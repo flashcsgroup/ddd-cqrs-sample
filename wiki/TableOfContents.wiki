@@ -12,8 +12,7 @@ Add your content here.  Format your content with:
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
 
-#sidebar 
-  * [prezimap Scalable map of the design]
+#sidebar * [prezimap Scalable map of the design]
   * [Source Leaven source]
   * Most important articles
     * [wiki1 Article 1]
