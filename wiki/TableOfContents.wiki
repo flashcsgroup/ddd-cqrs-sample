@@ -1,0 +1,23 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+#sidebar 
+  * [prezimap Scalable map of the design]
+  * [Source Leaven source]
+  * Most important articles
+    * [wiki1 Article 1]
+    * [wiki2 Article 2]
+  * Knowledge sources
+    * [amazon ddd book]
+    * [http://cqrsinfo.com CqRS Info]
