@@ -18,19 +18,19 @@ We are working on the suggested learning path that is meant to flatten learning 
     # Noninvasive philosophy
     # You are the Architect and owner of the code
   # PART I: Domain Driven Design - *Business Developer mental model*    
-    * Domain Description
+    # Domain Description
       * Bounded Contexts - decoupling, independent development
       * Shared Kernel
-    * Application Architecture
+    # Application Architecture
       * Layers
       * Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming
       * Design expression using Custom Annotations
       * Visualization using "scalable map"
-    * Application Layer
+    # Application Layer
       * Commands/Services
       * Listeners - Bounded Context and Context Mapper
       * Sagas
-    * Domain Layer
+    # Domain Layer
       * Entity - JPA aspects, Base class
       * Aggregate - Dependency Injection, Encapsulation, Outside Projections using Value Objects, Base classes
       * Value Objects - Make explicit what is implicit, Increase expression power, JPA aspects
@@ -42,7 +42,7 @@ We are working on the suggested learning path that is meant to flatten learning 
       * Events - motivation (decoupling, optimization, plugin oriented architecture, updating read model)
       * Saga - persistent multi-listener, complex process orchestration, make explicit what is implicit
   # Part II: Command-query Responsibility Segregation - *System Architect mental model*
-    * Architecture decisions
+    # Architecture decisions
       * Business (Write) Model
         * Classic: Service - AOP techniques
         * Commands and handlers - possibility to get rid of Containers
@@ -54,7 +54,7 @@ We are working on the suggested learning path that is meant to flatten learning 
       * Event Sourcing
         * When to Use (Behavioral model and it's projections, Complex Event Processing and Artificial Neural Networks)
         * Why in this context we decided to not use it
-    * Technical aspects of implementation
+    # Technical aspects of implementation
       * Command Handlers
         * Finding Handler
         * Security and transactions
@@ -70,6 +70,6 @@ We are working on the suggested learning path that is meant to flatten learning 
         * API
         * Persistent Memento
   # PART III: Behavior Driven Development
-    * Resources
-    * Sample
-    * Support
+    # Resources
+    # Sample
+    # Support
