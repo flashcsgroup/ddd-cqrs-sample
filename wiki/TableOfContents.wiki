@@ -41,7 +41,6 @@ We are working on the suggested learning path that is meant to flatten learning 
       * Specification - Supple Design in Runtime
       * Events - motivation (decoupling, optimization, plugin oriented architecture, updating read model)
       * Saga - persistent multi-listener, complex process orchestration, make explicit what is implicit
-
   # Part II: Command-query Responsibility Segregation - *System Architect mental model*
     * Architecture decisions
       * Business (Write) Model
