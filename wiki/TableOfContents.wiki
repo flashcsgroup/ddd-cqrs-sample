@@ -1,22 +1,77 @@
-#summary One-sentence summary of this page.
+#summary Table co contents
 
-= WIKI IS UNDER SONSTRUCTION =
+= WIKI IS UNDER CONSTRUCTION =
 
-Add your content here.
+We are working on the suggested learning path that is meant to flatten learning curve.
 
 
-= Details =
+=Learning Path=
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
-
-#sidebar * [prezimap Scalable map of the design]
-  * [Source Leaven source]
-  * Most important articles
-    * [wiki1 Article 1]
-    * [wiki2 Article 2]
-  * Knowledge sources
-    * [amazon ddd book]
-    * [http://cqrsinfo.com CqRS Info]
+  # Introduction
+    * Motivation
+    * Pragmatic approach
+    * DDD and CqRS resources
+    * Modeling resources
+  # Assumptions
+    * Main goals
+    * Leaven idea
+    * Noninvasive philosophy
+    * You are the Architect and owner of the code
+  # PART I: Domain Driven Design
+    * *Business Developer mental model*    
+    * Domain Description
+      * Bounded Contexts - decoupling, independent development
+      * Shared Kernel
+    * Application Architecture
+      * Layers
+      * Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming
+      * Design expression using Custom Annotations
+      * Visualization using "scalable map"
+    * Application Layer
+      * Commands/Services
+      * Listeners - Bounded Context and Context Mapper
+      * Sagas
+    * Domain Layer
+      * Entity - JPA aspects, Base class
+      * Aggregate - Dependency Injection, Encapsulation, Outside Projections using Value Objects, Base classes
+      * Value Objects - Make explicit what is implicit, Increase expression power, JPA aspects
+      * Factory - Dependency Injection Responsibility, Validation, Part of business logic (Assembling objects), Increase testability
+      * Repository - Dependency Injection Responsibility, Base Classes
+      * Domain Services - Responsibility Driven Design Transformers, when to introduce: simple rule of the thumb
+      * Policy - Supple Design, Decorating technique, Functional style, Injecting
+      * Specification - Supple Design in Runtime
+      * Events - motivation (decoupling, optimization, plugin oriented architecture, updating read model)
+      * Saga - persistent multi-listener, complex process orchestration, make explicit what is implicit
+  # Part II: Command-query Responsibility Segregation
+    * *System Architect mental model*
+    * Architecture decisions
+      * Business (Write) Model
+        * Classic: Service - AOP techniques
+        * Commands and handlers - possibility to get rid of Containers
+        * Synergy: Commands and AOP
+      * Presentation (Read) Model
+        * Performance problems with JPA
+        * Techniques of flattening Business Model - SELECT NEW, View, Dedicated Model
+        * Optimization: First think what You query for, tan model it
+      * Event Sourcing
+        * When to Use (Behavioral model and it's projections, Complex Event Processing and Artificial Neural Networks)
+        * Why in this context we decided to not use it
+    * Technical aspects of implementation
+      * Command Handlers
+        * Finding Handler
+        * Security and transactions
+      * Server Gate
+        * Asynchronous mode
+        * Optimization by detecting duplicates
+      * Run Environment - leaven for additional features
+      * Events Engine
+        * How doest it work and why so simple:)
+        * Asynchronous Mode
+      * Saga
+        * Also so simple?
+        * API
+        * Persistent Memento
+  # PART III: Behavior Driven Development
+    * Resources
+    * Sample
+    * Support
