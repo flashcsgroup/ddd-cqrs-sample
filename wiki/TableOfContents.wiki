@@ -8,10 +8,10 @@ We are working on the suggested learning path that is meant to flatten learning 
 =Learning Path=
 
   # [Introduction Introduction]
-    # [Introduction#Motivation Motivation]
-    # Pragmatic approach
-    # DDD and CqRS resources
-    # Modeling resources
+    # Introduction#Motivation Motivation
+    # [Introduction#Pragmatic_approach Pragmatic approach]
+    # [Introduction#DDD_and_CqRS_resources DDD and CqRS resources]
+    # [Introduction#Modeling_resources Modeling resources]
   # Assumptions
     # Main goals
     # Leaven idea
