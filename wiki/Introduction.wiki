@@ -1,0 +1,25 @@
+#summary Introduction to the project
+
+=Motivation=
+Providing non trivial, real live DDD examples and clarifying Java implementation details. 
+
+=Pragmatic approach=
+Details makes difference, so we try to present different solutions for different contexts.
+We try to avoid so called "technical onanism" and focus on techniques that introduces a value.
+
+=DDD and CqRS resources= 
+We assume that You are familiar with DDD and CqRS. That's the reason You are looking for implementation examples. Thats why We are not trying to manifold theoretical content.
+
+If You need to gain more knowledge, we recommend:
+  * [http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215/ Domain-Driven Design: Tackling Complexity in the Heart of Software] - read this at least three times. There is no shortcut way, so don't waste Your time reading any "quickly" version or trying to learn from blogs beacue the "blue book" contains lots of context. And as all non trivial techniques - they work only in certain context
+  * [http://domaindrivendesign.org DDD Community]
+  * [http://cqrsinfo.com CqRS]
+    * especially this 6.5h [http://cqrsinfo.com/video/ video] - it's worth Your time!
+  * [http://martinfowler.com/bliki/CQRS.html fast introduction by Martin Fowler]
+
+=Modeling resources=
+Goal of this project is not to teach You how to model. In this project we focus on implementation challenges. Introducing too sophisticated model would blur and complicate our goal. Thats why we compromised domain model (but still putting high emphasis on general OO techniqies).
+
+If You are looking for real "ERP problem class" modelling check the following resources:
+  * [http://www.amazon.com/Enterprise-Patterns-MDA-Building-Archetype/dp/032111230X Enterprise Patterns and MDA]
+  * [http://www.amazon.com/exec/obidos/ASIN/0201895420 Analysis Patterns: Reusable Object Models]
