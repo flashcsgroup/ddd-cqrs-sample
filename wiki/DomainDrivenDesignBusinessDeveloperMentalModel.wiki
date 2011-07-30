@@ -6,10 +6,57 @@ This document describes sample code illustrating DDD techniques. Intention is to
 
 Idea is that Business does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
 
+==The Code==
 
-= Details =
+map
+==Visualization using "scalable map"==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+=Domain Description= 
+==Bounded Contexts - decoupling, independent development== 
+==Shared Kernel== 
+=Application Architecture= 
+==Layers== 
+==Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming== 
+==Design expression using Custom Annotations==  
+=Application Layer= 
+==Commands/Services== 
+==Listeners - Bounded Context and Context Mapper== 
+==Sagas== 
+=Domain Layer= 
+==Entity - JPA aspects, Base class== 
+==Aggregate==
+===Dependency Injection===
+===Encapsulation===
+===Outside Projections using Value Objects===
+===Base classes=== 
+==Value Objects==
+===Make explicit what is implicit===
+===Increase expression power===
+===JPA aspects=== 
+==Factory==
+===Dependency Injection Responsibility===
+===Validation===
+===Part of business logic (Assembling objects)===
+===Increase testability=== 
+==Repository==
+===Dependency Injection Responsibility===
+===Base Classes=== 
+==Domain Services==
+===Responsibility Driven Design Transformers===
+===When to introduce: simple rule of the thumb=== 
+==Policy==
+===Supple Design===
+===Decorating technique===
+===Functional style===
+===Injecting=== 
+==Specification==
+===Supple Design in Runtime 
+==Events==
+===Decoupling===
+===Optimization===
+===Plugin oriented architecture===
+===Updating read model===
+==Saga==
+===Persistent multi-listener===
+===Complex process orchestration===
+===Make explicit what is implicit===
