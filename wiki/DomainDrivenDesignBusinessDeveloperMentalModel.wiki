@@ -469,9 +469,41 @@ There are other ways to do this:
   * Pass needed dependencies as Aggregate methods' parameters. Sometimes can be artificial, but sometimes makes sense. For example when dependency is need only in one method of the Aggregate. But in other hand - as we discuss later - very specific and used once Aggregate Methods should become a Domain Service.
 ----
 ==Value Objects==
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fsharedcernel Shared Kernel] contains two examples of Value Objects: Money and Percentage. Both encapsulates representation of the value they protect.
+Therefore You can chane money calculations to ultra-fast integers where fractions are handled with bytes shifting:)
+Moreover Money encapsulates concept of the Currency. You can also add concept of currency ration date.
+===Immutability===
+VOs are immutable, so  You can pass them to another Aggregate without worrying about Side Effects. For example prices for OrderedProducts are used by InvoicingService to generate Invoice. Life is simple with immutability.
+===Aggregate Inner State Projection===
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderedProduct.java OrderedProduct] Value Object is introduced as an "adapter" that adopts inner aggregate model to the outer world, because we assume that OrderLine model is unstable and will change in the future.
+
+
 ===Make explicit what is implicit===
+VOs are little classes that makes difference.
+Without VOs Your code suffers from Primitive Obsession Code Smell.
 ===Increase expression power===
+Value objects are small artifacts but extremely increase power of domain expression. They enrich Ubiquitous Languages and helps understand details of the model. 
 ===JPA aspects=== 
+Using VOs is very "cheap" from the perspective of JPA. You don't need any additional tables. Simple map them as @Embededable classes and use in Entitues/Aggregates ad @Embeded.
+
+If You have more than one embeded VO in Entity You must use additional annotations:
+
+<code language="java">
+@Embedded
+	@AttributeOverrides({
+			@AttributeOverride(name = "value", column = @Column(name = "net_value")),
+			@AttributeOverride(name = "currencyCode", column = @Column(name = "net_currencyCode")) })
+	private Money net;
+
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "value", column = @Column(name = "gros_value")),
+		@AttributeOverride(name = "currencyCode", column = @Column(name = "gros_currencyCode")) })
+	private Money gros;
+</code>
+
+Alternatively You can provide special Naming Strategy in Hibenrate.
+
 ----
 ==Factory==
 ===Dependency Injection Responsibility===
@@ -493,7 +525,7 @@ There are other ways to do this:
 ===Functional style===
 ===Injecting=== 
 ==Specification==
-===Supple Design in Runtime 
+===Supple Design in Runtime===
 ----
 ==Events==
 ===Decoupling===
