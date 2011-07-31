@@ -12,10 +12,28 @@ Idea is that Business does not need to understand what's under the hood - he or 
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample SVN Repository] contains project that is structured in the standard Maven way.
 
 ===DDD common classes===
-Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd pl.com.bottega.ddd] contains common DDD "library".
+Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd pl.com.bottega.ddd] contains common DDD library (not framework).
+
+Common DDD goodies are:
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fapplication application]
+    * annotation - annotations used in Application Layer artifacts
+      * ApplicationEvent - tagging annotation, will be used in visual tools
+      * ApplicationService - if You prefer services instead of commands and handlers. Used for tagging but also provides Spring features (this annotations is annotated by Spring annotations)
+      * ApplicationStatefullComponent - for session scoped Spring beans
+  * [ http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain domain]
+    * annotations - annotations for all DDD Building Blocks - some of them are just for tagging (will be used by visual analyzers) but some of them are annotated by Spring's annotations that introduces Spring based features like being a Bean.
+    * sharedcernel - common model
+    * infrastructure
+      * events - Events Engine impl, Common technical listeners, annotations for listeners
+      * repo - JPA base repositories, that can be handfull
+      * sagas - Saga Engine impl
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fsagas sagas] - Saga API - described in later section of this document
+
 
 ===CqRS common classes===
 Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fcqrs pl.com.bottega.cqrs] contains common CqRS "engine".
+
+Common CqRS goodies are described in the [PART II] because they are just technical details.
 
 ===ERP product classes===
 Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp pl.com.bottega.erp] is The Product - Enterprise Resource Planning class system.
@@ -29,6 +47,19 @@ System modules separation at this package level:
 Modules are independent set of features that can  be used separately and still being valuable.
 
 In this sample modules are equal to DDD Bounded Context.
+
+===ERP module structure===
+Open [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/#main%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales Sales] module, look at packages structure and follow the description:
+
+Each module is packaged using the same application architecture style (beginning from the top):
+  # _webui_ - at the top, web client controllers
+  # two separated CqRS stacks:
+    * read (presentation) model
+      # _presentation_ reading presentation data
+    * write (business) model
+      # _application_ application logic (handlers or services, listeners, statefull objects)
+      # _domain_ - domain model, building blocks
+      # _infrastructure_ - technical stuff, repository impl, technical listeners
 
 ===Technical resources===
 Folder [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/#main%2Fresources] contains:
@@ -60,7 +91,11 @@ Therefore, using [http://prezi.com Prezi], we have created a "scaleable map" of 
   * You can "play" default road trip or pan and zoom freely using mouse
   * You can click on SVN link and go straight to the code!
 
-=Domain Description= 
+=Domain Description=
+Sample is illustrated in the context of ERP system. We have chosen this domain because is relatively well known. Everybody has some intuition about Clients, Orders, Products etc. so We don't have to stuck explaining how different domain works (financial, medical etc.)
+
+*Sales* module
+
 ==Bounded Contexts - decoupling, independent development== 
 ==Shared Kernel== 
 =Application Architecture= 
