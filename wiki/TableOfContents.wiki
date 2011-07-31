@@ -19,32 +19,38 @@ We are working on the suggested learning path that is meant to flatten learning 
     # [Philosophy#Portable_architecture_-_technical_independence Portable architecture - technical independence]
     # [Philosophy#You_are_the_Architect_and_owner_of_the_code You are the Architect and owner of the code]
   # [DomainDrivenDesignBusinessDeveloperMentalModel PART I: Domain Driven Design] - *Business Developer mental model*
-    # Technical introduction
-      * Architecture and design visualization using "scaleable map"
-      * Project Structure
-      * Just one Maven Artifact?      
-    # Domain Description
-      * Bounded Contexts - decoupling, independent development
-      * Shared Kernel
-    # Application Architecture
-      * Layers
-      * Expressing design expression using Custom Annotations   
-      * Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming         
-    # Application Layer
-      * Commands/Services
-      * Listeners - Bounded Context and Context Mapper
-      * Sagas
-    # Domain Layer
-      * Entity - JPA aspects, Base class
-      * Aggregate - Dependency Injection, Encapsulation, Outside Projections using Value Objects, Base classes
-      * Value Objects - Make explicit what is implicit, Increase expression power, JPA aspects
-      * Factory - Dependency Injection Responsibility, Validation, Part of business logic (Assembling objects), Increase testability
-      * Repository - Dependency Injection Responsibility, Base Classes
-      * Domain Services - Responsibility Driven Design Transformers, when to introduce: simple rule of the thumb
-      * Policy - Supple Design, Decorating technique, Functional style, Injecting
-      * Specification - Supple Design in Runtime
-      * Events - motivation (decoupling, optimization, plugin oriented architecture, updating read model)
-      * Saga - persistent multi-listener, complex process orchestration, make explicit what is implicit
+    # [DomainDrivenDesignBusinessDeveloperMentalModel#Technical_introduction Technical introduction]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map&q Architecture and design visualization using "scalable map"]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Project_Structure Project Structure]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Just_one_Maven_Artifact? Just one Maven Artifact?]
+    # [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Description Domain Description]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Bounded_Contexts Bounded Contexts]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Shared_Kernel Shared Kernel]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#WARNING WARNING]
+    # [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Architecture Application Architecture]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Two_stacks_of_Layers Two stacks of Layers]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Expressing_Design_using_Custom_Annotations Expressing Design using Custom Annotations]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Inversion_of_Control_techniques Inversion of Control techniques]
+    # [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Layer Application Layer]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Commands/Services Commands/Services]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Event Application Event]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Listeners_-_Bounded_Context_and_Context_Mapper Listeners - Bounded Context and Context Mapper]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Sagas Sagas]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Statefull_Application_Objects Statefull Application Objects]
+    # [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Layer Domain Layer]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Entity Entity]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Aggregate Aggregate]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Value_Objects Value Objects]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Factory Factory]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Repository Repository]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Services Domain Services]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Policy Policy]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Specification Specification]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Events Events]
+    # [DomainDrivenDesignBusinessDeveloperMentalModel#Saga Saga]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel# Complex process orchestration]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel# Persistent multi-listener]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel# Make explicit what is implicit]   
   # Part II: Command-query Responsibility Segregation - *System Architect mental model*
     # Portable architecture - technical independence    
     # Architecture decisions
