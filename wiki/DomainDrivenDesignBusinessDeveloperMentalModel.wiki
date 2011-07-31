@@ -92,6 +92,7 @@ All this stuff is stored in one Eclipse Project - one Maven Artifact.
 This decision is a trade-off made in sake of simplicity. If You are proficient Maven user, You probably split code into separated artifacts in one hour. But those of You who are not familiar with Maven should focus on the essence of this project - sample code.
 
 ----
+----
 
 =Domain Description=
 Sample is illustrated in the context of simplified fraction of the ERP system. We have chosen some ERP domains because they are relatively well known. Everybody has some intuition about Clients, Orders, Products etc. so We don't have to stuck explaining how different domain works (financial, medical etc.)
@@ -121,6 +122,7 @@ ERP model is simplified in sake of educational purpose. If You are developing su
   * Party Archetype
   * CRM Archetype
   * Product Archetype
+----
 ----
 
 =Application Architecture=
@@ -168,7 +170,7 @@ Business tack layers are described in details in the following sections:
 [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Layer Application Layer]
 [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Layer Domain Layer]
 [CqRS_Part_II Infrastructure]
-
+----
 ==Expressing Design using Custom Annotations==  
 While reading the sample code You should notice multiple custom annotations, used to mark
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fannotations DDD Building Blocks]
@@ -184,7 +186,7 @@ Annotations are used to achieve three goals:
 
 All custom annotations will be described in details in later sections of this document.
 
-
+----
 ==Inversion of Control techniques==
 Application architecture of this sample rely in Inversion of Control principle - famous Hollywood rule: "Don't call Us, we will call You".
 
@@ -227,6 +229,7 @@ You can use Command style or classic Application Service style. Simply use [http
 But implementing own "AOP" *is trivial* when using Command style. Simply edit [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class and add own features before and after running a handler.
 
 
+----
 ----
 
 =Application Layer= 
@@ -288,7 +291,7 @@ Creating a handler for a command is also pretty straightforward.
   * You *can* annotate handler with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandlerAnnotation] if You wan to rely on automatic  Command2Handler matching. This annotation also introduces Spring features (Dependency Injection, Security and Transactions) to the handler so You don't need to worry about them.
 
 Now implement logic just the same way as in classic [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Services Application Service]: inject required dependencies and orchestrate part of the Use Case/user Story scenario in handle method based on parameters from the Command. You can also fire an Application Event.
-
+----
 ==Application Event==
 Application Events are characteristic to the specific Use Case/User Story. They model application (not domain) behavior.
 
@@ -301,7 +304,7 @@ To fire such an event simply:
 In our example application event [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/events/ProductAddedToOrderEvent.java ProductAddedToOrderEvent] models important fact of the application life cycle. Let's assume that in this sample we don't want to model this act on the domain model level.
 
 Than, [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java one of the listeners] stores data about this fact in "spy model" used by the marketing division to do something evil.
-
+----
 ==Listeners - Bounded Context and Context Mapper== 
 Now we will discuss [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fapplication%2Flisteners Application Level Listeners].
 
@@ -351,7 +354,7 @@ Notice that in case of events, listener is the artifact that express asynch inte
 ====Application Listener as a Context Mapper and Anti-corruption Layer====
 You can consider Application Event Listeners as a Context Mapers because them map concepts from different Bounded Contexts.
 If Your Listeners are listening to the events from the legacy systems, they can be also considered as Anti-corruption Layer artifacts.
-
+----
 ==Sagas== 
 
 Events are very powerful IoC technique, but has some limitations. You can use Event when dealing with dependent facts that took place in Your system. You mentally treat each Event and it's Listeners as an independent objects with no deterministic processing sequence.
@@ -361,7 +364,7 @@ What if sequence order matters? What of some process need to be "pushed" by many
 You need to introduce a Saga mental model to orchestrate complex processes that contains multi-events sequence.
 
 Sagas are just mentioned here to make layer description complete. Detailed description of Saga model is presented at the end of this document.
-
+----
 ==Statefull Application Objects==
 Sometimes You may need to model Application State.
 
@@ -377,6 +380,7 @@ Sample contains following Statefull Application Components:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/SystemUser.java SystemUser] - common object that represents user working with the system. You can inject this objects into CommandHandlers or ApplicationServices if You need to know who is performing operation. SystemUser is a application concept that abstract form domain entity. This object contains just ID of the domain entity therefore concept of domain user does not leak into whole code.
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/ClientBasket.java ClientBasket] is a metaphor of a shopping cart. In this sample We assume that Shopping cart is not a domain artifact nor client specific feature. Assumption is that this metaphor models application concept (but in some systems it may be a very important domain concept or maybe just some feature of some minor client app.).
 
+----
 ----
 
 =Domain Layer=
@@ -402,7 +406,7 @@ Features of BaseEntity:
   * Store last modification date
   * Logic delete operation - change flag. You can use Hibernate Filters to automatically filter archived JPA entities
   * equals and hashcode
-
+----
 ==Aggregate==
 Sample Sales Bounded Context contains three Aggregates:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Order.java Order]
@@ -463,7 +467,7 @@ There are other ways to do this:
   * No setter, just custom injection annotation checked in Repo and factory - a little dirty in our opinion
   * @Configurable annotation - we do not want do use any magic in sake of architecture style portability. Besides, sometime we need to calculate (perform some business logic) to determine a Policy for example
   * Pass needed dependencies as Aggregate methods' parameters. Sometimes can be artificial, but sometimes makes sense. For example when dependency is need only in one method of the Aggregate. But in other hand - as we discuss later - very specific and used once Aggregate Methods should become a Domain Service.
-
+----
 ==Value Objects==
 ===Make explicit what is implicit===
 ===Increase expression power===
