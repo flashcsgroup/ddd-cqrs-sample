@@ -9,6 +9,27 @@ This document describes sample code illustrating DDD techniques. Intention is to
 Idea is that Business does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
 
 ==Project Structure==
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample SVN Repository] contains project that is structured in the standard Maven way.
+
+===DDD common classes===
+Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd pl.com.bottega.ddd] contains common DDD "library".
+
+===CqRS common classes===
+Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fcqrs pl.com.bottega.cqrs] contains common CqRS "engine".
+
+===ERP product classes===
+Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp pl.com.bottega.erp] is The Product - Enterprise Resource Planning class system.
+
+System modules separation at this package level:
+*crm - Client Relationship Management module
+*sagas - Sagas which contains cross module features
+*sales - Sales module - *most examples are implemented in this module*
+*shipping - Shipping module
+
+Modules are independent set of features that can  be used separately and still being valuable.
+
+In this sample modules are equal do DDD Bounded Context.
+
 
 ==Just one Maven Artifact?==
 
@@ -26,11 +47,13 @@ Idea is that Business does not need to understand what's under the hood - he or 
 ==Listeners - Bounded Context and Context Mapper== 
 ==Sagas== 
 =Domain Layer= 
-==Entity - JPA aspects, Base class== 
+==Entity==
+===Base class===
 ==Aggregate==
 ===Dependency Injection===
 ===Encapsulation===
 ===Outside Projections using Value Objects===
+===JPA aspects===
 ===Base classes=== 
 ==Value Objects==
 ===Make explicit what is implicit===
