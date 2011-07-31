@@ -354,7 +354,15 @@ If Your Listeners are listening to the events from the legacy systems, they can 
 
 ==Sagas== 
 
-Integration via Events is very powerful, but hast limited
+Events are very powerful IoC technique, but has some limitations. You can use Event when dealing with dependent facts that took place in Your system. You mentally treat each Event and it's Listeners as an independent objects with no deterministic processing sequence.
+
+What if sequence order matters? What of some process need to be "pushed" by many events?
+
+You need to introduce a Saga mental model to orchestrate complex processes that contains multi-events sequence.
+
+Sagas are just mentioned here to make layer description complete. Detailed description of Saga model is presented at the end of this document.
+
+==Statefull Application Objects==
 
 ----
 
