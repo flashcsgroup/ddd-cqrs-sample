@@ -472,17 +472,21 @@ There are other ways to do this:
 ===Make explicit what is implicit===
 ===Increase expression power===
 ===JPA aspects=== 
+----
 ==Factory==
 ===Dependency Injection Responsibility===
 ===Validation===
 ===Part of business logic (Assembling objects)===
 ===Increase testability=== 
+----
 ==Repository==
 ===Dependency Injection Responsibility===
 ===Base Classes=== 
+----
 ==Domain Services==
 ===Responsibility Driven Design Transformers===
 ===When to introduce: simple rule of the thumb=== 
+----
 ==Policy==
 ===Supple Design===
 ===Decorating technique===
@@ -490,11 +494,13 @@ There are other ways to do this:
 ===Injecting=== 
 ==Specification==
 ===Supple Design in Runtime 
+----
 ==Events==
 ===Decoupling===
 ===Optimization===
 ===Plugin oriented architecture===
 ===Updating read model===
+----
 ----
 =Saga=
 ==Persistent multi-listener==
