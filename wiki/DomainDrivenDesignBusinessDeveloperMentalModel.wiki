@@ -573,8 +573,30 @@ Impl is based on the famous [http://www.ibm.com/developerworks/java/library/j-ge
 
 ----
 ==Domain Services==
+Sometimes it is not natural to just stick some method to the Aggregate.
+Moreover we don't want to our Aggregates become a God Classes. 8k lines of code monster that knows everything and knows everyone.
+
+There is a [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/InvoicingService.java InvoicingService] sample Domain Service that handles creating Invoices.
+
+We certainly don't want to add this feature to the Order Aggregate.
+
+Domain Service is annotated by [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainService.java DomainService] annotation that introduces Spring Bean features. therefore our Domain Service can be injected and we can inject dependencies to the service (ex. Repositories).
+
+As we can see, InvoicingService looks at the Order Aggregate through a ValueObject "projection" mentioned earlier.
+
 ===Responsibility Driven Design Transformers===
+Great book [http://www.amazon.com/Object-Design-Roles-Responsibilities-Collaborations/dp/0201379430 Responsibility Driven Design] by Rebecca Wirfs-Brock describes standard Building Blocks - more abstract than Evans' DDD BB. 
+
+InvoicingService can be considered as a Transformer role class, that transforms Orders to Invoices.
+
 ===When to introduce: simple rule of the thumb=== 
+
+Simple rule of the thumb for beginners. You probably wont miss much if create Domain Services instead of Aggregate methods for operations that are used on one Use Case/user Story.
+
+It it a procedural way of thinking but keeps Aggregates coherent and lousily coupled.
+
+That's just a rule for the newbies, so it intuition tells when to break it. 
+
 ----
 ==Policy==
 ===Supple Design===
