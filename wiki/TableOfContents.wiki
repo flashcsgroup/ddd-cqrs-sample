@@ -20,9 +20,9 @@ We are working on the suggested learning path that is meant to flatten learning 
     # [Philosophy#You_are_the_Architect_and_owner_of_the_code You are the Architect and owner of the code]
   # [DomainDrivenDesignBusinessDeveloperMentalModel PART I: Domain Driven Design] - *Business Developer mental model*
     # Technical introduction
-      * Project Structure
-      * Just one Maven Artifact?
       * Architecture and design visualization using "scaleable map"
+      * Project Structure
+      * Just one Maven Artifact?      
     # Domain Description
       * Bounded Contexts - decoupling, independent development
       * Shared Kernel
