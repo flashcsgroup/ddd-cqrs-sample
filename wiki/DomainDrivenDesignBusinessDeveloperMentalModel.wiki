@@ -397,6 +397,12 @@ You *can* consider extending [http://code.google.com/p/ddd-cqrs-sample/source/br
 
 Remember that inheritance ins not just about pulling code up in the hierarchy! BaseEntity class is used as a polymorphic interface (in the meaning of "api", not java keyword) in the repositories, so we are in tune with [http://en.wikipedia.org/wiki/Liskov_substitution_principle Liskov Substitution Principle]. Therefore inheritance is justified.
 
+Features of BaseEntity:
+  * Optimistic Concurrency - @Version annotation
+  * Store last modification date
+  * Logic delete operation - change flag. You can use Hibernate Filters to automatically filter archived JPA entities
+  * equals and hashcode
+
 ==Aggregate==
 Sample Sales Bounded Context contains three Aggregates:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Order.java Order]
@@ -405,14 +411,45 @@ Sample Sales Bounded Context contains three Aggregates:
 Notice that:
   * Aggregates does not allow to modify all their properties via setters. It may have sense only in some cases.
   * Aggregate state is changed via business methods
-  * Some business operations may be not valid in some state - therefore they throw domain [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Ferrors errors].
+  * Some business operations may be not valid in some state (ex. Order.submit()) - therefore they throw domain [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Ferrors errors].
   * Not all getters makes sense.
+
+====Inner state protection====
+Notice that Invoice Aggregate method: getItems returns list of [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/InvoiceLine.java InvoiceLine] entities. But this list is also unidentifiable in order to protect Aggregate from being changed by outer code. 
+
+====Inner model protection====
+Notice that Order Aggregate method: addProduct takes as an argument Product Entity, than wraps it with OrderLine. OrderLine is Aggregate's inner implementation detail.
 
 ===Outside Projections using Value Objects===
 In this sample we assume that Order model is unstable - we expect changes in near future. Therefore we want to reduce catastrophe area to Aggregate itself. Domain Expert is not sure about [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderLine.java Order Line] model.
 
+Therefore [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderedProduct.java OrderedProduct] Value Object is introduced as an "adapter" that adopts inner aggregate model to the outer world.
+
+Notice that method Order.getOrderedProducts transforms inner (unstable) aggregate model to the "outer interface" based on OrderedProduct Value Objects. Method return unidentifiable list because changes to this list does not make any sense.
+
 ===JPA aspects===
-===Base classes=== 
+Aggregate is an entity from the JPA perspective. JPA can operate on private fields, so getters and setters are not necessary (using them makes sense only sometimes).
+
+====Lazy Loading====
+You may consider Eager loading of some aggregated objects. Some aggregated objects are always needed.
+
+On the other hand Lazy loading does not hurt with <i>n+1 select problem</i> because in Business Model we usually load just couple on aggregates, so n is relatively small.
+
+<code language="java">
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  private List<OrderLine> items;
+</code>
+
+====Cascade Operations====
+Cascade operations makes sense to most aggregated objects, so You must always consider adding this attribute.
+
+===Base classes===
+You *may* consider extending [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseAggregateRoot.java BaseAggregateRoot] class.
+
+*If You don't want to couple Your model with Leaven classes than simply rename and repackage this class*.
+
+BaseAggregateRoot is based on BaseEntity - it adds common future, an injected [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/DomainEventPublisher.java DomainEventPublisher].
+
 ===Dependency Injection===
 ==Value Objects==
 ===Make explicit what is implicit===
