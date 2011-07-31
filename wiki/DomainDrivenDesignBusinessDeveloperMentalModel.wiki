@@ -17,10 +17,10 @@ Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fd
 Common DDD goodies are:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fapplication application]
     * annotation - annotations used in Application Layer artifacts
-      * ApplicationEvent - tagging annotation, will be used in visual tools
+      * [!ApplicationEvent] - tagging annotation, will be used in visual tools
       * ApplicationService - if You prefer services instead of commands and handlers. Used for tagging but also provides Spring features (this annotations is annotated by Spring annotations)
       * ApplicationStatefullComponent - for session scoped Spring beans
-  * [ http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain domain]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain domain]
     * annotations - annotations for all DDD Building Blocks - some of them are just for tagging (will be used by visual analyzers) but some of them are annotated by Spring's annotations that introduces Spring based features like being a Bean.
     * sharedcernel - common model
     * infrastructure
