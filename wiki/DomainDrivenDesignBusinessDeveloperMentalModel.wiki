@@ -379,15 +379,41 @@ Sample contains following Statefull Application Components:
 
 ----
 
-=Domain Layer= 
+=Domain Layer=
+Now let's focus on the Sales Bounded Context and it's [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain Domain Layer].
+
+We will go through all building blocks discussing design decisions and technical solutions.
 ==Entity==
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Product.java Product] is a sample entity.
+
+Worth to notice:
+  * In this case we don't need setters (technically JPA can work on private fields via refelction which is even faster that calling methods)
+  * In general entity contains business methods - but on the other hand do not spread all business code on entities. [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderLine.java Order Line] is a sample Entity that performs business logic - calculates cost based on rebate policy
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainEntity.java DomainEntity] is just a tagging annotation that will be used by cool visualisation tools we plan to publish
+
 ===Base class===
+You *can* consider extending [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseEntity.java BaseEntity].
+*If You don't want to couple Your model with Leaven classes than simply rename and repackage this class*.
+
+Remember that inheritance ins not just about pulling code up in the hierarchy! BaseEntity class is used as a polymorphic interface (in the meaning of "api", not java keyword) in the repositories, so we are in tune with [http://en.wikipedia.org/wiki/Liskov_substitution_principle Liskov Substitution Principle]. Therefore inheritance is justified.
+
 ==Aggregate==
-===Dependency Injection===
+Sample Sales Bounded Context contains three Aggregates:
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Order.java Order]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Invoice.java Invoice]
 ===Encapsulation===
+Notice that:
+  * Aggregates does not allow to modify all their properties via setters. It may have sense only in some cases.
+  * Aggregate state is changed via business methods
+  * Some business operations may be not valid in some state - therefore they throw domain [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Ferrors errors].
+  * Not all getters makes sense.
+
 ===Outside Projections using Value Objects===
+In this sample we assume that Order model is unstable - we expect changes in near future. Therefore we want to reduce catastrophe area to Aggregate itself. Domain Expert is not sure about [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderLine.java Order Line] model.
+
 ===JPA aspects===
 ===Base classes=== 
+===Dependency Injection===
 ==Value Objects==
 ===Make explicit what is implicit===
 ===Increase expression power===
