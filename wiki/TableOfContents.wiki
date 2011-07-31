@@ -22,7 +22,7 @@ We are working on the suggested learning path that is meant to flatten learning 
     # Technical introduction
       * Project Structure
       * Just one Maven Artifact?
-      * Visualization using "scaleable map"
+      * Architecture and design visualization using "scaleable map"
     # Domain Description
       * Bounded Contexts - decoupling, independent development
       * Shared Kernel
