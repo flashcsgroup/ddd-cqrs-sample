@@ -163,21 +163,81 @@ In [PART II] we will discuss:
   * Technical details of designing this Stack
   * Techniques of optimization (Special JPA Syntax, pure SQL, Updating by Events, Materialized Views)
 
-two separated CqRS stacks:
-read (presentation) model
-presentation reading presentation data
-write (business) model
-application application logic (handlers or services, listeners, statefull objects)
-domain - domain model, building blocks
-infrastructure - technical stuff, repository impl, technical listeners
+===Business Stack===
+Business tack layers are described in details in the following sections:
+[DomainDrivenDesignBusinessDeveloperMentalModel#Application_Layer Application Layer]
+[DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Layer Domain Layer]
+[CqRS_Part_II Infrastructure]
+
+==Expressing Design using Custom Annotations==  
+While reading the sample code You should notice multiple custom annotations, used to mark
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fannotations DDD Building Blocks]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fapplication%2Fannotation Application Layer objects]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fsagas Sagas]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Fevents Events]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java Commands]
+
+Annotations are used to achieve three goals:
+  * Tag code - visual analyzer (similar to "scaleable map") will be reading them and presenting design graph
+  * Some custom annotations are annotated by Spring's annotation. In effects classes annotated by custom annotations gains Spring features (transactions and security). Using custom annotations decouples and globalizes Spring features.
+  * CqRS engine (Event, Sagas) rely on some custom annotations.
+
+All custom annotations will be described in details in later sections of this document.
 
 
-==Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming== 
-==Design expression using Custom Annotations==  
+==Inversion of Control techniques==
+Application architecture of this sample rely in Inversion of Control principle - famous Hollywood rule: "Don't call Us, we will call You".
+
+It is important to notice that Spring can be easily removed and all it's features can be implemented on Your own.
+
+*Spring features are encapsulated by custom annotations and interfaces.
+Implementing IoC features on Your own is described in PART II.*
+
+===Dependency Injection===
+DI is basic IoC technique. In this project DI is used only at the application level:
+  * Injecting dependencies (Repositories, Services) to Command Handlers
+  * Injecting dependencies (Repositories, Services) to Application Services -  If You want to use classic services approach without commands
+  * Injecting dependencies (JDBC connection, Entity Manager) to repositories
+  * Injecting dependencies (JDBC connection, Entity Manager) to Finders (presentation stack) 
+
+We decided not to inject automatically dependencies to Aggregates. It could be done using Spring's @Configurable but we wanted to keep example magic clear. This trade-off makes easy rewrite our Leaven to different platform (Seam, EJB, etc.) 
+
+===Events===
+Events are stronger than DI technique of inverting control, because they allow to:
+  * abstract number of dependencies (many listeners)
+  * decouple from time arrow (asynchronous)
+
+We have decided to implement own [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Fevents Event Engine], because Spring's solution forces You to use Spring specific API.
+
+Event engine contains:
+  * two [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Fevents annotations]
+    * EventListener - for listener methods
+    * EventListeners - for class containing listener methods - adds Spring Comonent features (DI)
+  * just two [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Fevents%2Fimpl impl classes]
+
+So Events Engine can be easily enhanced to support asynchronous processing secured by persistent queue.
+
+===Aspect Oriented Programming===
+AOP is the strongest IoC technique used int the sample to provide:
+  * transactions
+  * security
+
+You can use Command style or classic Application Service style. Simply use [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationService.java ApplicationService] or [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandler] annotation - they both introduces Spring Security and Transaction Management features.
+
+But implementing own "AOP" *is trivial* when using Command style. Simply edit [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class and add own features before and after running a handler.
+
 
 ----
 
 =Application Layer= 
+
+Application logic orchestrates scenario for "domain actors" who lives in lower layer. Application logic also takes care for security and transactions. Application logic can fire application events.
+ 
+ (handlers or services, listeners, statefull objects)
+domain - domain model, building blocks
+infrastructure - technical stuff, repository impl, technical listeners
+
+
 ==Commands/Services== 
 ==Listeners - Bounded Context and Context Mapper== 
 ==Sagas== 
@@ -220,7 +280,8 @@ infrastructure - technical stuff, repository impl, technical listeners
 ===Optimization===
 ===Plugin oriented architecture===
 ===Updating read model===
-==Saga==
-===Persistent multi-listener===
-===Complex process orchestration===
-===Make explicit what is implicit===
+----
+=Saga=
+==Persistent multi-listener==
+==Complex process orchestration==
+==Make explicit what is implicit==
