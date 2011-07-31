@@ -290,6 +290,18 @@ Creating a handler for a command is also pretty straightforward.
 Now implement logic just the same way as in classic [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Services Application Service]: inject required dependencies and orchestrate part of the Use Case/user Story scenario in handle method based on parameters from the Command. You can also fire an Application Event.
 
 ==Application Event==
+Application Events are characteristic to the specific Use Case/User Story. They model application (not domain) behavior.
+
+To fire such an event simply:
+  * inject [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/ApplicationEventPublisher.java ApplicationEventPublisher] to the Command Handler or Application Service
+  * create event using any class
+    * event usually carries some valuable ingormation
+    * event class *can* be annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationEvent.java ApplicationEvent] annotations - consider this as a meta-data that will be analyzed by some cools tools we plan to publish
+
+In our example application event [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/events/ProductAddedToOrderEvent.java ProductAddedToOrderEvent] models important fact of the application life cycle. Let's assume that in this sample we don't want to model this act on the domain model level.
+
+Than, [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java one of the listeners] stores data about this fact in "spy model" used by the marketing division to do something evil.
+
 ==Listeners - Bounded Context and Context Mapper== 
 ==Sagas== 
 
