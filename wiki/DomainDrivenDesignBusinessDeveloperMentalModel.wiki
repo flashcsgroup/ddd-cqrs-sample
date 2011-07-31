@@ -233,12 +233,49 @@ But implementing own "AOP" *is trivial* when using Command style. Simply edit [h
 
 Application logic orchestrates scenario for "domain actors" who lives in lower layer. Application logic also takes care for security and transactions. Application logic can fire application events.
  
- (handlers or services, listeners, statefull objects)
-domain - domain model, building blocks
-infrastructure - technical stuff, repository impl, technical listeners
-
+We will discuss all sample Application Layer artifacts focusing on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fapplication Sales Module].
 
 ==Commands/Services== 
+Leaven supports two styles of implementing Application Logic.
+Commands and App Services are technically totally different, but mentally can be considered as equivalent.
+Commands are powerful because it's relatively easy to introduce own "AOP" programming model in clean and no-magic way. Using Spring you can achieve the same feature, but in transparent, magic way. So if magic scares You or You like to have full control - choose Commands style.
+
+===Application Services===
+At first let's look at the "service" style approach.
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/services/PurchaseApplicationService.java PurchaseApplicationService]
+
+Characteristic:
+  * Repository and Factory injection
+  * ApplicationEvent Publisher injection
+  * SystemUser - statefull (session scoped) application object injection
+  * transactions and security features supported by Spring using custom [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationService.java ApplicationService] annotation
+  * Service methods realizes parts of User Story/Use Case
+
+Typical method implementation:
+  * Load Aggregates from Repositories (or create in Factories)
+  * Perform business scenario (sequence of aggregate calls)
+  * Eventually create Application Event
+  * Save Aggregates in Repository
+
+===Commands and CommandHandlers===
+Alternative to the class "service" style is a "command" style.
+You always implement a pair - command and it's handler, for example:
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/SubmitOrderCommand.java SubmitOrderCommand]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/SubmitOrderCommandHandler.java SubmitOrderCommandHandler]
+
+or
+* [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/CreateOrderCommand.java CreateOrderCommand]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/CreateOrderCommandHandler.java CreateOrderCommandHandler]
+
+
+Conceptually two classes can be considered as a [http://en.wikipedia.org/wiki/Command_pattern Command Design Pattern]. In our case commands are sent from different Tier, so they can not contain any logic due the security and coupling reason. Therefore Command Design pattern is split to:
+  * Command that just caries input data (kind of DTO)
+  * CommandHandler that contains logic.
+
+====Command====
+
+
+==Application Event==
 ==Listeners - Bounded Context and Context Mapper== 
 ==Sagas== 
 
