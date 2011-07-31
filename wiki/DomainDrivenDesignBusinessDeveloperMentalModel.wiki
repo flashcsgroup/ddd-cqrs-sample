@@ -8,6 +8,13 @@ Idea is that Business does not need to understand what's under the hood - he or 
 
 ==The Code==
 
+#summary Project structure description
+
+
+Just one Maven Artifact
+General structure
+
+
 map
 ==Visualization using "scalable map"==
 
