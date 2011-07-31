@@ -8,6 +8,16 @@ This document describes sample code illustrating DDD techniques. Intention is to
 
 Idea is that Business does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
 
+==Architecture and design visualization using "scalable map"==
+
+Java (and any known language) does not support understanding complex code structures. Neither UML tools.
+
+Therefore, using [http://prezi.com Prezi], we have created a "scaleable map" of both big picture (architecture) and details view (class design).
+
+  * You can watch it [http://prezi.com/hi2dmhfej9zu/ddd-cqrs-sample-2/ here]
+  * You can "play" default road trip or pan and zoom freely using mouse
+  * You can click on SVN link and go straight to the code!
+
 ==Project Structure==
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample SVN Repository] contains project that is structured in the standard Maven way.
 
@@ -17,12 +27,12 @@ Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fd
 Common DDD goodies are:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fapplication application]
     * annotation - annotations used in Application Layer artifacts
-      * [!ApplicationEvent] - tagging annotation, will be used in visual tools
-      * ApplicationService - if You prefer services instead of commands and handlers. Used for tagging but also provides Spring features (this annotations is annotated by Spring annotations)
-      * ApplicationStatefullComponent - for session scoped Spring beans
+      * !ApplicationEvent - tagging annotation, will be used in visual tools
+      * !ApplicationService - if You prefer services instead of commands and handlers. Used for tagging but also provides Spring features (this annotations is annotated by Spring annotations)
+      * !ApplicationStatefullComponent - for session scoped Spring beans
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain domain]
-    * annotations - annotations for all DDD Building Blocks - some of them are just for tagging (will be used by visual analyzers) but some of them are annotated by Spring's annotations that introduces Spring based features like being a Bean.
-    * sharedcernel - common model
+    * annotations - annotations for all DDD Building Blocks - some of them are just for tagging (will be used by visual analyzers) but some of them are annotated by Spring's annotations that introduces Spring based features like being a Bean. All annotations will be described in details in [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Layer Domain Layer section] of this document.
+    * sharedcernel - common model used in all Bounded Contexts
     * infrastructure
       * events - Events Engine impl, Common technical listeners, annotations for listeners
       * repo - JPA base repositories, that can be handfull
@@ -81,15 +91,7 @@ All this stuff is stored in one Eclipse Project - one Maven Artifact.
 
 This decision is a trade-off made in sake of simplicity. If You are proficient Maven user, You probably split code into separated artifacts in one hour. But those of You who are not familiar with Maven should focus on the essence of this project - sample code.
 
-==Architecture and design visualization using "scalable map"==
 
-Java (and any known language) does not support understanding complex code structures. Neither UML tools.
-
-Therefore, using [http://prezi.com Prezi], we have created a "scaleable map" of both big picture (architecture) and details view (class design).
-
-  * You can watch it [http://prezi.com/hi2dmhfej9zu/ddd-cqrs-sample-2/ here]
-  * You can "play" default road trip or pan and zoom freely using mouse
-  * You can click on SVN link and go straight to the code!
 
 =Domain Description=
 Sample is illustrated in the context of ERP system. We have chosen this domain because is relatively well known. Everybody has some intuition about Clients, Orders, Products etc. so We don't have to stuck explaining how different domain works (financial, medical etc.)
