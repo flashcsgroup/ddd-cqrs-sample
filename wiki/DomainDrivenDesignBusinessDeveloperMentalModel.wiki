@@ -1,6 +1,6 @@
 #summary Domain Driven Design - Business Developer mental model
 
-<wiki:toc max_depth="3" />
+#sidebar TableOfContents
 
 = Technical introduction =
 
