@@ -707,7 +707,8 @@ In general use Saga when You need to orchestrate process that is pushed by many 
 ==Persistent multi-listener==
 
 Saga has persistent state and listen to many events.
-Saga engine is described in details in [PART II]. General idea is:
+
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Fsagas Saga Engine] is described in details in [PART II]. General idea is:
   * Engine catches event
   * Engines finds Loaders that are interested in this event
   * Engine asks found Loaders to load/create persistent Mementos
@@ -719,15 +720,33 @@ Saga engine is described in details in [PART II]. General idea is:
 
 Above scenario is a technical point of view, but it is good to understand it at this level. Business Developer does not have to implement technical steps, they are provided by the Engine. Business 
 
-Developers focuses on the following domain artifacts:
+Developers focuses on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fsagas Saga API] and following domain artifacts:
 
 ===Logic===
-Create class that implements Saga logic.
-Sample: 
+Create class that implements Saga logic. In this class we focus only on business logic, don't have to think about engine.
+Sample:
+
+Extends base class and use API Annotation.
+
+Each saga listener method must be annotated.
+
+Some (maybe all) methods may try to finish this saga.
+
+TODO
 
 ===Data - Memento===
 
+Saga data is simple [http://en.wikipedia.org/wiki/Memento_pattern Memento Design Pattern].
+
+Idea is that Saga class is stateless, state is delegated to the memento.
+
+TODO
+
 ===Loader===
+
+Saga loader focuses on funding right memento for Saga Logic based on event. In general finding Memento may rely on different parameters of different events. For each event instance there may be many matching finders, therefore many mementos, so one event instance can push many sagas.
+
+TODO
 
 ==Make explicit what is implicit==
 Sage models very complex processes. Modeling them instead of trying to pretend that they are not so complex is essential for chaos management in the model and code.
