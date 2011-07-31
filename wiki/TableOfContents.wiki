@@ -20,7 +20,7 @@ We are working on the suggested learning path that is meant to flatten learning 
     # [Philosophy#You_are_the_Architect_and_owner_of_the_code You are the Architect and owner of the code]
   # [DomainDrivenDesignBusinessDeveloperMentalModel PART I: Domain Driven Design] - *Business Developer mental model*
     # [DomainDrivenDesignBusinessDeveloperMentalModel#Technical_introduction Technical introduction]
-      # [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map&q Architecture and design visualization using "scalable map"]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_&qscalable_map&q Architecture and design visualization using "scalable map"]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Project_Structure Project Structure]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Just_one_Maven_Artifact? Just one Maven Artifact?]
     # [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Description Domain Description]
