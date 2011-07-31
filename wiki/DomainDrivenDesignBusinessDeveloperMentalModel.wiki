@@ -506,10 +506,50 @@ Alternatively You can provide special Naming Strategy in Hibenrate.
 
 ----
 ==Factory==
-===Dependency Injection Responsibility===
+Sample contains two factories: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderFactory.java OrderFactory] and InvoiceFactory.
+
+Factories are annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainFactory.java DomainFactory] annotation. This annotation introduces Spring features - factory becomes a Spring bean, therefore You can inject dependencies into the factory and factory can be injected into CommandHandlers.
+
+Now we will discuss responsibility scope of DDD Factories.
+
 ===Validation===
+Factory is responsible for providing valid Aggregates. Invalid Aggregate can not exist in memory. OrderFactory is responsible for validating 
+"components" that build Order - in this sample it checks Client and eventually throws [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/errors/OrderCreationException.java Domain Error].
+===Injecting Factories into Command Handlers/Application Services
+Factories are need to create Aggregates, therefore You will inject them into Command handlers or other places. It is possible because factory is a Spring Bean
+===Injecting into Factory===
+Factory may also need some dependencies. For example Repositories to be able to check something.
+
+For example OrderFactory adds gratis products to newly created order. Knowledge about gratis comes from DomainService or Repository.
+
+Another example is RebatePolictFactory in OrderFactory to determine rebate.
+
+===Dependency Injection Responsibility===
+Aggregates needs dependencies. We decided that Factories and Repositories are responsible for providing them.
+
+In sample code OrderRepository is responsible for injecting RebatePolicy.
+
+There are some very common dependencies, like DomainEventsPublisher that are injected by special [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/support/InjectorHelper.java InjectorHelper].
+ 
 ===Part of business logic (Assembling objects)===
+
+Factory is responsible for some domain logic:
+  * calculates dependencies - Rebate Policy
+  * add gratis producst
+Therefore it is a First Class Citizen in DDD Buildng Blocks World.
+
+Read great [http://misko.hevery.com/2008/08/21/where-have-all-the-singletons-gone post] by Miško Hevery that explains three faces of the coupling:
+  * collaboration
+  * construction
+  * call
+
+Factories lighten application logic layer by taking construction coupling.
+
+
 ===Increase testability=== 
+
+If You construct Aggregate dependencies in factories and than inject them to the Aggregate You gain another feature - higher testability. Thanks factories, Aggregates don't have to use new operator (except inner data structures). This means You can easily mock dependencies when unit testing.
+
 ----
 ==Repository==
 ===Dependency Injection Responsibility===
