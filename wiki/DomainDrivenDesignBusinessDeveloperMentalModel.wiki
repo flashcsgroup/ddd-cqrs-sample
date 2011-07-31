@@ -552,8 +552,25 @@ If You construct Aggregate dependencies in factories and than inject them to the
 
 ----
 ==Repository==
-===Dependency Injection Responsibility===
+
+Project contains few sample Repositories, that are implemented in the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Finfrastructure%2Frepositories%2Fjpa Infrastructure Layer].
+
+Repository is an abstraction of the Aggregate/Entity persistence. In general Aggregate parts may origin form different sources.
+
+Repository manages aggregate, which means it mus load and save. Don'p pollute repositories with dozens of search method - that's the responsibility of the second stack - a Presentation Stack.
+
+Of course repository will contain business search methods, like: find draft Orders of the given Client, because we want to apply rebate for them.
+
+===Responsibilities===
+
+In general Repository is also responsible for stuff that Factory does: a Dependency Injection.
+
 ===Base Classes=== 
+
+There are base classes for both Entity and Aggregate repositories in [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Frepo%2Fjpa common DDD goodies].
+
+Impl is based on the famous [http://www.ibm.com/developerworks/java/library/j-genericdao/index.html Generic DAO] by Per Mellqvist.
+
 ----
 ==Domain Services==
 ===Responsibility Driven Design Transformers===
