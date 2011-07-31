@@ -18,6 +18,9 @@ We are working on the suggested learning path that is meant to flatten learning 
     # [Philosophy#Noninvasive_philosophy Noninvasive philosophy]
     # [Philosophy#Portable_architecture_-_technical_independence Portable architecture - technical independence]
     # [Philosophy#You_are_the_Architect_and_owner_of_the_code You are the Architect and owner of the code]
+  # [StartProjectStructure Start - Project Structure]
+    # [StartProjectStructure#Just_one_Maven_Artifact Just one Maven Artifact?]
+    # [StartProjectStructure#General_structure General structure]
   # [DomainDrivenDesignBusinessDeveloperMentalModel PART I: Domain Driven Design] - *Business Developer mental model*
     # Introduction
       * The Code
