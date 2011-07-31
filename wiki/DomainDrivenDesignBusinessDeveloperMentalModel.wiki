@@ -701,6 +701,33 @@ Domain Events may be stored as a behavioral model. Loading Aggregate loads all i
 ----
 ----
 =Saga=
-==Persistent multi-listener==
+Great Saga introduction by Udi Dahan: [http://www.udidahan.com/2009/04/20/saga-persistence-and-event-driven-architectures/ Saga Persistence and Event-Driven Architectures]
 ==Complex process orchestration==
+In general use Saga when You need to orchestrate process that is pushed by many events. Using Saga You can model partial state change of the bigger process - state change triggered by events.
+==Persistent multi-listener==
+
+Saga has persistent state and listen to many events.
+Saga engine is described in details in [PART II]. General idea is:
+  * Engine catches event
+  * Engines finds Loaders that are interested in this event
+  * Engine asks found Loaders to load/create persistent Mementos
+  * Engine feeds relevant Sagas with Mementos
+  * Engine calls Saga event handlers
+  * Sagas change their state (Memento)
+  * Mementos are persisted
+  * Sagas may be done
+
+Above scenario is a technical point of view, but it is good to understand it at this level. Business Developer does not have to implement technical steps, they are provided by the Engine. Business 
+
+Developers focuses on the following domain artifacts:
+
+===Logic===
+Create class that implements Saga logic.
+Sample: 
+
+===Data - Memento===
+
+===Loader===
+
 ==Make explicit what is implicit==
+Sage models very complex processes. Modeling them instead of trying to pretend that they are not so complex is essential for chaos management in the model and code.
