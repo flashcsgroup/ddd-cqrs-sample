@@ -599,12 +599,43 @@ That's just a rule for the newbies, so it intuition tells when to break it.
 
 ----
 ==Policy==
+
+Technically Policy is just an old, good [http://en.wikipedia.org/wiki/Strategy_design_pattern Strategy Design Pattern].
+
+In our sample project we have two behaviors that varies a lot:
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/RebatePolicy.java Rebate Counting] - depends on client, product, whole order, history etc
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/TaxPolicy.java Tax Counting] - depends on client's country, seller country etc
+
+===Make explicit what is implicit===
+We want to express those very important domain concepts in the model and treat them as First Class Citizens.
+
 ===Supple Design===
+Introducing policy opens design for further extension. It also encapsulates complex logic in separated places:
+  * Rebate counting resides in specific [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Fpolicies%2Frebate implementations]
+  * Rebate choosing based on logged user resides in [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/RebatePolicyFactory.java RebatePolicyFactory]
+  * Calling rebate is managed by Order Aggregate and delegated to the Order Lines
+
 ===Decorating technique===
+Suppose we have VIP rebate and Winter rebate. What if VIP buys in winter? Suppose our system composes rebates. Should we introduce a third class to the model?
+
+Sure not! All You need to do is to introduce a [http://en.wikipedia.org/wiki/Decorator_design_pattern Decorator Design Pattern].
+
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Fpolicies%2Frebate%2Fdecorators Sample decorators].
+
 ===Functional style===
+
+Strategy design pattern semantically is similar to the functional style programming. Concept is the same: an operation is as First Class Citizen. In OO language FCC is an objects. So we simply pack operations into objects with only one method which is a signal to the object saying "execute yourself"  
+
 ===Injecting=== 
+
+In our example Order Policy is injected to the order Aggregate by the Order Repository and Order Factory.
+
+Another example:
+Tax Policy is passed to the Invoicing Service as a method parameter.
+
 ==Specification==
 ===Supple Design in Runtime===
+===Further extension===
 ----
 ==Events==
 ===Decoupling===
