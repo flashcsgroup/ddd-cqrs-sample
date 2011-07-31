@@ -94,13 +94,33 @@ This decision is a trade-off made in sake of simplicity. If You are proficient M
 ----
 
 =Domain Description=
-Sample is illustrated in the context of ERP system. We have chosen this domain because is relatively well known. Everybody has some intuition about Clients, Orders, Products etc. so We don't have to stuck explaining how different domain works (financial, medical etc.)
+Sample is illustrated in the context of simplified fraction of the ERP system. We have chosen some ERP domains because they are relatively well known. Everybody has some intuition about Clients, Orders, Products etc. so We don't have to stuck explaining how different domain works (financial, medical etc.)
 
-*Sales* module
+==Bounded Contexts==
+There are three Bounded Context, that are equals to the ERP modules.
+This approach:
+  * helps to model that is relevant to the specific context
+  * supports focus on specific Domain Expert knowledge area
+  * avoids creating one big corporate model of Great Unification theory that is de'facto meaningless.
 
-==Bounded Contexts - decoupling, independent development== 
+Modules are separated at the level of [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp pl.com.bottega.erp] package.
+
+===Sales===
+It's about ordering products, calculating rebates, invoicing and analyzing sale trends.
+This module contains most sample code. Other modules just illustrates Event communication and are Saga participants.
+===CRM===
+It's about client relationship management. Client in this module is modeled as a different artifact (another Bounded Context) than in Sales module.
+===Shipping===
+It's about charging and shipping orders.
+
 ==Shared Kernel== 
+Shared Kernel contains model common to all Bounded Contexts - [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fsharedcernel pl.com.bottega.ddd.domain.sharedcernel] package.
 
+==WARNING==
+ERP model is simplified in sake of educational purpose. If You are developing such a system refer to [Introduction#Modeling_resources Modeling Resources], in particular:
+  * Party Archetype
+  * CRM Archetype
+  * Product Archetype
 ----
 
 =Application Architecture= 
