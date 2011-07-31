@@ -363,6 +363,19 @@ You need to introduce a Saga mental model to orchestrate complex processes that 
 Sagas are just mentioned here to make layer description complete. Detailed description of Saga model is presented at the end of this document.
 
 ==Statefull Application Objects==
+Sometimes You may need to model Application State.
+
+Notice that:
+  * state of the Domain Model should be persisted
+  * state of the Client Tier is a different aspect
+
+We are talking about Application Layer state. If You need to introduce state think if You are sure about that. Than think about persisting this model or using global, distributed cache. But if You decide to use Session as a storage mechanism than You have easy support. Just annotate classes with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationStatefullComponent.java ApplicationStatefullComponent] and You are done.
+
+Spring will store objects of this class in Http Session. Spring also let You to inject this objects to Singleton Scoped objects using magic trick based on cunning proxy. For example our CommandHandlers or ApplicationServices are stateless singletons in sake of memory optimization.
+
+Sample contains following Statefull Application Components:
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/SystemUser.java SystemUser] - common object that represents user working with the system. You can inject this objects into CommandHandlers or ApplicationServices if You need to know who is performing operation. SystemUser is a application concept that abstract form domain entity. This object contains just ID of the domain entity therefore concept of domain user does not leak into whole code.
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/ClientBasket.java ClientBasket] is a metaphor of a shopping cart. In this sample We assume that Shopping cart is not a domain artifact nor client specific feature. Assumption is that this metaphor models application concept (but in some systems it may be a very important domain concept or maybe just some feature of some minor client app.).
 
 ----
 
