@@ -660,10 +660,44 @@ If needed You may extend Specification so that it collects errors.
 
 ----
 ==Events==
+In one of the previous chapters we have discussed Application Events. technically Domain Events are the same. Difference is one the mental level - Domain Events model facts that takes place in domain model.
+
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseAggregateRoot.java BaseAggregateRoot] contains [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/DomainEventPublisher.java DomainEventPublisher] object which is injected via Repo or Factory. 
+
+Firing event:
+  * inject DomainEventPublisher
+  * create objects of any class that contains valuable information
+  * call publish on publisher
+
+Sample event publishing: submit method of [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Order.java Order] Aggregate.
+
+Listening events:
+  * annotate listener method with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/infrastructure/events/EventListener.java EventListener]
+    * Event listener may express intention that it is not interested in immediate execution - asynchronous attribute
+  * annotate class containing listener method with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/infrastructure/events/EventListeners.java EventListeners] - that will register Spring bean and introduce Dependency Injection support
+
+Now we will discuss motivations that promotes using Domain Events
 ===Decoupling===
+Events introduce Bounded Contexts decoupling. Context does not know about each other.
+
+Events introduces Technical decoupling. Domain Building blocks does not know about technical listeners (ex. mail/sms senders, facebook publishers;)
+
+Sample: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/infrastructure/events/listeners/domain/OrderSubmittedListener.java OrderSubmittedListener] that fakes sending mail.
 ===Optimization===
+Some listeners may be executed in asynchronous way which reduces request processing time.
+
+Sample: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/infrastructure/events/listeners/domain/OrderSubmittedListener.java OrderSubmittedListener] that fakes sending mail can be annotated to work in asynch mode. 
 ===Plugin oriented architecture===
+Listeners may introduce new features without need to touch core code.
 ===Updating read model===
+Domain Events can be used to update [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fpresentation Presentation Model].
+
+You can use this technique when presentation model is implemented as a separate, dedicated model (not Views). You can introduce many presentation model (each per specific case) that are updated by the same Event - just add dedicated updating Listener per model.
+
+In [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java this sample] Listener works on Application Event, but idea is the same.
+
+===Event Sourcing===
+Domain Events may be stored as a behavioral model. Loading Aggregate loads all it'e events and executes them on a given aggregate. In this case Presentation model must be updated via updating listeners discussed in previous section.
 ----
 ----
 =Saga=
