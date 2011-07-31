@@ -123,8 +123,55 @@ ERP model is simplified in sake of educational purpose. If You are developing su
   * Product Archetype
 ----
 
-=Application Architecture= 
-==Layers== 
+=Application Architecture=
+Looking at the [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map&q Visual Map] should be helpful in this moment. 
+==Two stacks of Layers== 
+Each module is build regarding the same architecture style.
+Three tier architecture:
+* Client Tier
+* Application Server Tier
+* DB Tier
+
+Application Server Tier is designed in layered fashion (remember that Tier!=Layer). Layer are grouped in two stacks.
+One stack specialized in domain modeling and handling commands, second specialized in fast data serving and handling queries.
+
+CqRS convention is to call one stack: Write Model  and second: Read Model. But we prefer call it *Business* and *Presentation* models because in Business model You bot write and read data (read data are just not visually presented, used only in processing).
+
+There are Clients on the top of both stacks. Right now only WebApp client is implemented.
+Client Tier code located is here:
+http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fwebapp
+
+Server Tier code (Sales Module) is located here:
+http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fwebui
+
+Looking at the Server Tier Let's focus on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales Sales Module].
+
+application application logic (handlers or services, listeners, statefull objects)
+domain - domain model, building blocks
+infrastructure - technical stuff, repository impl, technical listeners
+
+===Presentation Stack===
+Presentation (read) model is simple. It's just a thin layer specialized in reading data that need to to presented somehow.
+
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fpresentation pl.com.bottega.erp.sales.presentation] Package contains sample:
+  * Queries - Search Criteria objects that specify querying parameters.
+Notice that [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/ProductSearchCriteria.java ProductSearchCriteria] class is designed in Fluent Interface style. From the client perspective criteria hides domain model properties (name, description) under abstract text.
+  * Data Transfer Objects - carries data. They are created per Use Case/User Story or per View. In complex systems they are much better transferring classes than JPA entities because they don't break encapsulation on the model level and contains optimized data that are needed in particular context.
+  * Finders - simple services that perform search based on Search Criteria.
+
+In [PART II] we will discuss:
+  * Technical details of designing this Stack
+  * Techniques of optimization (Special JPA Syntax, pure SQL, Updating by Events, Materialized Views)
+
+two separated CqRS stacks:
+read (presentation) model
+presentation reading presentation data
+write (business) model
+application application logic (handlers or services, listeners, statefull objects)
+domain - domain model, building blocks
+infrastructure - technical stuff, repository impl, technical listeners
+
+
 ==Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming== 
 ==Design expression using Custom Annotations==  
 
