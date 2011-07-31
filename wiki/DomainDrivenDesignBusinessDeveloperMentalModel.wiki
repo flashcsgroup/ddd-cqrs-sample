@@ -273,7 +273,21 @@ Conceptually two classes can be considered as a [http://en.wikipedia.org/wiki/Co
   * CommandHandler that contains logic.
 
 ====Command====
+Creating command is simple:
+  * usually implement Serializable tagging interface because command may be send form remote client
+  * add fields that holds command parameters
+  * You *can* add [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java @Command] annotation if You want to express following intentions:
+    * Client is not interested in immediate result - command can be handled in asynchronous way. This is just a suggestion for a Server - it can support asynch. invocations. Use this mode when You want to optimize response time
+    * Command is unique and sending it again is considered as a mistake (ex. nervous user clicking many times). Server stores some amount of commands (annotated as unique) that were ran, therefore it can optimize anti-flood mechanism. *This feature is just in sake of optimization. You must implement unique checking on the domain level* (ex. Order can not be accepted twice). Unique mechanism rely on equals method.
+    * Unique command can specify how long it should be considered as unique.
+====CommandHandler====
+Creating a handler for a command is also pretty straightforward.
+  * implement [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandler.java CommandHandler] interface. This interface is generic, so You must specify:
+    * class of the Command that is handled - CqRS engine matches Command and Handlers by this parameter
+    * result type - handling command may return something to the caller. Of course handler that handle asynchronous commands should return java.lang.Void (not the void keyword).
+  * You *can* annotate handler with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandlerAnnotation] if You wan to rely on automatic  Command2Handler matching. This annotation also introduces Spring features (Dependency Injection, Security and Transactions) to the handler so You don't need to worry about them.
 
+Now implement logic just the same way as in classic [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Services Application Service]: inject required dependencies and orchestrate part of the Use Case/user Story scenario in handle method based on parameters from the Command. You can also fire an Application Event.
 
 ==Application Event==
 ==Listeners - Bounded Context and Context Mapper== 
