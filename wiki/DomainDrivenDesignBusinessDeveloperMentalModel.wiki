@@ -303,7 +303,58 @@ In our example application event [http://code.google.com/p/ddd-cqrs-sample/sourc
 Than, [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java one of the listeners] stores data about this fact in "spy model" used by the marketing division to do something evil.
 
 ==Listeners - Bounded Context and Context Mapper== 
+Now we will discuss [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fapplication%2Flisteners Application Level Listeners].
+
+One way to integrate modules (which are equal to Bounded Context in this Sample) is to call Application API of the another module.
+This approach introduces coupling between Modules.
+
+If You want to reduce coupling You can introduce events - one of the IoC techniques.
+In this case:
+  * one module fires Event (rather Domain Event, but Application Event is also possible)
+  * other modules can listen to this event - each module can register many listeners per event.
+
+Introducing events results in:
+  * lose coupling (which is always good)
+  * possibility to react in the asynchronous way
+  * potability to introduce plugin oriented architecture - if You want to create flexible platform
+
+===Bounded Context===
+Consider class example by Udi Dahan.
+There is a [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fcrm CRM Module] which contains a [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/crm/domain/Customer.java Customer Aggregate]. 
+
+CRM module is about managing clients, this is completely differed Bounded Context than [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales sales Module].
+
+CRM Client can have status changed. Requirement is:
+ "when client status is changed to VIP than calculate x% of the rebate to all not-approved-yet orders"
+Orders and Rebates are Sales Bounded Context concepts.
+If we would perform this operation in the CRM module than we would break context boundary. CRM module would know about Sales details. probably everyone have worked on a systems we such a module-spaghetti was developed.
+
+===Listener===
+
+In this sample we want to avoid this kind of problems. Therefore CRM Client does it's own logic, than fires Event [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/crm/domain/events/CustomerStatusChangedEvent.java CustomerStatusChangedEvent]. *This is just a statement about the fact that took place*.
+
+System can react in many ways on that statement. For example Sales module can register [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/listeners/CustomerStatusChangedListener.java CustomerStatusChangedListener] to perform *additional business logic*.
+
+====Indicative mode====
+Notice that Events are expressed in indicative model. Something has happen and we can not reject this fact. We can only perform additional processing.
+
+This is opposite to the Commands, that are expressed in imperative mode and we can always reject a command.
+
+====Asynchronous Event Processing====
+Event listeners are just methods annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/infrastructure/events/EventListener.java EventListener]
+
+You can specify asynchronous attribute to express intention that this logic can be calculated later.
+*Always think if additional logic must be performed immediately?* Maybe not, than You can optimize request processing time.
+
+Notice that in case of events, listener is the artifact that express asynch intention. It is opposite to the Commands, where commands express this intention and handler has nothing to say abut this matter.
+
+====Application Listener as a Context Mapper and Anti-corruption Layer====
+You can consider Application Event Listeners as a Context Mapers because them map concepts from different Bounded Contexts.
+If Your Listeners are listening to the events from the legacy systems, they can be also considered as Anti-corruption Layer artifacts.
+
 ==Sagas== 
+
+Integration via Events is very powerful, but hast limited
 
 ----
 
