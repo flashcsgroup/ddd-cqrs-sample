@@ -21,19 +21,44 @@ Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fd
 Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp pl.com.bottega.erp] is The Product - Enterprise Resource Planning class system.
 
 System modules separation at this package level:
-*crm - Client Relationship Management module
-*sagas - Sagas which contains cross module features
-*sales - Sales module - *most examples are implemented in this module*
-*shipping - Shipping module
+  * crm - Client Relationship Management module
+  * sagas - Sagas which contains cross module features
+  * sales - Sales module - *most examples are implemented in this module*
+  * shipping - Shipping module
 
 Modules are independent set of features that can  be used separately and still being valuable.
 
-In this sample modules are equal do DDD Bounded Context.
+In this sample modules are equal to DDD Bounded Context.
 
+===Technical resources===
+Folder [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/#main%2Fresources] contains:
+  * jdbc and logger properties
+  * application service level (no web app stuff) Spring configuration
+
+Folder [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/#main%2Fwebapp] contains web application based on Spring Web MVC. Other client implementations will be provided in the next milestone (Android, Ajax, Remoting, WebService)
 
 ==Just one Maven Artifact?==
+As You can see project logically contains:
+  * common DDD API
+  * common DDD impl
+  * common CqRS API
+  * common CqRS impl
+  * product modules API
+  * product modules and cross module Sagas impl
+
+All this stuff is stored in one Eclipse Project - one Maven Artifact.
+
+This decision is a trade-off made in sake of simplicity. If You are proficient Maven user, You probably split code into separated artifacts in one hour. But those of You who are not familiar with Maven should focus on the essence of this project - sample code.
 
 ==Architecture and design visualization using "scalable map"==
+
+Java (and any known language) does not support understanding complex code structures. Neither UML tools.
+
+Therefore, using [http://prezi.com Prezi], we have created a "scaleable map" of both big picture (architecture) and details view (class design).
+
+  * You can watch it [http://prezi.com/hi2dmhfej9zu/ddd-cqrs-sample-2/ here]
+  * You can "play" default road trip or pan and zoom freely using mouse
+  * You can click on SVN link and go straight to the code!
 
 =Domain Description= 
 ==Bounded Contexts - decoupling, independent development== 
