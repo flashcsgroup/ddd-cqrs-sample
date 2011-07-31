@@ -1,22 +1,18 @@
 #summary Domain Driven Design - Business Developer mental model
 
-= Introduction =
+<wiki:toc max_depth="3" />
+
+= Technical introduction =
 
 This document describes sample code illustrating DDD techniques. Intention is to present code form the perspective of the business model developer. So we focus on business developers' mental model without digging to deep into engine details.
 
 Idea is that Business does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
 
-==The Code==
+==Project Structure==
 
-#summary Project structure description
+==Just one Maven Artifact?==
 
-
-Just one Maven Artifact
-General structure
-
-
-map
-==Visualization using "scalable map"==
+==Architecture and design visualization using "scalable map"==
 
 =Domain Description= 
 ==Bounded Contexts - decoupling, independent development== 
