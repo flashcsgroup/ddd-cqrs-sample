@@ -354,6 +354,12 @@ Notice that in case of events, listener is the artifact that express asynch inte
 ====Application Listener as a Context Mapper and Anti-corruption Layer====
 You can consider Application Event Listeners as a Context Mapers because them map concepts from different Bounded Contexts.
 If Your Listeners are listening to the events from the legacy systems, they can be also considered as Anti-corruption Layer artifacts.
+
+===Impl===
+Application Level Event Listener can be implemented in two styles:
+  * Perform logic using injected dependencies
+  * Create a Command and run it via injected [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java Run Environment]
+
 ----
 ==Sagas== 
 
@@ -633,9 +639,25 @@ In our example Order Policy is injected to the order Aggregate by the Order Repo
 Another example:
 Tax Policy is passed to the Invoicing Service as a method parameter.
 
+----
+
 ==Specification==
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/SubmitOrderCommandHandler.java SubmitOrderCommandHandler] attempts to submit Order and generate Invoice.
+
+But there are complex constrains that must be met before Order can be submitted. If you struggle to model constrains that are build by many criterion which are arranged in logic tree than You may consider using a [http://en.wikipedia.org/wiki/Specification_pattern Specification Pattern]. 
+
+Sample contains [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Fspecification%2Forder Order Specifications] based on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fsharedcernel%2Fspecification library generic specification]. 
+
 ===Supple Design in Runtime===
+
+Power of the specification is that it can be assembled late in the runtime based on the actual context.
+
+Method SubmitOrderCommandHandler.generateSpecification can be refactored to the factory.
+
 ===Further extension===
+
+If needed You may extend Specification so that it collects errors.
+
 ----
 ==Events==
 ===Decoupling===
