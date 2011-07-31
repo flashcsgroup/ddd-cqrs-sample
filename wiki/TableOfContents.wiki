@@ -28,8 +28,8 @@ We are working on the suggested learning path that is meant to flatten learning 
       * Shared Kernel
     # Application Architecture
       * Layers
-      * Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming
-      * Design expression using Custom Annotations      
+      * Expressing design expression using Custom Annotations   
+      * Inversion of Control techniques: Dependency Injection, Events, Aspect Oriented Programming         
     # Application Layer
       * Commands/Services
       * Listeners - Bounded Context and Context Mapper
