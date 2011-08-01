@@ -390,7 +390,7 @@ public class ProductAddedToOrderEvent implements Serializable{
     this.quantity = quantity;
   }
 
-  //juest getters
+  //just getters
 }
 </code>
 
@@ -767,6 +767,33 @@ Alternatively You can provide special Naming Strategy in Hibenrate.
 ==Factory==
 Sample contains two factories: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderFactory.java OrderFactory] and InvoiceFactory.
 
+<code language="java>
+@DomainFactory
+public class OrderFactory {
+
+    @Inject
+    private RebatePolicyFactory rebatePolicyFactory;
+    @Inject
+    private InjectorHelper injector;
+
+    public Order crateOrder(Client client) throws OrderCreationException {
+        checkIfclientCanPerformPurchase(client);
+
+        Order order = new Order(client, Money.ZERO, OrderStatus.DRAFT);
+        injector.injectDependencies(order);
+
+        RebatePolicy rebatePolicy = rebatePolicyFactory.createRebatePolicy();
+        order.setRebatePolicy(rebatePolicy);
+
+        addGratis(order, client);
+
+        return order;
+    }
+
+  //...
+}
+</code>
+
 Factories are annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainFactory.java DomainFactory] annotation. This annotation introduces Spring features - factory becomes a Spring bean, therefore You can inject dependencies into the factory and factory can be injected into CommandHandlers.
 
 Now we will discuss responsibility scope of DDD Factories.
@@ -776,9 +803,27 @@ Factory is responsible for providing valid Aggregates. Invalid Aggregate can not
 "components" that build Order - in this sample it checks Client and eventually throws [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/errors/OrderCreationException.java Domain Error].
 ===Injecting Factories into Command Handlers/Application Services
 Factories are need to create Aggregates, therefore You will inject them into Command handlers or other places. It is possible because factory is a Spring Bean
-===Injecting into Factory===
-Factory may also need some dependencies. For example Repositories to be able to check something.
+<code language="java>
+@CommandHandlerAnnotation
+public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, Long> {
 
+  @Inject
+  private OrderFactory orderFactory;
+
+  //..
+}
+</code>
+===Injecting into Factory===
+Factory may also need some dependencies,  for example Repositories to be able to check something.
+<code language="java>
+@DomainFactory
+public class OrderFactory {
+
+    @Inject
+    private RebatePolicyFactory rebatePolicyFactory;
+    @Inject
+    private InjectorHelper injector;
+</code>
 For example OrderFactory adds gratis products to newly created order. Knowledge about gratis comes from DomainService or Repository.
 
 Another example is RebatePolictFactory in OrderFactory to determine rebate.
@@ -787,6 +832,25 @@ Another example is RebatePolictFactory in OrderFactory to determine rebate.
 Aggregates needs dependencies. We decided that Factories and Repositories are responsible for providing them.
 
 In sample code OrderRepository is responsible for injecting RebatePolicy.
+
+<code language="java>
+    //..
+    public Order crateOrder(Client client) throws OrderCreationException {
+        //..
+        Order order = new Order(client, Money.ZERO, OrderStatus.DRAFT);
+        injector.injectDependencies(order);
+
+        RebatePolicy rebatePolicy = rebatePolicyFactory.createRebatePolicy();
+        order.setRebatePolicy(rebatePolicy);
+
+        //..
+
+        return order;
+    }
+
+  //...
+}
+</code>
 
 There are some very common dependencies, like DomainEventsPublisher that are injected by special [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/support/InjectorHelper.java InjectorHelper].
  
@@ -814,7 +878,30 @@ If You construct Aggregate dependencies in factories and than inject them to the
 
 Project contains few sample Repositories, that are implemented in the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Finfrastructure%2Frepositories%2Fjpa Infrastructure Layer].
 
-Repository is an abstraction of the Aggregate/Entity persistence. In general Aggregate parts may origin form different sources.
+Repository is an abstraction of the Aggregate/Entity persistence.
+<code language="java">
+@DomainRepository
+public interface OrderRepository {
+
+    public void persist(Order order);
+
+    public Order save(Order order);
+
+    public Order load(Long orderId);
+
+}
+</code>
+Therefore Repository has domain interface and technical implementation.
+<code language="java">
+@DomainRepositoryImpl
+public class JpaOrderRepository extends GenericJpaRepositoryForBaseEntity<Order> implements OrderRepository {
+  //..
+}
+</code>
+
+
+In general Aggregate parts may origin form different sources.
+
 
 Repository manages aggregate, which means it mus load and save. Don'p pollute repositories with dozens of search method - that's the responsibility of the second stack - a Presentation Stack.
 
@@ -837,6 +924,18 @@ Moreover we don't want to our Aggregates become a God Classes. 8k lines of code 
 
 There is a [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/InvoicingService.java InvoicingService] sample Domain Service that handles creating Invoices.
 
+<code language="java">
+@DomainService
+public class InvoicingService {
+	
+  @Inject
+  private ProductRepository productRepository;
+	
+  public Invoice issuance(Order order, TaxPolicy taxPolicy){
+    //..		
+  }	
+}
+</code>
 We certainly don't want to add this feature to the Order Aggregate.
 
 Domain Service is annotated by [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainService.java DomainService] annotation that introduces Spring Bean features. therefore our Domain Service can be injected and we can inject dependencies to the service (ex. Repositories).
@@ -881,17 +980,76 @@ Sure not! All You need to do is to introduce a [http://en.wikipedia.org/wiki/Dec
 
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Fpolicies%2Frebate%2Fdecorators Sample decorators].
 
+Sample Policy decoration in case System User has a VIP status:
+<code language="java">
+@DomainFactory
+public class RebatePolicyFactory {
+
+  @Inject
+  private SystemUser systemUser;
+	
+  public RebatePolicy createRebatePolicy() {		
+    RebatePolicy rebatePolicy = new StandardRebate(10, 1);
+		
+    if (isVip(systemUser)){
+      rebatePolicy = new VipRebate(rebatePolicy, new Money(1000.0), new Money(100));
+    }
+    return rebatePolicy;
+  }
+  //..
+}
+</code>
+
 ===Functional style===
 
-Strategy design pattern semantically is similar to the functional style programming. Concept is the same: an operation is as First Class Citizen. In OO language FCC is an objects. So we simply pack operations into objects with only one method which is a signal to the object saying "execute yourself"  
+Strategy design pattern semantically is similar to the functional style programming. Concept is the same: an operation is as First Class Citizen. In OO language FCC is an objects. So we simply pack operations into objects with only one method which is a signal to the object saying "execute yourself":
+
+<code language="java">
+@DomainPolicy
+public interface RebatePolicy {
+
+  public Money calculateRebate(Product product, int quantity, Money regularCost);
+
+}
+</code>
 
 ===Injecting=== 
 
 In our example Order Policy is injected to the order Aggregate by the Order Repository and Order Factory.
 
+<code language="java">
+@Entity
+@Table(name = "Orders")
+@DomainAggregateRoot
+public class Order extends BaseAggregateRoot {
+
+    @Transient
+    private RebatePolicy rebatePolicy;
+
+    //..
+
+    public void setRebatePolicy(RebatePolicy rebatePolicy) {
+        if (this.rebatePolicy != null)
+            throw new IllegalStateException("Policy is already set! Probably You have logical error in code");
+        this.rebatePolicy = rebatePolicy;
+    }
+}
+</code>
+
 Another example:
 Tax Policy is passed to the Invoicing Service as a method parameter.
 
+<code language="java">
+@DomainService
+public class InvoicingService {
+	
+  @Inject
+  private ProductRepository productRepository;
+	
+  public Invoice issuance(Order order, TaxPolicy taxPolicy){
+    //..
+  }
+</code>
 ----
 
 ==Specification==
@@ -907,6 +1065,23 @@ Power of the specification is that it can be assembled late in the runtime based
 
 Method SubmitOrderCommandHandler.generateSpecification can be refactored to the factory.
 
+<code language="java">
+private Specification<Order> generateSpecification(SystemUser systemUser) {
+		Specification<Order> specification = new ConjunctionSpecification<Order>( 
+													new DestinationSpecification(Locale.CHINA),//.not(), // - do not send to China
+													new ItemsCountSpecification(100),//max 100 items
+													  	new DebtorSpecification()//not debts or max 1000  => debtors can buy for max 1000
+															.or(new TotalCostSpecification(new Money(1000.0))));
+		
+		//vip can buy some nice stuff
+		if (! isVip(systemUser)){
+			
+			specification = specification.and(new RestrictedProductsSpecification());
+		}
+		
+		return specification;
+	}
+</code>
 ===Further extension===
 
 If needed You may extend Specification so that it collects errors.
@@ -924,10 +1099,32 @@ Firing event:
 
 Sample event publishing: submit method of [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Order.java Order] Aggregate.
 
+<code language="java">
+public void submit() {
+  checkIfDraft();
+
+  status = OrderStatus.SUBMITTED;
+  submitDate = new Timestamp(System.currentTimeMillis());
+
+  eventPubslisher.publish(new OrderSubmittedEvent(getId()));
+}
+</code>
+
 Listening events:
   * annotate listener method with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/infrastructure/events/EventListener.java EventListener]
     * Event listener may express intention that it is not interested in immediate execution - asynchronous attribute
   * annotate class containing listener method with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/infrastructure/events/EventListeners.java EventListeners] - that will register Spring bean and introduce Dependency Injection support
+
+<code language="java">
+@EventListeners
+public class OrderSubmittedListener {
+
+  @EventListener(aynchronous=true)
+  public void handle(OrderSubmittedEvent event) {
+    System.out.println("Sending mail aboud order: " + event.getOrderId());	
+  }
+}
+</code>
 
 Now we will discuss motivations that promotes using Domain Events
 ===Decoupling===
