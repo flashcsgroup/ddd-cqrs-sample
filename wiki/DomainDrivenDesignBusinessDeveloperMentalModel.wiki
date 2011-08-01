@@ -202,7 +202,19 @@ DI is basic IoC technique. In this project DI is used only at the application le
   * Injecting dependencies (JDBC connection, Entity Manager) to repositories
   * Injecting dependencies (JDBC connection, Entity Manager) to Finders (presentation stack) 
 
+Sample injection:
+<code language="java">
+@CommandHandlerAnnotation
+public class ChangeCustomerStatusCommandHandler implements CommandHandler<ChangeCustomerStatusCommand, Void>{
+  @Inject
+  private CustomerRepository customerRepository; 
+  //..
+}
+</code>
+
 We decided not to inject automatically dependencies to Aggregates. It could be done using Spring's @Configurable but we wanted to keep example magic clear. This trade-off makes easy rewrite our Leaven to different platform (Seam, EJB, etc.) 
+
+Manual Aggregate injection is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Aggregate_Dependency_Injection Aggregate Dependency Injection] chapter.
 
 ===Events===
 Events are stronger than DI technique of inverting control, because they allow to:
@@ -460,7 +472,7 @@ You *may* consider extending [http://code.google.com/p/ddd-cqrs-sample/source/br
 
 BaseAggregateRoot is based on BaseEntity - it adds common future, an injected [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/DomainEventPublisher.java DomainEventPublisher].
 
-===Dependency Injection===
+===Aggregate Dependency Injection===
 Aggregates are main work-horses of the domain. Therefore they need to delegate some work to dependencies (Domain Services, Policies, Specifications or DomainEventPublisher).
 
 Aggregates *should not* create dependencies by their own. This simply kills testability.
@@ -496,16 +508,16 @@ If You have more than one embeded VO in Entity You must use additional annotatio
 
 <code language="java">
 @Embedded
-	@AttributeOverrides({
-			@AttributeOverride(name = "value", column = @Column(name = "net_value")),
-			@AttributeOverride(name = "currencyCode", column = @Column(name = "net_currencyCode")) })
-	private Money net;
+  @AttributeOverrides({
+    @AttributeOverride(name = "value", column = @Column(name = "net_value")),
+    @AttributeOverride(name = "currencyCode", column = @Column(name = "net_currencyCode")) })
+private Money net;
 
-	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name = "value", column = @Column(name = "gros_value")),
-		@AttributeOverride(name = "currencyCode", column = @Column(name = "gros_currencyCode")) })
-	private Money gros;
+@Embedded
+  @AttributeOverrides({
+   @AttributeOverride(name = "value", column = @Column(name = "gros_value")),
+  @AttributeOverride(name = "currencyCode", column = @Column(name = "gros_currencyCode")) })
+private Money gros;
 </code>
 
 Alternatively You can provide special Naming Strategy in Hibenrate.
