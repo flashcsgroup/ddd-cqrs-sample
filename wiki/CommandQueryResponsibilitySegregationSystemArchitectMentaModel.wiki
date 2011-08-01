@@ -184,7 +184,8 @@ CommandHandlerAnnotation is annotated with Spring's annotations:
   * @Transactional - transactions are automatically managed by Spring's Transaction Manger according to System/Application Exception convention (refer to the Spring documentation).
   * You can add Spring's @Secured annotation to introduce security aspect
 
----- 
+----
+
 ==Server Gate== 
 ===Asynchronous mode=== 
 ===Optimization by detecting duplicates===
@@ -192,6 +193,7 @@ CommandHandlerAnnotation is annotated with Spring's annotations:
 ----
 ==Run Environment - leaven for additional features== 
 
+----
 
 ==Events Engine== 
 ===How doest it work and why so simple:) ===
