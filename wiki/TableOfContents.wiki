@@ -72,7 +72,8 @@ We are working on the suggested learning path that is meant to flatten learning 
       * Server Gate
         * Asynchronous mode
         * Optimization by detecting duplicates
-      * Run Environment - leaven for additional features
+      * Run Environment
+        * Leaven for additional features
       * Events Engine
         * How doest it work and why so simple:)
         * Asynchronous Mode
