@@ -659,7 +659,7 @@ Method SubmitOrderCommandHandler.generateSpecification can be refactored to the 
 If needed You may extend Specification so that it collects errors.
 
 ----
-==Events==
+==Domain Events==
 In one of the previous chapters we have discussed Application Events. technically Domain Events are the same. Difference is one the mental level - Domain Events model facts that takes place in domain model.
 
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseAggregateRoot.java BaseAggregateRoot] contains [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/DomainEventPublisher.java DomainEventPublisher] object which is injected via Repo or Factory. 
