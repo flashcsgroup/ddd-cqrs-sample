@@ -697,7 +697,13 @@ You can use this technique when presentation model is implemented as a separate,
 In [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java this sample] Listener works on Application Event, but idea is the same.
 
 ===Event Sourcing===
-Domain Events may be stored as a behavioral model. Loading Aggregate loads all it'e events and executes them on a given aggregate. In this case Presentation model must be updated via updating listeners discussed in previous section.
+Domain Events may be stored as a behavioral model. Loading Aggregate loads all it'e events and executes them on a given aggregate.
+
+Stored events can be "projected" to many "perspectives".
+In this case Presentation model must be updated via updating listeners discussed in previous section.
+
+===Complex Event Processing===
+You can introduce Event Oriented approach when system/organisation need to process event streams and react on event patterns that emerge in time/quantity window.
 ----
 ----
 =Saga=
