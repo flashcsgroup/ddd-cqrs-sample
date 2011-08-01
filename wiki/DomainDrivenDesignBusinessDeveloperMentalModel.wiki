@@ -1067,20 +1067,20 @@ Method SubmitOrderCommandHandler.generateSpecification can be refactored to the 
 
 <code language="java">
 private Specification<Order> generateSpecification(SystemUser systemUser) {
-		Specification<Order> specification = new ConjunctionSpecification<Order>( 
-													new DestinationSpecification(Locale.CHINA),//.not(), // - do not send to China
-													new ItemsCountSpecification(100),//max 100 items
-													  	new DebtorSpecification()//not debts or max 1000  => debtors can buy for max 1000
-															.or(new TotalCostSpecification(new Money(1000.0))));
+  Specification<Order> specification = new ConjunctionSpecification<Order> (
+     new DestinationSpecification(Locale.CHINA),//.not(), // - do not send to China
+     new ItemsCountSpecification(100),//max 100 items
+     new DebtorSpecification()//not debts or max 1000  => debtors can buy for max 1000
+       .or(new TotalCostSpecification(new Money(1000.0))));
+
+
+  //vip can buy some nice stuff
+  if (! isVip(systemUser)){			
+    specification = specification.and(new RestrictedProductsSpecification());
+  }
 		
-		//vip can buy some nice stuff
-		if (! isVip(systemUser)){
-			
-			specification = specification.and(new RestrictedProductsSpecification());
-		}
-		
-		return specification;
-	}
+  return specification;
+}
 </code>
 ===Further extension===
 
