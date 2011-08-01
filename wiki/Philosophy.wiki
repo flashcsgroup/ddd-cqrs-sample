@@ -58,7 +58,10 @@ Spring is being used to provide:
   * Security
   * Dependency Injection
 Based on our experience since 2004 (Spring 1) Spring does it well.
-But overall architecture is not influenced by Spring. You can get rid of Spring easily and implement mentioned features by Your own or using third party solutions.
+
+*But overall architecture is not influenced by Spring.*
+
+You can get rid of Spring easily and implement mentioned features by Your own or using third party solutions.
 There is one place, a RunEnvironment class where You can do this very easy by Yourself and we will discuss this scenario in details in next part.
 
 Business model storage is based on JPA. But again - it can be done anyway You like.
