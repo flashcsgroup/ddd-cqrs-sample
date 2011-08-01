@@ -5,11 +5,11 @@ This document describes sample code illustrating CqRS techniques. Intention is t
 
 Idea is that an architect need to understand what's under the hood - he or she should feel with engine technical code like fish in the water and freely change it.
 
-==Architecture and design visualization using "scalable map"==
+==Architecture and design visualization using Scalable Map==
 
 Java (and any known language) does not support understanding complex code structures. Neither UML tools.
 
-Therefore, using [http://prezi.com Prezi], we have created a "scaleable map" of both big picture (architecture) and details view (class design).
+Therefore, using [http://prezi.com Prezi], we have created a "scalable map" of both big picture (architecture) and details view (class design).
 
   * You can watch it [http://prezi.com/hi2dmhfej9zu/ddd-cqrs-sample-2/ here]
   * You can "play" default road trip or pan and zoom freely using mouse
@@ -34,21 +34,38 @@ possibility to get rid of Containers
 
 
 ==Presentation (Read) Model== 
-===Performance problems with JPA=== 
+===Performance problems with JPA===
+  TODO
+  * n+1 Select problem
+  * fetching unnecessary data
+  * need to encapsulate domain model (remote clients)
+    * loading JPA entities and repacking to DTO is simply silly:)
 ===Techniques of flattening Business Model===
- - SELECT NEW, View, Dedicated Model=== 
+  TODO
+  * JPA: SELECT NEW
+  * Native SQL
+  * materialized ViewView
+  * Dedicated Model
 ===Optimization: First think what You query for, tan model it ===
-
+TODO
+Dedicated model updated by Domain Events.
 
 ==Event Sourcing== 
 ===When to Use===
-(Behavioral model and it's projections, Complex Event Processing and Artificial Neural Networks) 
+  * Need to store Behavioral model and "project" it in many perspetives
+  * Complex Event Processing with Artificial Neural Networks (events stream as learning vector)
+  * Need to "travel in time"
 ===Why in this context we decided to not use it=== 
+  * ERP is well described by archetypes
+  * Relative small amount events per aggregate
+  * Need to check model constrains - relational DB does it out of the box
 
 ----
 ----
 
 =Technical aspects of implementation= 
+TODO
+
 ==Command Handlers== 
 ===Finding Handler=== 
 ===Security and transactions===
