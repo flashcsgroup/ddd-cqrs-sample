@@ -267,7 +267,7 @@ You always implement a pair - command and it's handler, for example:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/SubmitOrderCommandHandler.java SubmitOrderCommandHandler]
 
 or
-* [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/CreateOrderCommand.java CreateOrderCommand]
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/CreateOrderCommand.java CreateOrderCommand]
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/CreateOrderCommandHandler.java CreateOrderCommandHandler]
 
 
