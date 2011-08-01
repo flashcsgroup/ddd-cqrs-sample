@@ -41,8 +41,8 @@ Having some free time watch great presentation [http://nealford.com/downloads/co
 
 So idea is to don't be distracted by too abstract concepts of the framework. Just focus on domain and really simple engine code. Code that can be easily understood and changed when needed (instead of messing with XML and hacking wrong assumptions of framwork's authors)
 
-===Just focus===
-And having more free time read Focus book ([http://focusmanifesto.com free version]).
+===Just focus on the right problems===
+Having more free time read Focus book ([http://focusmanifesto.com free version]).
 
 =Noninvasive philosophy=
 Our goal is to present a business developer programming model (way of thinking about class-level design) that is free of any platform-specific solutions. Business developer should focus on DDD modelling, and engine does technical stuff. 
