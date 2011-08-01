@@ -259,6 +259,15 @@ Commands are powerful because it's relatively easy to introduce own "AOP" progra
 At first let's look at the "service" style approach.
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/services/PurchaseApplicationService.java PurchaseApplicationService]
 
+<code language="java">
+@ApplicationService
+public class PurchaseApplicationService {
+  @Inject
+  private OrderRepository orderRepository;
+  //...  
+}
+</code>
+
 Characteristic:
   * Repository and Factory injection
   * ApplicationEvent Publisher injection
@@ -295,6 +304,23 @@ Creating command is simple:
     * Client is not interested in immediate result - command can be handled in asynchronous way. This is just a suggestion for a Server - it can support asynch. invocations. Use this mode when You want to optimize response time
     * Command is unique and sending it again is considered as a mistake (ex. nervous user clicking many times). Server stores some amount of commands (annotated as unique) that were ran, therefore it can optimize anti-flood mechanism. *This feature is just in sake of optimization. You must implement unique checking on the domain level* (ex. Order can not be accepted twice). Unique mechanism rely on equals method.
     * Unique command can specify how long it should be considered as unique.
+
+<code language="java">
+@Command
+public class CreateOrderCommand {
+
+    private final List<Long> productIds;
+
+    public CreateOrderCommand(List<Long> productIds) {
+        this.productIds = productIds;
+    }
+
+    public List<Long> getProductIds() {
+        return productIds;
+    }
+}
+</code>
+
 ====CommandHandler====
 Creating a handler for a command is also pretty straightforward.
   * implement [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandler.java CommandHandler] interface. This interface is generic, so You must specify:
@@ -303,6 +329,20 @@ Creating a handler for a command is also pretty straightforward.
   * You *can* annotate handler with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandlerAnnotation] if You wan to rely on automatic  Command2Handler matching. This annotation also introduces Spring features (Dependency Injection, Security and Transactions) to the handler so You don't need to worry about them.
 
 Now implement logic just the same way as in classic [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Services Application Service]: inject required dependencies and orchestrate part of the Use Case/user Story scenario in handle method based on parameters from the Command. You can also fire an Application Event.
+
+<code language="java">
+@CommandHandlerAnnotation
+public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, Long> {
+
+  @Inject
+  private OrderFactory orderFactory;
+
+  @Inject
+  private OrderRepository orderRepository;
+
+  //..
+</code>
+
 ----
 ==Application Event==
 Application Events are characteristic to the specific Use Case/User Story. They model application (not domain) behavior.
@@ -313,9 +353,62 @@ To fire such an event simply:
     * event usually carries some valuable ingormation
     * event class *can* be annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationEvent.java ApplicationEvent] annotations - consider this as a meta-data that will be analyzed by some cools tools we plan to publish
 
+<code language="java>
+@CommandHandlerAnnotation
+public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, Long> {
+
+  @Inject
+  private ApplicationEventPublisher applicationEventPublisher;
+
+  //..  
+
+  @Override
+  public Long handle(CreateOrderCommand command) {
+    //..       
+    applicationEventPublisher.publish(new ProductAddedToOrderEvent(productId, systemUser.getUserId(), 1));
+    //..
+  }
+}
+</code>
+
 In our example application event [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/events/ProductAddedToOrderEvent.java ProductAddedToOrderEvent] models important fact of the application life cycle. Let's assume that in this sample we don't want to model this act on the domain model level.
 
+<code language="java>
+@ApplicationEvent
+@SuppressWarnings("serial")
+public class ProductAddedToOrderEvent implements Serializable{
+	
+  private Long productid;
+	
+  private Long clientId;
+
+  private int quantity;
+
+  public ProductAddedToOrderEvent(Long productid, Long clientId, int quantity) {
+    this.productid = productid;
+    this.clientId = clientId;
+    this.quantity = quantity;
+  }
+
+  //juest getters
+}
+</code>
+
 Than, [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java one of the listeners] stores data about this fact in "spy model" used by the marketing division to do something evil.
+
+<code language="java">
+@EventListeners
+public class ProductEventsListener {
+
+  @PersistenceContext
+  private EntityManager entityManager;
+	
+  @EventListener(aynchronous=true)
+  public void handle(ProductAddedToOrderEvent event){
+    entityManager.persist(new OrderedProduct(event.getProductid(), event.getClientId(), event.getQuantity(), new Date()));
+  }
+}
+</code>
 ----
 ==Listeners - Bounded Context and Context Mapper== 
 Now we will discuss [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fapplication%2Flisteners Application Level Listeners].
@@ -348,7 +441,44 @@ If we would perform this operation in the CRM module than we would break context
 
 In this sample we want to avoid this kind of problems. Therefore CRM Client does it's own logic, than fires Event [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/crm/domain/events/CustomerStatusChangedEvent.java CustomerStatusChangedEvent]. *This is just a statement about the fact that took place*.
 
+<code language="java">
+@Entity
+@DomainAggregateRoot
+public class Customer extends BaseAggregateRoot{
+
+  public enum CustomerStatus{
+    STANDARD, VIP, PLATINUM
+  }
+	
+  @Enumerated(EnumType.STRING)
+  private CustomerStatus status;
+	
+  public void changeStatus(CustomerStatus status){
+    if (status.equals(this.status))
+      return;
+		
+    this.status = status;
+		
+    eventPubslisher.publish(new CustomerStatusChangedEvent(getId(), status));
+  }
+}
+</code>
+
 System can react in many ways on that statement. For example Sales module can register [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/listeners/CustomerStatusChangedListener.java CustomerStatusChangedListener] to perform *additional business logic*.
+
+<code language="java">
+@EventListeners
+public class CustomerStatusChangedListener{
+
+  @EventListener(aynchronous=true)	
+  public void handle(CustomerStatusChangedEvent event) {
+    if (event.getStatus() == CustomerStatus.VIP){
+      calculateReabteForAllDraftOrders(event.getCustomerId(), 10);
+    }		
+  }
+  //..
+}
+</code>
 
 ====Indicative mode====
 Notice that Events are expressed in indicative model. Something has happen and we can not reject this fact. We can only perform additional processing.
@@ -360,6 +490,17 @@ Event listeners are just methods annotated with [http://code.google.com/p/ddd-cq
 
 You can specify asynchronous attribute to express intention that this logic can be calculated later.
 *Always think if additional logic must be performed immediately?* Maybe not, than You can optimize request processing time.
+
+<code language="java">
+@EventListeners
+public class OrderSubmittedListener {
+
+  @EventListener(aynchronous=true)
+  public void handle(OrderSubmittedEvent event) {
+    System.out.println("Sending mail aboud order: " + event.getOrderId());	
+  }
+}
+</code>
 
 Notice that in case of events, listener is the artifact that express asynch intention. It is opposite to the Commands, where commands express this intention and handler has nothing to say abut this matter.
 
@@ -398,6 +539,31 @@ Sample contains following Statefull Application Components:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/SystemUser.java SystemUser] - common object that represents user working with the system. You can inject this objects into CommandHandlers or ApplicationServices if You need to know who is performing operation. SystemUser is a application concept that abstract form domain entity. This object contains just ID of the domain entity therefore concept of domain user does not leak into whole code.
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/ClientBasket.java ClientBasket] is a metaphor of a shopping cart. In this sample We assume that Shopping cart is not a domain artifact nor client specific feature. Assumption is that this metaphor models application concept (but in some systems it may be a very important domain concept or maybe just some feature of some minor client app.).
 
+<code language="java">
+@ApplicationStatefullComponent
+public class ClientBasket implements Serializable{
+
+    private List<Long> productIds = new ArrayList<Long>();
+
+    @EventListener
+    public void clearBasketOnSuccessfulOrderCreation(OrderCreatedEvent event) {
+        clearBasket();
+    }
+
+    public void clearBasket() {
+        productIds.clear();
+    }
+
+    public void addProduct(Long productId) {
+        productIds.add(productId);
+    }
+
+    public List<Long> getProductIds() {
+        return Collections.unmodifiableList(productIds);
+    }
+}
+</code>
+
 ----
 ----
 
@@ -429,6 +595,16 @@ Features of BaseEntity:
 Sample Sales Bounded Context contains three Aggregates:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Order.java Order]
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Invoice.java Invoice]
+
+<code language="java">
+@Entity
+@Table(name = "Orders")
+// table name ORDER is not valid in HSQL dialect
+@DomainAggregateRoot
+public class Order extends BaseAggregateRoot {
+ //..
+}
+</code>
 ===Encapsulation===
 Notice that:
   * Aggregates does not allow to modify all their properties via setters. It may have sense only in some cases.
@@ -436,19 +612,62 @@ Notice that:
   * Some business operations may be not valid in some state (ex. Order.submit()) - therefore they throw domain [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Ferrors errors].
   * Not all getters makes sense.
 
+<code language="java">
+
+</code>
+
 ====Inner state protection====
 Notice that Invoice Aggregate method: getItems returns list of [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/InvoiceLine.java InvoiceLine] entities. But this list is also unidentifiable in order to protect Aggregate from being changed by outer code. 
-
+<code language="java">
+@DomainAggregateRoot
+@Entity
+public class Invoice extends BaseAggregateRoot {
+  //..
+  @OneToMany(cascade = CascadeType.ALL)
+  private List<InvoiceLine> items;
+	
+  public List<InvoiceLine> getItems() {
+    return Collections.unmodifiableList(items);
+  }
+}
+</code>
 ====Inner model protection====
 Notice that Order Aggregate method: addProduct takes as an argument Product Entity, than wraps it with OrderLine. OrderLine is Aggregate's inner implementation detail.
 
+<code language="java">
+public void addProduct(Product product, int quantity) {
+  checkIfDraft();
+
+  OrderLine line = find(product);
+
+  if (line == null) {
+    items.add(new OrderLine(product, quantity, rebatePolicy));
+  }
+  else {
+    line.increaseQuantity(quantity, rebatePolicy);
+  }
+
+  recalculate();
+}
+</code>
 ===Outside Projections using Value Objects===
 In this sample we assume that Order model is unstable - we expect changes in near future. Therefore we want to reduce catastrophe area to Aggregate itself. Domain Expert is not sure about [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderLine.java Order Line] model.
 
 Therefore [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderedProduct.java OrderedProduct] Value Object is introduced as an "adapter" that adopts inner aggregate model to the outer world.
 
 Notice that method Order.getOrderedProducts transforms inner (unstable) aggregate model to the "outer interface" based on OrderedProduct Value Objects. Method return unidentifiable list because changes to this list does not make any sense.
+<code language="java">
+public List<OrderedProduct> getOrderedProducts() {
+  List<OrderedProduct> result = new ArrayList<OrderedProduct>(items.size());
 
+  for (OrderLine line : items) {
+    result.add(new OrderedProduct(line.getProduct().getId(), line.getProduct().getName(), line.getQuantity(),
+    line.getEffectiveCost(), line.getRegularCost()));
+  }
+
+  return Collections.unmodifiableList(result);
+}
+</code>
 ===JPA aspects===
 Aggregate is an entity from the JPA perspective. JPA can operate on private fields, so getters and setters are not necessary (using them makes sense only sometimes).
 
@@ -481,6 +700,21 @@ We decided to perform injection manually in Factories and Repositories (describe
 
 Notice how[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseAggregateRoot.java BaseAggregateRoot] class supports injection. setEventPubslisher can be called only once - in Repo or Factory. Calling it inside Application Layer will fail.
 
+<code language="java">
+@MappedSuperclass
+public abstract class BaseAggregateRoot extends BaseEntity {
+
+  @Transient
+  protected DomainEventPublisher eventPubslisher;
+
+  public void setEventPubslisher(DomainEventPublisher domainEventPubslisher) {
+    if (this.eventPubslisher != null)
+      throw new IllegalStateException("Publisher is already set! Probably You have logical error in code");
+    this.eventPubslisher = domainEventPubslisher;
+  }
+}
+</code>
+
 There are other ways to do this:
   * No setter, just custom injection annotation checked in Repo and factory - a little dirty in our opinion
   * @Configurable annotation - we do not want do use any magic in sake of architecture style portability. Besides, sometime we need to calculate (perform some business logic) to determine a Policy for example
@@ -492,6 +726,13 @@ Therefore You can chane money calculations to ultra-fast integers where fraction
 Moreover Money encapsulates concept of the Currency. You can also add concept of currency ration date.
 ===Immutability===
 VOs are immutable, so  You can pass them to another Aggregate without worrying about Side Effects. For example prices for OrderedProducts are used by InvoicingService to generate Invoice. Life is simple with immutability.
+
+<code language="java">
+public Money multiplyBy(BigDecimal multiplier) {
+  return new Money(value.multiply(multiplier), currencyCode);
+}
+</code>
+
 ===Aggregate Inner State Projection===
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderedProduct.java OrderedProduct] Value Object is introduced as an "adapter" that adopts inner aggregate model to the outer world, because we assume that OrderLine model is unstable and will change in the future.
 
