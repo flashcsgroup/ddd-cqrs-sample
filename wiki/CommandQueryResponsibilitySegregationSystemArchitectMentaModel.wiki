@@ -1,5 +1,5 @@
 #summary Command-query Responsibility Segregation - System Architect mental model
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 = Introduction =
 This document describes sample code illustrating CqRS techniques. Intention is to present code form the perspective of the (application/system/general) architect. So we focus on architects' mental model digging deep into engine details. 
 
@@ -20,6 +20,15 @@ Therefore, using [http://prezi.com Prezi], we have created a "scalable map" of b
 ----
 
 =Portable architecture - technical independence=
+Application architecture is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Application_ArchitectureDDD Part].
+
+Portable architecture idea is described in [Philosophy#Portable_architecture_-_technical_independence Philosophy chapter].
+
+Possibility to switch Spring to other container or light and simple home made solution is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment_-_leaven_for_additional_features Run Environment - leaven for additional features].
+
+Possibility to implement own Events is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Events_Engine Events Engine].
+
+Possibility to implement own Saga is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Saga_Engine Saga Engine].
 
 
 ----
@@ -48,7 +57,13 @@ possibility to get rid of Containers
   * Dedicated Model
 ===Optimization: First think what You query for, tan model it ===
 TODO
-Dedicated model updated by Domain Events.
+====Dedicated model updated by Domain Events====
+
+====Shredding====
+
+====Clustering====
+
+====Cloud==== 
 
 ==Event Sourcing== 
 ===When to Use===
@@ -84,7 +99,7 @@ TODO
 ===Asynchronous Mode ===
 
 
-==Saga== 
+==Saga Engine== 
 ===Also so simple? ===
 ===API ===
 ===Persistent Memento===
