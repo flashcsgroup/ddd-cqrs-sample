@@ -748,5 +748,5 @@ Saga loader focuses on funding right memento for Saga Logic based on event. In g
 
 TODO
 
-==Make explicit what is implicit==
+==Saga makes explicit what is implicit==
 Sage models very complex processes. Modeling them instead of trying to pretend that they are not so complex is essential for chaos management in the model and code.
