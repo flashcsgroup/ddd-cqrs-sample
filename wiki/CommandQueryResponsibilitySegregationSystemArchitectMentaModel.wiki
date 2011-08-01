@@ -250,7 +250,7 @@ It simply:
   # finds proper Handler using injected HandlersProvider
   # runs found Handler
 
-===leaven for additional features===
+===Leaven for additional features===
 Simplicity drives form Spring goodies that cares about everything (Security, Transactions).
 
 But You can get rid of Spring simply adding technical code before and after
