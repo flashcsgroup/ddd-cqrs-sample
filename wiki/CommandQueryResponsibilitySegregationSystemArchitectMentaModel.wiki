@@ -101,14 +101,22 @@ Idea is quite simple:
 As You can see mechanism is really simple.
 You can implement Your own CommandHandler provider using any container You like (or even using home made XML, Annotations or just hardcoded map;)
 
-
-
-possibility to get rid of Containers
-adnotacja przyklad, odniesienie do re na dole
-
 ===Synergy: Commands and AOP=== 
-przyklad
+We have decided to mix CommandHandler approach with Spring's AOP goodies.
 
+Each CommandHandler is annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandlerAnnotation] annotation.
+<code language="java">
+@Component
+@Transactional
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface CommandHandlerAnnotation {
+}
+</code>
+
+CommandHandlerAnnotation is annotated with Spring's annotations. Therefore executing any CommandHandler results in running all Spring AOP engine that supports Transactions and Security. You can also inject dependencies to each handler.
+
+If You would like to get rid of Spring and provide own implementations of this features refer to [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment_-_leaven_for_additional_features Run Environment - leaven for additional features] chapter.
 ---
 ==Presentation (Read) Model== 
 Presentation Stack responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Presentation_Stack DDD part].
