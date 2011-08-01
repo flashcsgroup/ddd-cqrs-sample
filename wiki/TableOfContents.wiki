@@ -56,14 +56,14 @@ We are working on the suggested learning path that is meant to flatten learning 
     # Architecture decisions
       * Business (Write) Model
         * Classic: Service - AOP techniques
-        * Commands and handlers - possibility to get rid of Containers
+        * Commands and handlers
         * Synergy: Commands and AOP
       * Presentation (Read) Model
         * Performance problems with JPA
-        * Techniques of flattening Business Model - SELECT NEW, View, Dedicated Model
+        * Techniques of flattening Business Model
         * Optimization: First think what You query for, tan model it
       * Event Sourcing
-        * When to Use (Behavioral model and it's projections, Complex Event Processing and Artificial Neural Networks)
+        * When to Use
         * Why in this context we decided to not use it
     # Technical aspects of implementation
       * Command Handlers
