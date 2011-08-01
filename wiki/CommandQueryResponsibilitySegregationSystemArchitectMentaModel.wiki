@@ -42,9 +42,67 @@ Implementing Business Stack, Application Layer You can choose between: classic s
 
 
 ===Classic: Service - AOP techniques===
-adnotacja przyklad
+Sample [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/services/PurchaseApplicationService.java PurchaseApplicationService] is annotated with @ApplicationService annotation.
+
+@ApplicationService annotation is annotated with Spring annotations.
+
+<code language="java">
+@Service
+@Transactional
+//@Secured
+public @interface ApplicationService {
+    String value() default "";
+}
+</code>
+
+In result all Application Services gain Spring features 
+  * Dependency Injection
+  * Services can be injected into upper layer components
+  * Transactions and Security provided via transparent AOP mechanisms.
 
 ===Commands and handlers===
+Sample command is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Commands_and DDD Part].
+
+CommandHandlers are automatically matched to incoming Commands by generic type of the Handler.
+
+<code language="java">
+public interface CommandHandler<C, R> {
+    public R handle(C command);
+}
+</code>
+
+for example this handler:
+<code language="java">
+@CommandHandlerAnnotation
+public class SubmitOrderCommandHandler implements CommandHandler<SubmitOrderCommand, Void> {
+  //..
+}
+</code>
+is matched to handle this command:
+<code language="java">
+@Command(unique=true)
+public class SubmitOrderCommand {
+ //..
+}
+</code>
+
+
+Matching engine is implemented in [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/spring/SpringHandlersProvider.java SpringHandlersProvider] class.
+
+Idea is quite simple:
+  * Each CommandHandler is annotated with @CommandHandlerAnnotation what makes it a Spring Bean
+  * Our provider object reacts on Spring internal event that is fired after Spring context refresh - onApplicationEvent method
+  * Provider scans Spring Context looking for CommandHandlers
+  * For each found Hander we simply check it's generic type
+  * Provider registers in inner HashMap Type of the command and the Spring bean name (name of the handler)
+  * When asked about handler for given command - getHandler method
+    * return Spring bean
+
+As You can see mechanism is really simple.
+You can implement Your own CommandHandler provider using any container You like (or even using home made XML, Annotations or just hardcoded map;)
+
+
+
 possibility to get rid of Containers
 adnotacja przyklad, odniesienie do re na dole
 
