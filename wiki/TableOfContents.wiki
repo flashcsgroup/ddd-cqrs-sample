@@ -46,7 +46,7 @@ We are working on the suggested learning path that is meant to flatten learning 
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Services Domain Services]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Policy Policy]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Specification Specification]
-      # [DomainDrivenDesignBusinessDeveloperMentalModel#Events Events]
+      # [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Events Domain Events]
     # [DomainDrivenDesignBusinessDeveloperMentalModel#Saga Saga]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Complex_process_orchestration Complex process orchestration]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Persistent_multi-listener Persistent multi-listener]
