@@ -149,8 +149,6 @@ Dedicated model updated by Domain Events from the Business Developer perspective
 ==Command Handlers== 
 ===Finding Handler=== 
 
-
-
 Matching engine is implemented in [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/spring/SpringHandlersProvider.java SpringHandlersProvider] class.
 
 Idea is quite simple:
@@ -240,9 +238,36 @@ You always have to perform checking in Domain Logic of this operation can be exe
 
 ----
 ==Run Environment==
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class is actual place that runs Commands. Actually it matches CommandHandler to the Command using [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Finding_Handler provider] and runs Commandhandlers.
+
+You should use this class in the following situations:
+  * in the [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Server_Gate Gate]
+  * in the Queue technical Listener/MessageDrivenBean that handles asynchronous commands
+  * when executing commands in Application Listeners described in [DomainDrivenDesignBusinessDeveloperMentalModel#Listeners_-_Bounded_Context_and_Context_Mapper DDD Part]
+
+RunEnvironment impl is quite trivial.
+It simply:
+  # finds proper Handler using injected HandlersProvider
+  # runs found Handler
 
 ===leaven for additional features===
+Simplicity drives form Spring goodies that cares about everything (Security, Transactions).
 
+But You can get rid of Spring simply adding technical code before and after
+<code language="java">
+Object result = handler.handle(command);
+</code>
+
+You can add:
+  * transaction management (begin, end, rollback)
+  * authentication and authorization
+  * command execution logging
+  * storing commands
+  * command execution profiling
+  * etc
+All this must be done only in this one place.
+
+You can also implement Your own HandlersProvider.
 ----
 
 ==Events Engine== 
