@@ -1,5 +1,5 @@
 #summary Command-query Responsibility Segregation - System Architect mental model
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="2" />
 = Introduction =
 This document describes sample code illustrating CqRS techniques. Intention is to present code form the perspective of the (application/system/general) architect. So we focus on architects' mental model digging deep into engine details. 
 
