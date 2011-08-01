@@ -1,13 +1,59 @@
 #summary Command-query Responsibility Segregation - System Architect mental model
-
+<wiki:toc max_depth="1" />
 = Introduction =
+This document describes sample code illustrating CqRS techniques. Intention is to present code form the perspective of the (application/system/general) architect. So we focus on architects' mental model digging deep into engine details. 
+----
+----
 
-Add your content here.
+=Portable architecture - technical independence=
 
 
-= Details =
+----
+----
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+=Architecture decisions= 
+==Business (Write) Model== 
+===Classic: Service - AOP techniques===
+===Commands and handlers===
+possibility to get rid of Containers
+===Synergy: Commands and AOP=== 
+
+
+==Presentation (Read) Model== 
+===Performance problems with JPA=== 
+===Techniques of flattening Business Model===
+ - SELECT NEW, View, Dedicated Model=== 
+===Optimization: First think what You query for, tan model it ===
+
+
+==Event Sourcing== 
+===When to Use===
+(Behavioral model and it's projections, Complex Event Processing and Artificial Neural Networks) 
+===Why in this context we decided to not use it=== 
+
+----
+----
+
+=Technical aspects of implementation= 
+==Command Handlers== 
+===Finding Handler=== 
+===Security and transactions===
+
+ 
+==Server Gate== 
+===Asynchronous mode=== 
+===Optimization by detecting duplicates===
+
+
+==Run Environment - leaven for additional features== 
+
+
+==Events Engine== 
+===How doest it work and why so simple:) ===
+===Asynchronous Mode ===
+
+
+==Saga== 
+===Also so simple? ===
+===API ===
+===Persistent Memento===
