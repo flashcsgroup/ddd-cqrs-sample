@@ -35,14 +35,27 @@ Possibility to implement own Saga is described in this document in section [Comm
 ----
 
 =Architecture decisions= 
-==Business (Write) Model== 
+==Business (Write) Model==
+Application Layer responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Layer DDD Part].
+
+Implementing Business Stack, Application Layer You can choose between: classic service style and command+handler style.
+
+
 ===Classic: Service - AOP techniques===
+adnotacja przyklad
+
 ===Commands and handlers===
 possibility to get rid of Containers
+adnotacja przyklad, odniesienie do re na dole
+
 ===Synergy: Commands and AOP=== 
+przyklad
 
-
+---
 ==Presentation (Read) Model== 
+Presentation Stack responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Presentation_Stack DDD part].
+
+
 ===Performance problems with JPA===
   TODO
   * n+1 Select problem
@@ -58,13 +71,14 @@ possibility to get rid of Containers
 ===Optimization: First think what You query for, tan model it ===
 TODO
 ====Dedicated model updated by Domain Events====
+Dedicated model updated by Domain Events from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Updating_read_model DDD Part].
 
 ====Shredding====
 
 ====Clustering====
 
 ====Cloud==== 
-
+---
 ==Event Sourcing== 
 ===When to Use===
   * Need to store Behavioral model and "project" it in many perspetives
@@ -85,12 +99,12 @@ TODO
 ===Finding Handler=== 
 ===Security and transactions===
 
- 
+---- 
 ==Server Gate== 
 ===Asynchronous mode=== 
 ===Optimization by detecting duplicates===
 
-
+----
 ==Run Environment - leaven for additional features== 
 
 
@@ -98,6 +112,7 @@ TODO
 ===How doest it work and why so simple:) ===
 ===Asynchronous Mode ===
 
+----
 
 ==Saga Engine== 
 ===Also so simple? ===
