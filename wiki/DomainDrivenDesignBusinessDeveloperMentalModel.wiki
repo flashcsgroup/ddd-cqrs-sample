@@ -6,7 +6,7 @@
 
 This document describes sample code illustrating DDD techniques. Intention is to present code form the perspective of the business model developer. So we focus on business developers' mental model without digging to deep into engine details.
 
-Idea is that Business does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
+Idea is that business developers does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
 
 ==Architecture and design visualization using "scalable map"==
 
