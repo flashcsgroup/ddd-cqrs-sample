@@ -20,7 +20,7 @@ Therefore, using [http://prezi.com Prezi], we have created a "scalable map" of b
 ----
 
 =Portable architecture - technical independence=
-Application architecture is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Application_ArchitectureDDD Part].
+Application architecture is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Architecture Part I: DDD - Application Architecture].
 
 Portable architecture idea is described in [Philosophy#Portable_architecture_-_technical_independence Philosophy chapter].
 
