@@ -51,7 +51,7 @@ We are working on the suggested learning path that is meant to flatten learning 
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Complex_process_orchestration Complex process orchestration]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Persistent_multi-listener Persistent multi-listener]
       # [DomainDrivenDesignBusinessDeveloperMentalModel#Saga_makes_explicit_what_is_implicit Saga makes explicit what is implicit]   
-  # Part II: Command-query Responsibility Segregation - *System Architect mental model*
+  # [CommandQueryResponsibilitySegregationSystemArchitectMentaModel   Part II: Command-query Responsibility Segregation] - *System Architect mental model*
     # Portable architecture - technical independence    
     # Architecture decisions
       * Business (Write) Model
