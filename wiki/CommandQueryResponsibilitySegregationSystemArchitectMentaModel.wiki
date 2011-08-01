@@ -24,7 +24,7 @@ Application architecture is described in [DomainDrivenDesignBusinessDeveloperMen
 
 Portable architecture idea is described in [Philosophy#Portable_architecture_-_technical_independence Philosophy chapter].
 
-Possibility to switch Spring to other container or light and simple home made solution is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment_-_leaven_for_additional_features Run Environment - leaven for additional features].
+Possibility to switch Spring to other container or light and simple home made solution is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Leaven_for_additional_features Run Environment - leaven for additional features].
 
 Possibility to implement own Events is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Events_Engine Events Engine].
 
@@ -103,7 +103,7 @@ public class SubmitOrderCommand {
 
 CommandHandlerAnnotation is annotated with Spring's annotations. Therefore executing any CommandHandler results in running all Spring AOP engine that supports Transactions and Security. You can also inject dependencies to each handler.
 
-If You would like to get rid of Spring and provide own implementations of this features refer to [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment_-_leaven_for_additional_features Run Environment - leaven for additional features] chapter.
+If You would like to get rid of Spring and provide own implementations of this features refer to [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Leaven_for_additional_features Run Environment - leaven for additional features] chapter.
 ---
 ==Presentation (Read) Model== 
 Presentation Stack responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Presentation_Stack DDD part].
@@ -186,12 +186,62 @@ CommandHandlerAnnotation is annotated with Spring's annotations:
 
 ----
 
-==Server Gate== 
+==Server Gate==
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Gate.java Gate] class is the first point of access to the Application Layer. It's responsibility is to dispatch Command.
+
+It should be called by:
+  * web app controllers that sends Commands
+  * all clients from Client Tier that sends Commands
+
+Gate itself is a Spring Component so it can be injected into web app controllers.
+
+In standard case Gate simply delegates command handling to the [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment RunEnvironment].
+
 ===Asynchronous mode=== 
+Commands *can* be annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java Command] annotation.
+
+You can specify *asynchronous* attribute of this annotation.
+<code language="java">
+@Command(asynchronous=true)
+public class MyCommand {
+  //..
+}
+</code>
+In this case Gate does not delegate Command to the [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment RunEnvironment]. Gate sends command to the queue and returns immediately to the client.
+
+Responsibility of the queue is to send asynchronously command to the technical Listener, that calls [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment RunEnvironment] at the end.
+
+*This feature is not implemented Yet in this Leaven, but idea is straight forward.*
+
 ===Optimization by detecting duplicates===
+As mentioned in previous section, Commands *can* be annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java Command] annotation.
+
+You can specify *unique* attribute of this annotation.
+<code language="java">
+@Command(unique=true)
+public class MyCommand {
+  //..
+}
+</code>
+You *can* also specify uniqueStorageTimeout property.
+ 
+Sample code: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/SubmitOrderCommand.java SubmitOrderCommand] class.
+Sample scenario: nervous user keep clicking Approve Order button and client app does not block it.
+
+This is the way of expressing the following intention:
+ Sending the same command again (eventually in given time window) is a mistake, please ignore this. Command is the same if equals method says so (so You must implement if if specifying unique=true).
+
+This is just a tip for a server to use it's internal [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/GateHistory.java GateHistory].
+Therefore server does not even have to struggle with Command Handling.
+
+*WARNING*
+This is just an optimization technique and You can not rely on it. Simply GateHistory could be filled to max and lost it's old entries.
+You always have to perform checking in Domain Logic of this operation can be executed.
 
 ----
-==Run Environment - leaven for additional features== 
+==Run Environment==
+
+===leaven for additional features===
 
 ----
 
