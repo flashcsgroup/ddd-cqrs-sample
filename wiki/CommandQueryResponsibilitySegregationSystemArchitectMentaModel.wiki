@@ -130,6 +130,8 @@ Dedicated model updated by Domain Events from the Business Developer perspective
 
 ====Clustering====
 
+====NoSQL usage====
+
 ====Cloud==== 
 ---
 ==Event Sourcing== 
