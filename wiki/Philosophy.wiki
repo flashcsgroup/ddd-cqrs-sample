@@ -45,7 +45,7 @@ So idea is to don't be distracted by too abstract concepts of the framework. Jus
 Having more free time read Focus book ([http://focusmanifesto.com free version]).
 
 =Noninvasive philosophy=
-Our goal is to present a business developer programming model (way of thinking about class-level design) that is free of any platform-specific solutions. Business developer should focus on DDD modelling, and engine does technical stuff. 
+Our goal is to present a business developer programming model (way of thinking about class-level design) that is free of any platform-specific solutions. Business developer should focus on analysis and domain modeling - engine does technical stuff. 
 
 There are just few cases when You need to implement platform specific interfaces. But it's not critical, You can always change them.
 There are some base classes You can extend, but they are introduced in sake of coding ergonomic. You can modify them freely. 
