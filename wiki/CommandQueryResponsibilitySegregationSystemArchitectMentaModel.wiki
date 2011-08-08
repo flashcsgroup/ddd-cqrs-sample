@@ -108,23 +108,43 @@ If You would like to get rid of Spring and provide own implementations of this f
 ==Presentation (Read) Model== 
 Presentation Stack responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Presentation_Stack DDD part].
 
-
 ===Performance problems with JPA===
   TODO
   * n+1 Select problem
-  * fetching unnecessary data
+  * fetching unnecessary data (reporting, summary)
+  * transactional behavior and dirty checking is not used when quering for read-only
   * need to encapsulate domain model (remote clients)
+  * no support for any other represantation other than the JPA model itself (i.e. DTOs)
     * loading JPA entities and repacking to DTO is simply silly:)
 ===Techniques of flattening Business Model===
-  TODO
-  * JPA: SELECT NEW
-  * Native SQL
-  * materialized ViewView
-  * Dedicated Model
+====JPA: SELECT NEW====
+====Native SQL====
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/impl/SqlProductFinder.java see the whole SqlProductFinder code]
+<code language="java">
+@Finder
+public class SqlProductFinder implements ProductFinder {
+ 
+  ...
+
+    @Override
+    public List<ProductListItemDto> findProducts(ProductSearchCriteria searchCriteria) {
+        StringBuilder query = new StringBuilder();
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        query.append("SELECT id, name, value, currencyCode FROM Product");
+        query.append(createWhereClause(searchCriteria, parameters));
+        query.append(createOrderClause(searchCriteria));
+        return jdbcTemplate.query(query.toString(), parameters, new ProductListItemRowMapper());
+    }
+  ...
+}
+</code>
+====SQL views====
+ * or event materialized views for extra performance if the vendor supports it 
+====Separate model updated by events====
+Dedicated model updated by Domain Events from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Updating_read_model DDD Part]
+
 ===Optimization: First think what You query for, tan model it ===
 TODO
-====Dedicated model updated by Domain Events====
-Dedicated model updated by Domain Events from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Updating_read_model DDD Part].
 
 ====Shredding====
 
