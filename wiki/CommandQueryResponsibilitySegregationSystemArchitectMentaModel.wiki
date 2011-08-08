@@ -118,6 +118,25 @@ Presentation Stack responsibility from the Business Developer perspective is des
     * loading JPA entities and repacking to DTO is simply silly:)
 ===Techniques of flattening Business Model===
 ====JPA: SELECT NEW====
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/impl/JpaOrderFinder.java see the whole JpaOrderFinder code]
+<code language="java">
+@Finder
+public class JpaOrderFinder implements OrderFinder {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<ClientOrderListItemDto> findCurrentClientsOrders() {
+        Query query = entityManager
+                .createQuery("select new pl.com.bottega.erp.sales.presentation.ClientOrderListItemDto("
+                        + "o.id, o.totalCost, o.submitDate, o.status) from Order o where ...");
+        return query.getResultList();
+    }
+  ...
+}
+</code>
 ====Native SQL====
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/impl/SqlProductFinder.java see the whole SqlProductFinder code]
 <code language="java">
