@@ -11,7 +11,7 @@ Java (and any known language) does not support understanding complex code struct
 
 Therefore, using [http://prezi.com Prezi], we have created a "scalable map" of both big picture (architecture) and details view (class design).
 
-  * You can watch it [http://prezi.com/hi2dmhfej9zu/ddd-cqrs-sample-2/ here]
+  * You can watch it [http://prezi.com/hi2dmhfej9zu/ddd-cqrs-sample/ here]
   * You can "play" default road trip or pan and zoom freely using mouse
   * You can click on SVN link and go straight to the code!
 
