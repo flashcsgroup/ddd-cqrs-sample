@@ -2,6 +2,10 @@
 
 <wiki:toc max_depth="2" />
 
+= General introduction =
+If You are new to DDD You can quickly grasp general idea by watching this prezi:
+[http://prezi.com/woxd5xokf36g/domain-driven-design-a-place-for-everything-and-everything-in-its-place-en Domain Driven Design - A place for everything and everything in its place]
+
 = Technical introduction =
 
 This document describes sample code illustrating DDD techniques. Intention is to present code form the perspective of the business model developer. So we focus on business developers' mental model without digging to deep into engine details.
