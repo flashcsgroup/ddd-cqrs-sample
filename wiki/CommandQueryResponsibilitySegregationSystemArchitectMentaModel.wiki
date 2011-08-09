@@ -146,7 +146,7 @@ public class JpaOrderFinder implements OrderFinder {
  * this can be good as 
   * you don't need to keep a seperate model
   * data is alway up to data
-  * pretty performant (faster than JPA and queries can be further optimized by the DBA)
+  * it's pretty performant (faster than JPA and queries can be further optimized by the DBA)
  * this can also be bad 
   * not extremally scalable as you rely on a single DB
   * reading can cause write model latency
@@ -171,12 +171,15 @@ public class SqlProductFinder implements ProductFinder {
 </code>
 ====SQL views====
  * this is simmiliar to native SQL but has several improvements
- * views are another layer of abstraction over data
+ * views are another layer of abstraction over data (which has to be maintained)
  * minor changes in write model don't cause you to rewrite native SQL queries (only the views definitions)
  * its possible to use ORM tools like myBatis or Hibernate(statless session)
  * materialized views can add some extra performance (if the vendor supports it)
 
 ====Separate model updated by events====
+ * unlike the other techniques this approach is almost a paradigm shift from the traditional N-layered architecture
+ * best scalability
+ * ...
 Dedicated model updated by Domain Events from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Updating_read_model DDD Part]
 
 ===Optimization: First think what You query for, tan model it ===
