@@ -338,6 +338,112 @@ You can also implement Your own HandlersProvider.
 ----
 
 ==Saga Engine== 
+ * Single Saga consists of 3 java classes: Saga instance (business code only), Saga Manager (persistence management), Saga data (memento which is persisted instead of the saga itself)
 ===Also so simple? ===
+ * The most important point about the saga class is that it only contains business code
+ * It's a spring managed bean so you can use injection (usualy other domain building blocks like repos and factories) and AOP if needed
+ * Saga can listen to multiple events and any of those events can move the saga 
+ * The basic idea is the similiar to [http://www.udidahan.com/2009/04/20/saga-persistence-and-event-driven-architectures/ the one of Udi Dahan] for [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sagas/OrderShipmentStatusTrackerSaga.java the whole saga code check our svn]
+<code language="java>
+@Saga
+public class OrderShipmentStatusTrackerSaga extends SagaInstance<OrderShipmentStatusTrackerData> {
+
+    @Inject
+    private OrderRepository orderRepository;
+
+    @SagaAction
+    public void handleOrderCreated(OrderCreatedEvent event) {
+        data.setOrderId(event.getOrderId());
+        completeIfPossible();
+    }
+
+    @SagaAction
+    public void handleOrderSubmitted(OrderSubmittedEvent event) {
+        data.setOrderId(event.getOrderId());
+        // do some business
+        completeIfPossible();
+    }
+
+    @SagaAction
+    public void orderShipped(OrderShippedEvent event) {
+        data.setOrderId(event.getOrderId());
+        data.setShipmentId(event.getShipmentId());
+        completeIfPossible();
+    }
+
+    @SagaAction
+    public void shipmentDelivered(ShipmentDeliveredEvent event) {
+        data.setShipmentId(event.getShipmentId());
+        data.setShipmentReceived(true);
+        completeIfPossible();
+    }
+
+    private void completeIfPossible() {
+        if (data.getOrderId() != null && data.getShipmentId() != null && data.getShipmentReceived()) {
+            Order shippedOrder = orderRepository.load(data.getOrderId());
+            shippedOrder.archive();
+            orderRepository.save(shippedOrder);
+        }
+    }
+}
+
+</code>
 ===API ===
+ * saga also requires a manager to manage its persistence 
+ * this is a clear separation of concerns (thanks to it we don't polute saga code with infrastructure or application details)
+ * it might be possible to manager saga loading in a generic way without creating a manager for each saga, but it actually gets pretty complicated if multiple aggregates are involved and mapping from event to a saga instance which this event relates to gets non-trivial
+ * this is an example of a saga loader for [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sagas/OrderShipmentStatusTrackerSagaManager.java the whole source code check svn]
+<code language="java">
+@Component
+public class OrderShipmentStatusTrackerSagaManager implements
+        SagaManager<OrderShipmentStatusTrackerSaga, OrderShipmentStatusTrackerData> {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @LoadSaga
+    public OrderShipmentStatusTrackerData loadSaga(OrderShippedEvent event) {
+        return findByOrderId(event.getOrderId());
+    }
+
+    @LoadSaga
+    public OrderShipmentStatusTrackerData loadSaga(ShipmentDeliveredEvent event) {
+        return findByShipmentId(event.getShipmentId());
+    }
+  // methods from SagaManager interface called by saga engine
+
+    @Override
+    public void removeSaga(OrderShipmentStatusTrackerSaga saga) {
+        OrderShipmentStatusTrackerData sagaData = entityManager.merge(saga.getData());
+        entityManager.remove(sagaData);
+    }
+
+    @Override
+    public OrderShipmentStatusTrackerData createNewSagaData() {
+        OrderShipmentStatusTrackerData sagaData = new OrderShipmentStatusTrackerData();
+        entityManager.persist(sagaData);
+        return sagaData;
+    }
+</code>
 ===Persistent Memento===
+ * Since saga is a spring managed component it isn't persistent
+ * Instead of persisting saga itself a memento is created and tracked
+ * The technology of persisting a memento matches the one in its manager (and the saga class is not aware of it)
+ * This is a snippet of [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sagas/OrderShipmentStatusTrackerSagaLoader.java saga memento from our svn]
+<code language="java">
+@Entity
+public class OrderShipmentStatusTrackerData {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private Long orderId;
+
+    private Long shipmentId;
+
+    private Boolean shipmentReceived = false;
+
+  // ... getters and setters
+}
+</code>
