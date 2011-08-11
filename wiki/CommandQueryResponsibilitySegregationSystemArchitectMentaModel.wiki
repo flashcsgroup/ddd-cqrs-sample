@@ -5,6 +5,8 @@ This document describes sample code illustrating CqRS techniques. Intention is t
 
 Idea is that an architect need to understand what's under the hood - he or she should feel with engine technical code like fish in the water and freely change it.
 
+CqRS beginners can grasp general idea watching this presentation: [http://prezi.com/pvfwd4xscqxy/command-query-responsibility-segregation-evolution-of-the-layered-architecture/ CqRS - evolution of the layered architecture]
+
 ==Architecture and design visualization using Scalable Map==
 
 Java (and any known language) does not support understanding complex code structures. Neither UML tools.
