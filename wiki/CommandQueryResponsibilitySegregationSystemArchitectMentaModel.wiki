@@ -120,10 +120,11 @@ Presentation Stack responsibility from the Business Developer perspective is des
     * loading JPA entities and repacking to DTO is simply silly:)
 ===Techniques of flattening Business Model===
 ====JPA: SELECT NEW====
- * since we use JPA for write model it's very easy to get started with it in the read model as well
- * jpql "select new ...Dto(...)" works on very simple data
- * selecting and entities and translating it to DTOs is also possible, but ...
- * ... above techniques are easy and work well for quck'n'dirty prototyping, but aren't recommended if performance is an issue
+ * since we are using JPA for write model it might be very tempting to read from the DB using JPA as well
+ * jpql "select new ...Dto(...)" works, but only on very simple data
+ * selecting and entities and translating it to DTOs is also possible and might seem to get the job done, but ...
+ * ... alot of entities details in the write model are hidden from the outside world for a reason, adding means to read those details may require you to break encapsulation or try dirty hack and neither is recomended
+ * it also can cause performance issues
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/impl/JpaOrderFinder.java see the whole JpaOrderFinder code]
 <code language="java">
 @Finder
