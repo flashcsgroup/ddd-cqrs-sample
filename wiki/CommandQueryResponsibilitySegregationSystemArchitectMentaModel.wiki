@@ -119,7 +119,7 @@ Presentation Stack responsibility from the Business Developer perspective is des
   * no support for any other represantation other than the JPA model itself (i.e. DTOs)
     * loading JPA entities and repacking to DTO is simply silly:)
 ===Techniques of flattening Business Model===
-====JPA: SELECT NEW====
+====JPA: SELECT NEW (not recommended)====
  * since we are using JPA for write model it might be very tempting to read from the DB using JPA as well
  * jpql "select new ...Dto(...)" works, but only on very simple data
  * selecting and entities and translating it to DTOs is also possible and might seem to get the job done, but ...
