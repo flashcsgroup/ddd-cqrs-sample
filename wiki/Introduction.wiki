@@ -23,3 +23,21 @@ Goal of this project is not to teach You how to model. In this project we focus 
 If You are looking for real "ERP problem class" modelling check the following resources:
   * [http://www.amazon.com/Enterprise-Patterns-MDA-Building-Archetype/dp/032111230X Enterprise Patterns and MDA]
   * [http://www.amazon.com/exec/obidos/ASIN/0201895420 Analysis Patterns: Reusable Object Models]
+
+=Getting started with the code=
+==checking out and building==
+ * checkout from the google code SVN (see http://code.google.com/p/ddd-cqrs-sample/source/checkout)
+ * the project is built using maven (tested on version 2.2.x) and should work right away when imported you your favourite IDE, e.g. Eclipse (with m2eclipse plugin), Netbeans (with the official maven plugin) or IntelliJ IDEA
+ * application should work on many application servers (tested on Jetty and Tomcat)
+ * this sample doesn't require configuring any additional configuration, e.g. the datasource (it uses an embedded one)
+ * if you just want to see if the app builds and runs correctly (and have maven accessible from your command line) you can run the application with:
+  mvn org.mortbay.jetty:maven-jetty-plugin:run-war 
+ * and navigate to http://localhost:8080/cqrs-web in your browser
+
+==reading==
+ * there are are two articles that will help you get the high level overview of the project
+  * CommandQueryResponsibilitySegregationSystemArchitectMentaModel (architect point of view)
+  * DomainDrivenDesignBusinessDeveloperMentalModel (business code developer point of view)
+
+==contributing==
+ * for discussion and posting your suggestion please use our group at http://groups.google.com/group/ddd-cqrs-sample
