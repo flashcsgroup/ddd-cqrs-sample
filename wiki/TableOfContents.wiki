@@ -62,7 +62,7 @@ We are working on the suggested learning path that is meant to flatten learning 
       * Presentation (Read) Model
         * Performance problems with JPA
         * Techniques of flattening Business Model
-        * Optimization: First think what You query for, tan model it
+        * Optimization: First think what You query for, then model it
       * Event Sourcing
         * When to Use
         * Why in this context we decided to not use it
@@ -76,7 +76,7 @@ We are working on the suggested learning path that is meant to flatten learning 
       * Run Environment
         * Leaven for additional features
       * Events Engine
-        * How doest it work and why so simple:)
+        * How does it work and why so simple:)
         * Asynchronous Mode
       * Saga Engine
         * Also so simple?
