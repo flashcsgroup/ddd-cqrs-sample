@@ -1,15 +1,15 @@
 #summary Command-query Responsibility Segregation - System Architect mental model
 <wiki:toc max_depth="3" />
 = Introduction =
-This document describes sample code illustrating CqRS techniques. Intention is to present code form the perspective of the (application/system/general) architect. So we focus on architects' mental model digging deep into engine details. 
+This document describes sample code illustrating CqRS techniques. Intention is to present code form the perspective of an (application/system/general) architect. So we focus on architects' mental model digging deep into engine details. 
 
-Idea is that an architect need to understand what's under the hood - he or she should feel with engine technical code like fish in the water and freely change it.
+The idea is that an architect needs to understand what's under the hood - he or she should feel with engine technical code like fish in the water and freely change it.
 
 CqRS beginners can grasp general idea watching this presentation: [http://prezi.com/pvfwd4xscqxy/command-query-responsibility-segregation-evolution-of-the-layered-architecture/ CqRS - evolution of the layered architecture]
 
 ==Architecture and design visualization using Scalable Map==
 
-Java (and any known language) does not support understanding complex code structures. Neither UML tools.
+Java (and any known language) does not support understanding complex code structures. Neither UML tools do.
 
 Therefore, using [http://prezi.com Prezi], we have created a "scalable map" of both big picture (architecture) and details view (class design).
 
@@ -26,11 +26,11 @@ Application architecture is described in [DomainDrivenDesignBusinessDeveloperMen
 
 Portable architecture idea is described in [Philosophy#Portable_architecture_-_technical_independence Philosophy chapter].
 
-Possibility to switch Spring to other container or light and simple home made solution is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Leaven_for_additional_features Run Environment - leaven for additional features].
+Possibility to switch from Spring to other container or light and simple home made solution is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Leaven_for_additional_features Run Environment - leaven for additional features].
 
-Possibility to implement own Events is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Events_Engine Events Engine].
+Possibility to implement Your own Events is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Events_Engine Events Engine].
 
-Possibility to implement own Saga is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Saga_Engine Saga Engine].
+Possibility to implement Your own Saga is described in this document in section [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Saga_Engine Saga Engine].
 
 
 ----
@@ -40,7 +40,7 @@ Possibility to implement own Saga is described in this document in section [Comm
 ==Business (Write) Model==
 Application Layer responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Layer DDD Part].
 
-Implementing Business Stack, Application Layer You can choose between: classic service style and command+handler style.
+When implementing Business Stack, Application Layer You can choose between: classic service style and command+handler style.
 
 
 ===Classic: Service - AOP techniques===
@@ -57,7 +57,7 @@ public @interface ApplicationService {
 }
 </code>
 
-In result all Application Services gain Spring features 
+As a result, all Application Services gain Spring features 
   * Dependency Injection
   * Services can be injected into upper layer components
   * Transactions and Security provided via transparent AOP mechanisms.
@@ -80,7 +80,7 @@ public @interface CommandHandlerAnnotation {
 }
 </code>
 
-CommandHandlers are automatically matched to incoming Commands by generic type of the Handler.
+CommandHandlers are automatically matched with incoming Commands by generic type of the Handler.
 
 <code language="java">
 public interface CommandHandler<C, R> {
@@ -103,9 +103,9 @@ public class SubmitOrderCommand {
 }
 </code>
 
-CommandHandlerAnnotation is annotated with Spring's annotations. Therefore executing any CommandHandler results in running all Spring AOP engine that supports Transactions and Security. You can also inject dependencies to each handler.
+CommandHandlerAnnotation is annotated with Spring annotations. Therefore executing any CommandHandler results in running all Spring AOP engine that supports Transactions and Security. You can also inject dependencies to each handler.
 
-If You would like to get rid of Spring and provide own implementations of this features refer to [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Leaven_for_additional_features Run Environment - leaven for additional features] chapter.
+If You would like to get rid of Spring and provide Your own implementations of this features refer to [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Leaven_for_additional_features Run Environment - leaven for additional features] chapter.
 ---
 ==Presentation (Read) Model== 
 Presentation Stack responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Presentation_Stack DDD part].
@@ -114,17 +114,17 @@ Presentation Stack responsibility from the Business Developer perspective is des
   TODO
   * n+1 Select problem
   * fetching unnecessary data (reporting, summary)
-  * transactional behavior and dirty checking is not used when quering for read-only
+  * transactional behavior and dirty checking is not used when querying for read-only
   * need to encapsulate domain model (remote clients)
-  * no support for any other represantation other than the JPA model itself (i.e. DTOs)
+  * no support for any other representation other than the JPA model itself (i.e. DTOs)
     * loading JPA entities and repacking to DTO is simply silly:)
 ===Techniques of flattening Business Model===
 ====JPA: SELECT NEW (not recommended)====
  * since we are using JPA for write model it might be very tempting to read from the DB using JPA as well
  * jpql "select new ...Dto(...)" works, but only on very simple data
  * selecting and entities and translating it to DTOs is also possible and might seem to get the job done, but ...
- * ... alot of entities details in the write model are hidden from the outside world for a reason, adding means to read those details may require you to break encapsulation or try dirty hack and neither is recomended
- * it also can cause performance issues
+ * ... a lot of entities details in the write model are hidden from the outside world for a reason, adding the means to read those details may require you to break encapsulation or try dirty hack and neither is recommended
+ * it can also cause performance issues
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/impl/JpaOrderFinder.java see the whole JpaOrderFinder code]
 <code language="java">
 @Finder
@@ -145,13 +145,13 @@ public class JpaOrderFinder implements OrderFinder {
 }
 </code>
 ====Native SQL====
- * sql selcts are very convinient as they work on the same data source 
+ * sql selects are very convenient as they work on the same data source 
  * this can be good as 
-  * you don't need to keep a seperate model
-  * data is alway up to data
-  * it's pretty performant (faster than JPA and queries can be further optimized by the DBA)
+  * you don't need to keep a separate model
+  * data is always up to date
+  * it's pretty robust (faster than JPA and queries can be further optimized by the DBA)
  * this can also be bad 
-  * not extremally scalable as you rely on a single DB
+  * not extremely scalable as you rely on a single DB
   * reading can cause write model latency
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/impl/SqlProductFinder.java see the whole SqlProductFinder code]
 <code language="java">
@@ -173,10 +173,10 @@ public class SqlProductFinder implements ProductFinder {
 }
 </code>
 ====SQL views====
- * this is simmiliar to native SQL but has several improvements
+ * this is similar to native SQL but has several improvements
  * views are another layer of abstraction over data (which has to be maintained)
  * minor changes in write model don't cause you to rewrite native SQL queries (only the views definitions)
- * its possible to use ORM tools like myBatis or Hibernate(statless session)
+ * its possible to use ORM tools like myBatis or Hibernate(stateless session)
  * materialized views can add some extra performance (if the vendor supports it)
 
 ====Separate model updated by events====
@@ -198,7 +198,7 @@ TODO
 ---
 ==Event Sourcing== 
 ===When to Use===
-  * Need to store Behavioral model and "project" it in many perspetives
+  * Need to store Behavioral model and "project" it in many perspectives
   * Complex Event Processing with Artificial Neural Networks (events stream as learning vector)
   * Need to "travel in time"
 ===Why in this context we decided to not use it=== 
@@ -224,7 +224,7 @@ Idea is quite simple:
   * When asked about handler for given command - getHandler method
     * return Spring bean
 
-As You can see mechanism is really simple.
+As You can see the mechanism is really simple.
 You can implement Your own CommandHandler provider using any container You like (or even using home made XML, Annotations or just hardcoded map;)
 
 ===Security and transactions===
@@ -252,10 +252,10 @@ CommandHandlerAnnotation is annotated with Spring's annotations:
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Gate.java Gate] class is the first point of access to the Application Layer. It's responsibility is to dispatch Command.
 
 It should be called by:
-  * web app controllers that sends Commands
-  * all clients from Client Tier that sends Commands
+  * web app controllers that send Commands
+  * all clients from Client Tier that send Commands
 
-Gate itself is a Spring Component so it can be injected into web app controllers.
+Gate itself is a Spring Component, so it can be injected into web app controllers.
 
 In standard case Gate simply delegates command handling to the [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment RunEnvironment].
 
@@ -273,10 +273,10 @@ In this case Gate does not delegate Command to the [CommandQueryResponsibilitySe
 
 Responsibility of the queue is to send asynchronously command to the technical Listener, that calls [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Run_Environment RunEnvironment] at the end.
 
-*This feature is not implemented Yet in this Leaven, but idea is straight forward.*
+*This feature is not implemented Yet in this Leaven, but idea is straightforward.*
 
 ===Optimization by detecting duplicates===
-As mentioned in previous section, Commands *can* be annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java Command] annotation.
+As mentioned in the previous section, Commands *can* be annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java Command] annotation.
 
 You can specify *unique* attribute of this annotation.
 <code language="java">
@@ -288,7 +288,7 @@ public class MyCommand {
 You *can* also specify uniqueStorageTimeout property.
  
 Sample code: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/SubmitOrderCommand.java SubmitOrderCommand] class.
-Sample scenario: nervous user keep clicking Approve Order button and client app does not block it.
+Sample scenario: nervous user keeps clicking Approve Order button and client app does not block it.
 
 This is the way of expressing the following intention:
  Sending the same command again (eventually in given time window) is a mistake, please ignore this. Command is the same if equals method says so (so You must implement if if specifying unique=true).
@@ -302,7 +302,7 @@ You always have to perform checking in Domain Logic of this operation can be exe
 
 ----
 ==Run Environment==
-[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class is actual place that runs Commands. Actually it matches CommandHandler to the Command using [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Finding_Handler provider] and runs Commandhandlers.
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class is the actual place that runs Commands. Actually it matches CommandHandler to the Command using [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Finding_Handler provider] and runs Commandhandlers.
 
 You should use this class in the following situations:
   * in the [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Server_Gate Gate]
@@ -329,13 +329,13 @@ You can add:
   * storing commands
   * command execution profiling
   * etc
-All this must be done only in this one place.
+All above must be done only in this one place.
 
 You can also implement Your own HandlersProvider.
 ----
 
 ==Events Engine== 
-===How doest it work and why so simple:) ===
+===How does it work and why so simple:) ===
 ===Asynchronous Mode ===
 
 ----
@@ -344,9 +344,9 @@ You can also implement Your own HandlersProvider.
  * Single Saga consists of 3 java classes: Saga instance (business code only), Saga Manager (persistence management), Saga data (memento which is persisted instead of the saga itself)
 ===Also so simple? ===
  * The most important point about the saga class is that it only contains business code
- * It's a spring managed bean so you can use injection (usualy other domain building blocks like repos and factories) and AOP if needed
+ * It's a Spring managed bean so you can use injection (usually other domain building blocks like repos and factories) and AOP if needed
  * Saga can listen to multiple events and any of those events can move the saga 
- * The basic idea is the similiar to [http://www.udidahan.com/2009/04/20/saga-persistence-and-event-driven-architectures/ the one of Udi Dahan] for [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sagas/OrderShipmentStatusTrackerSaga.java the whole saga code check our svn]
+ * The basic idea is similar to [http://www.udidahan.com/2009/04/20/saga-persistence-and-event-driven-architectures/ the one of Udi Dahan] for [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sagas/OrderShipmentStatusTrackerSaga.java the whole saga code check our svn]
 <code language="java>
 @Saga
 public class OrderShipmentStatusTrackerSaga extends SagaInstance<OrderShipmentStatusTrackerData> {
@@ -393,7 +393,7 @@ public class OrderShipmentStatusTrackerSaga extends SagaInstance<OrderShipmentSt
 </code>
 ===API ===
  * saga also requires a manager to manage its persistence 
- * this is a clear separation of concerns (thanks to it we don't polute saga code with infrastructure or application details)
+ * this is a clear separation of concerns (thanks to it we don't pollute saga code with infrastructure or application details)
  * it might be possible to manager saga loading in a generic way without creating a manager for each saga, but it actually gets pretty complicated if multiple aggregates are involved and mapping from event to a saga instance which this event relates to gets non-trivial
  * this is an example of a saga loader for [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sagas/OrderShipmentStatusTrackerSagaManager.java the whole source code check svn]
 <code language="java">
@@ -429,7 +429,7 @@ public class OrderShipmentStatusTrackerSagaManager implements
     }
 </code>
 ===Persistent Memento===
- * Since saga is a spring managed component it isn't persistent
+ * Since saga is a Spring managed component it isn't persistent
  * Instead of persisting saga itself a memento is created and tracked
  * The technology of persisting a memento matches the one in its manager (and the saga class is not aware of it)
  * This is a snippet of [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sagas/OrderShipmentStatusTrackerSagaLoader.java saga memento from our svn]
