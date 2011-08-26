@@ -12,12 +12,12 @@ Project contains implementation of:
 Project covers many questionable aspects like BB injections. No technical compromises, *real* world problems and solutions instead of *hello* world play.
 
 ===Present pragmatic approach to the CqRS architecture===
-  * Clean, "portable architecture" without magic tricks, than can be implemented in any technology
+  * Clean, "portable architecture" without magic tricks, that can be implemented in any technology
   * Provide *well crafted* code, ready to assimilate in *production*
 
 ==Secondary goals==
   * present development process techniques: Behavior Driven Development
-  * present ready ready to use and easy to adopt tools and best practices
+  * present ready to use and easy to adopt tools and best practices
 
 In this projects We focus on technical challenges. This project won't teach You how to model, however You can learn some best practices and patterns.
 
@@ -27,7 +27,7 @@ Check [http://code.google.com/p/ddd-cqrs-sample/wiki/Introduction#Modeling_resou
 Leaven ([http://en.wikipedia.org/wiki/Leavening_agent leavening agent]) - something that You use to make a bread - a good one.
 
 ===Why general Application Framework is a bad idea===
-Frameworks are good with dealing with specific problem (persistence, security etc). But when creating an Application Framework You always focus on certain context or specific class of the problem. In real life projects (not hello world) this leads to the grotesque situation when framework author keep trying to increase abstraction level while framework users keep digging to the base mechanism to achieve specific goal.
+Frameworks are good with dealing with specific problem (persistence, security etc). But when creating an Application Framework You always focus on certain context or specific class of the problem. In real life projects (not hello world) this leads to the grotesque situation when framework author keep trying to increase abstraction level, while framework users keep digging to the base mechanism to achieve specific goal.
 
 Of course working in *concrete context* You can build Your own Application Framework based on this leaven.
 
@@ -39,7 +39,7 @@ So we want to avoid a situation when all You know is an API and some code under 
 ===Abstraction Distractions===
 Having some free time watch great presentation [http://nealford.com/downloads/conferences/Abstraction_Distractions(Neal_Ford).pdf Abstraction Distractions] by Neal Ford.
 
-So idea is to don't be distracted by too abstract concepts of the framework. Just focus on domain and really simple engine code. Code that can be easily understood and changed when needed (instead of messing with XML and hacking wrong assumptions of framwork's authors)
+So the idea is not to be distracted by too abstract concepts of the framework. Just focus on the domain and really simple engine code. Code that can be easily understood and changed when needed (instead of messing with XML and hacking wrong assumptions of framework authors)
 
 ===Just focus on the right problems===
 Having more free time read Focus book ([http://focusmanifesto.com free version]).
@@ -48,23 +48,23 @@ Having more free time read Focus book ([http://focusmanifesto.com free version])
 Our goal is to present a business developer programming model (way of thinking about class-level design) that is free of any platform-specific solutions. Business developer should focus on analysis and domain modeling - engine does technical stuff. 
 
 There are just few cases when You need to implement platform specific interfaces. But it's not critical, You can always change them.
-There are some base classes You can extend, but they are introduced in sake of coding ergonomic. You can modify them freely. 
+There are some base classes You can extend, but they are introduced for the sake of coding ergonomic. You can modify them freely. 
 
 =Portable architecture - technical independence=
-Project uses Spring and JPA (Hibernate as a impl. provider).
+Project uses Spring and JPA (Hibernate as an implementation provider).
 
-Spring is being used to provide:
+Spring is used to provide:
   * Transactions management
   * Security
   * Dependency Injection
-Based on our experience since 2004 (Spring 1) Spring does it well.
+Based on our experience since 2004 (Spring version one) Spring does it well.
 
 *But overall architecture is not influenced by Spring.*
 
-You can get rid of Spring easily and implement mentioned features by Your own or using third party solutions.
-There is one place, a RunEnvironment class where You can do this very easy by Yourself and we will discuss this scenario in details in next part.
+You can get rid of Spring easily and implement mentioned features on Your own or by using third party solutions.
+There is one place, a RunEnvironment class where You can do this very easily by Yourself and we will discuss this scenario in details in next part.
 
 Business model storage is based on JPA. But again - it can be done anyway You like.
 
 =You are the Architect and owner of the code=
-The main idea is that an Architect (lead developer) should understand deeply all technical classes and than modify them freely.
+The main idea is that an Architect (lead developer) should understand deeply all technical classes and then modify them freely.
