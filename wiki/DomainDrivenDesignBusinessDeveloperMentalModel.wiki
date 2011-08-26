@@ -8,15 +8,15 @@ If You are new to DDD You can quickly grasp general idea by watching this prezi:
 
 = Technical introduction =
 
-This document describes sample code illustrating DDD techniques. Intention is to present code form the perspective of the business model developer. So we focus on business developers' mental model without digging to deep into engine details.
+This document describes sample code illustrating DDD techniques. The intention is to present code form the perspective of the business model developer. So we focus on business developers' mental model without digging to deep into engine details.
 
 Idea is that business developers does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
 
 ==Architecture and design visualization using "scalable map"==
 
-Java (and any known language) does not support understanding complex code structures. Neither UML tools.
+Java (and any known language) does not support understanding complex code structures. Neither UML tools do.
 
-Therefore, using [http://prezi.com Prezi], we have created a "scaleable map" of both big picture (architecture) and details view (class design).
+Therefore, using [http://prezi.com Prezi], we have created a "scalable map" of both big picture (architecture) and details view (class design).
 
   * You can watch it [http://prezi.com/hi2dmhfej9zu/ddd-cqrs-sample/ here]
   * You can "play" default road trip or pan and zoom freely using mouse
@@ -35,19 +35,19 @@ Common DDD goodies are:
       * !ApplicationService - if You prefer services instead of commands and handlers. Used for tagging but also provides Spring features (this annotations is annotated by Spring annotations)
       * !ApplicationStatefullComponent - for session scoped Spring beans
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain domain]
-    * annotations - annotations for all DDD Building Blocks - some of them are just for tagging (will be used by visual analyzers) but some of them are annotated by Spring's annotations that introduces Spring based features like being a Bean. All annotations will be described in details in [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Layer Domain Layer section] of this document.
+    * annotations - annotations for all DDD Building Blocks - some of them are just for tagging (will be used by visual analyzers) but some of them are annotated by Spring's annotations that introduces Spring based features like being a Bean. All annotations will be described in detail in [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Layer Domain Layer section] of this document.
     * sharedcernel - common model used in all Bounded Contexts
     * infrastructure
-      * events - Events Engine impl, Common technical listeners, annotations for listeners
-      * repo - JPA base repositories, that can be handfull
-      * sagas - Saga Engine impl
+      * events - Events Engine implementation, Common technical listeners, annotations for listeners
+      * repo - JPA base repositories, that can be handful
+      * sagas - Saga Engine implementation
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fsagas sagas] - Saga API - described in later section of this document
 
 
 ===CqRS common classes===
 Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fcqrs pl.com.bottega.cqrs] contains common CqRS "engine".
 
-Common CqRS goodies are described in the [PART II] because they are just technical details.
+Common CqRS goodies are described in the [PART II], because they are just technical details.
 
 ===ERP product classes===
 Package [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp pl.com.bottega.erp] is The Product - Enterprise Resource Planning class system.
@@ -60,7 +60,7 @@ System modules separation at this package level:
 
 Modules are independent set of features that can  be used separately and still being valuable.
 
-In this sample modules are equal to DDD Bounded Context.
+In this sample, modules are equal to DDD Bounded Context.
 
 ===ERP module structure===
 Open [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/#main%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales Sales] module, look at packages structure and follow the description:
@@ -71,13 +71,13 @@ Each module is packaged using the same application architecture style (beginning
     * read (presentation) model
       # _presentation_ reading presentation data
     * write (business) model
-      # _application_ application logic (handlers or services, listeners, statefull objects)
+      # _application_ application logic (handlers or services, listeners, stateful objects)
       # _domain_ - domain model, building blocks
-      # _infrastructure_ - technical stuff, repository impl, technical listeners
+      # _infrastructure_ - technical stuff, repository implementation, technical listeners
 
 ===Technical resources===
 Folder [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/#main%2Fresources] contains:
-  * jdbc and logger properties
+  * JDBC and logger properties
   * application service level (no web app stuff) Spring configuration
 
 Folder [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/#main%2Fwebapp] contains web application based on Spring Web MVC. Other client implementations will be provided in the next milestone (Android, Ajax, Remoting, WebService)
@@ -85,28 +85,28 @@ Folder [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sa
 ==Just one Maven Artifact?==
 As You can see project logically contains:
   * common DDD API
-  * common DDD impl
+  * common DDD implementation
   * common CqRS API
-  * common CqRS impl
+  * common CqRS implementation
   * product modules API
-  * product modules and cross module Sagas impl
+  * product modules and cross module Sagas implementation
 
 All this stuff is stored in one Eclipse Project - one Maven Artifact.
 
-This decision is a trade-off made in sake of simplicity. If You are proficient Maven user, You probably split code into separated artifacts in one hour. But those of You who are not familiar with Maven should focus on the essence of this project - sample code.
+This decision is a trade-off made in sake of simplicity. If You are proficient Maven user, You probably split code into separated artifacts in one hour. But those of You, who are not familiar with Maven should focus on the essence of this project - sample code.
 
 ----
 ----
 
 =Domain Description=
-Sample is illustrated in the context of simplified fraction of the ERP system. We have chosen some ERP domains because they are relatively well known. Everybody has some intuition about Clients, Orders, Products etc. so We don't have to stuck explaining how different domain works (financial, medical etc.)
+Sample is illustrated in the context of simplified fraction of the ERP system. We have chosen some ERP domains, because they are relatively well known. Everybody has some intuition about Clients, Orders, Products etc. so We don't have to stuck explaining how different domain works (financial, medical etc.)
 
 ==Bounded Contexts==
 There are three Bounded Context, that are equals to the ERP modules.
 This approach:
   * helps to model that is relevant to the specific context
   * supports focus on specific Domain Expert knowledge area
-  * avoids creating one big corporate model of Great Unification theory that is de'facto meaningless.
+  * avoids creating one big corporate model of Great Unification theory that is de facto meaningless.
 
 Modules are separated at the level of [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp pl.com.bottega.erp] package.
 
@@ -130,7 +130,7 @@ ERP model is simplified in sake of educational purpose. If You are developing su
 ----
 
 =Application Architecture=
-Looking at the [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map&q Visual Map] should be helpful in this moment. 
+Looking at the [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map&q Visual Map] should be helpful at this moment. 
 ==Two stacks of Layers== 
 Each module is build regarding the same architecture style.
 Three tier architecture:
@@ -138,23 +138,23 @@ Three tier architecture:
 * Application Server Tier
 * DB Tier
 
-Application Server Tier is designed in layered fashion (remember that Tier!=Layer). Layer are grouped in two stacks.
-One stack specialized in domain modeling and handling commands, second specialized in fast data serving and handling queries.
+Application Server Tier is designed in layered fashion (remember that Tier!=Layer). Layers are grouped in two stacks.
+One stack is specialized in domain modeling and handling commands, while second is specialized in fast data serving and handling queries.
 
-CqRS convention is to call one stack: Write Model  and second: Read Model. But we prefer call it *Business* and *Presentation* models because in Business model You bot write and read data (read data are just not visually presented, used only in processing).
+CqRS convention is to call one stack: Write Model  and second: Read Model. But we prefer call it *Business* and *Presentation* models because in Business model You both write and read data (read data are just not visually presented, used only in processing).
 
 There are Clients on the top of both stacks. Right now only WebApp client is implemented.
-Client Tier code located is here:
+Client Tier code is located here:
 http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fwebapp
 
 Server Tier code (Sales Module) is located here:
 http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fwebui
 
-Looking at the Server Tier Let's focus on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales Sales Module].
+Looking at the Server Tier, let's focus on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales Sales Module].
 
-application application logic (handlers or services, listeners, statefull objects)
+application logic (handlers or services, listeners, stateful objects)
 domain - domain model, building blocks
-infrastructure - technical stuff, repository impl, technical listeners
+infrastructure - technical stuff, repository implementation, technical listeners
 
 ===Presentation Stack===
 Presentation (read) model is simple. It's just a thin layer specialized in reading data that need to to presented somehow.
@@ -162,7 +162,7 @@ Presentation (read) model is simple. It's just a thin layer specialized in readi
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fpresentation pl.com.bottega.erp.sales.presentation] Package contains sample:
   * Queries - Search Criteria objects that specify querying parameters.
 Notice that [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/ProductSearchCriteria.java ProductSearchCriteria] class is designed in Fluent Interface style. From the client perspective criteria hides domain model properties (name, description) under abstract text.
-  * Data Transfer Objects - carries data. They are created per Use Case/User Story or per View. In complex systems they are much better transferring classes than JPA entities because they don't break encapsulation on the model level and contains optimized data that are needed in particular context.
+  * Data Transfer Objects - carries data. They are created per Use Case/User Story or per View. In complex systems they are much better transferring classes than JPA entities because they don't break encapsulation on the model level and contain optimized data that are needed in particular context.
   * Finders - simple services that perform search based on Search Criteria.
 
 In [PART II] we will discuss:
@@ -170,7 +170,7 @@ In [PART II] we will discuss:
   * Techniques of optimization (Special JPA Syntax, pure SQL, Updating by Events, Materialized Views)
 
 ===Business Stack===
-Business tack layers are described in details in the following sections:
+Business stack layers are described in detail in the following sections:
 [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Layer Application Layer]
 [DomainDrivenDesignBusinessDeveloperMentalModel#Domain_Layer Domain Layer]
 [CqRS_Part_II Infrastructure]
@@ -184,17 +184,17 @@ While reading the sample code You should notice multiple custom annotations, use
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java Commands]
 
 Annotations are used to achieve three goals:
-  * Tag code - visual analyzer (similar to "scaleable map") will be reading them and presenting design graph
-  * Some custom annotations are annotated by Spring's annotation. In effects classes annotated by custom annotations gains Spring features (transactions and security). Using custom annotations decouples and globalizes Spring features.
+  * Tag code - visual analyzer (similar to "scalable map") will be reading them and presenting design graph
+  * Some custom annotations are annotated by Spring's annotation. In effect classes annotated by custom annotations gain Spring features (transactions and security). Using custom annotations decouples and globalizes Spring features.
   * CqRS engine (Event, Sagas) rely on some custom annotations.
 
-All custom annotations will be described in details in later sections of this document.
+All custom annotations will be described in detail in later sections of this document.
 
 ----
 ==Inversion of Control techniques==
-Application architecture of this sample rely in Inversion of Control principle - famous Hollywood rule: "Don't call Us, we will call You".
+Application architecture of this sample rely on Inversion of Control principle - famous Hollywood rule: "Don't call Us, we will call You".
 
-It is important to notice that Spring can be easily removed and all it's features can be implemented on Your own.
+It is important to notice that Spring can be easily removed and all of its features can be implemented on Your own.
 
 *Spring features are encapsulated by custom annotations and interfaces.
 Implementing IoC features on Your own is described in PART II.*
@@ -216,7 +216,7 @@ public class ChangeCustomerStatusCommandHandler implements CommandHandler<Change
 }
 </code>
 
-We decided not to inject automatically dependencies to Aggregates. It could be done using Spring's @Configurable but we wanted to keep example magic clear. This trade-off makes easy rewrite our Leaven to different platform (Seam, EJB, etc.) 
+We decided not to inject dependencies to Aggregates automatically. It could be done using Spring's @Configurable, but we wanted to keep example magic clear. This trade-off makes rewriting our Leaven to different platform easy (Seam, EJB, etc.) 
 
 Manual Aggregate injection is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Aggregate_Dependency_Injection Aggregate Dependency Injection] chapter.
 
@@ -236,13 +236,13 @@ Event engine contains:
 So Events Engine can be easily enhanced to support asynchronous processing secured by persistent queue.
 
 ===Aspect Oriented Programming===
-AOP is the strongest IoC technique used int the sample to provide:
+AOP is the strongest IoC technique used in the sample to provide:
   * transactions
   * security
 
-You can use Command style or classic Application Service style. Simply use [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationService.java ApplicationService] or [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandler] annotation - they both introduces Spring Security and Transaction Management features.
+You can use Command style or classic Application Service style. Simply use [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationService.java ApplicationService] or [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandler] annotation - they both introduce Spring Security and Transaction Management features.
 
-But implementing own "AOP" *is trivial* when using Command style. Simply edit [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class and add own features before and after running a handler.
+But implementing Your own "AOP" *is trivial* when using Command style. Simply edit [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class and add Your own features before and after running a handler.
 
 
 ----
@@ -250,14 +250,14 @@ But implementing own "AOP" *is trivial* when using Command style. Simply edit [h
 
 =Application Layer= 
 
-Application logic orchestrates scenario for "domain actors" who lives in lower layer. Application logic also takes care for security and transactions. Application logic can fire application events.
+Application logic orchestrates scenario for "domain actors", who live in lower layer. Application logic also takes care for security and transactions. Application logic can fire application events.
  
 We will discuss all sample Application Layer artifacts focusing on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fapplication Sales Module].
 
 ==Commands/Services== 
 Leaven supports two styles of implementing Application Logic.
 Commands and App Services are technically totally different, but mentally can be considered as equivalent.
-Commands are powerful because it's relatively easy to introduce own "AOP" programming model in clean and no-magic way. Using Spring you can achieve the same feature, but in transparent, magic way. So if magic scares You or You like to have full control - choose Commands style.
+Commands are powerful, because it's relatively easy to introduce own "AOP" programming model in clean and no-magic way. Using Spring, you can achieve the same feature, but in a transparent, magic way. So if magic scares You or You like to have full control - choose Commands style.
 
 ===Application Services===
 At first let's look at the "service" style approach.
@@ -275,7 +275,7 @@ public class PurchaseApplicationService {
 Characteristic:
   * Repository and Factory injection
   * ApplicationEvent Publisher injection
-  * SystemUser - statefull (session scoped) application object injection
+  * SystemUser - stateful (session scoped) application object injection
   * transactions and security features supported by Spring using custom [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationService.java ApplicationService] annotation
   * Service methods realizes parts of User Story/Use Case
 
@@ -286,7 +286,7 @@ Typical method implementation:
   * Save Aggregates in Repository
 
 ===Commands and CommandHandlers===
-Alternative to the class "service" style is a "command" style.
+The "command" style is an alternative to the class "service" style.
 You always implement a pair - command and it's handler, for example:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/SubmitOrderCommand.java SubmitOrderCommand]
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/SubmitOrderCommandHandler.java SubmitOrderCommandHandler]
@@ -296,17 +296,17 @@ or
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/CreateOrderCommandHandler.java CreateOrderCommandHandler]
 
 
-Conceptually two classes can be considered as a [http://en.wikipedia.org/wiki/Command_pattern Command Design Pattern]. In our case commands are sent from different Tier, so they can not contain any logic due the security and coupling reason. Therefore Command Design pattern is split to:
+Conceptually two classes can be considered as a [http://en.wikipedia.org/wiki/Command_pattern Command Design Pattern]. In our case, commands are sent from different Tier, so they can not contain any logic due the security and coupling reason. Therefore Command Design pattern is split into:
   * Command that just caries input data (kind of DTO)
   * CommandHandler that contains logic.
 
 ====Command====
 Creating command is simple:
-  * usually implement Serializable tagging interface because command may be send form remote client
+  * usually implement Serializable tagging interface, because command may be send form remote client
   * add fields that holds command parameters
   * You *can* add [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/Command.java @Command] annotation if You want to express following intentions:
-    * Client is not interested in immediate result - command can be handled in asynchronous way. This is just a suggestion for a Server - it can support asynch. invocations. Use this mode when You want to optimize response time
-    * Command is unique and sending it again is considered as a mistake (ex. nervous user clicking many times). Server stores some amount of commands (annotated as unique) that were ran, therefore it can optimize anti-flood mechanism. *This feature is just in sake of optimization. You must implement unique checking on the domain level* (ex. Order can not be accepted twice). Unique mechanism rely on equals method.
+    * Client is not interested in immediate result - command can be handled in an asynchronous way. This is just a suggestion for a Server - it can support asynchronous invocations. Use this mode when You want to optimize response time
+    * Command is unique and sending it again is considered a mistake (e.g. nervous user clicking many times). Server stores some amount of commands (annotated as unique) that were ran, therefore it can optimize anti-flood mechanism. *This feature is just in sake of optimization. You must implement unique checking on the domain level* (ex. Order can not be accepted twice). Unique mechanism rely on equals method.
     * Unique command can specify how long it should be considered as unique.
 
 <code language="java">
@@ -329,8 +329,8 @@ public class CreateOrderCommand {
 Creating a handler for a command is also pretty straightforward.
   * implement [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandler.java CommandHandler] interface. This interface is generic, so You must specify:
     * class of the Command that is handled - CqRS engine matches Command and Handlers by this parameter
-    * result type - handling command may return something to the caller. Of course handler that handle asynchronous commands should return java.lang.Void (not the void keyword).
-  * You *can* annotate handler with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandlerAnnotation] if You wan to rely on automatic  Command2Handler matching. This annotation also introduces Spring features (Dependency Injection, Security and Transactions) to the handler so You don't need to worry about them.
+    * result type - handling command may return something to the caller. Naturally, handler that handle asynchronous commands should return java.lang.Void (not the void keyword).
+  * You *can* annotate handler with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/handler/CommandHandlerAnnotation.java CommandHandlerAnnotation] if You wan to rely on automatic  Command2Handler matching. This annotation also introduces Spring features (Dependency Injection, Security and Transactions) to the handler, so You don't need to worry about them.
 
 Now implement logic just the same way as in classic [DomainDrivenDesignBusinessDeveloperMentalModel#Application_Services Application Service]: inject required dependencies and orchestrate part of the Use Case/user Story scenario in handle method based on parameters from the Command. You can also fire an Application Event.
 
@@ -351,10 +351,10 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
 ==Application Event==
 Application Events are characteristic to the specific Use Case/User Story. They model application (not domain) behavior.
 
-To fire such an event simply:
+To fire such event, simply:
   * inject [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/ApplicationEventPublisher.java ApplicationEventPublisher] to the Command Handler or Application Service
   * create event using any class
-    * event usually carries some valuable ingormation
+    * event usually carries some valuable information
     * event class *can* be annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationEvent.java ApplicationEvent] annotations - consider this as a meta-data that will be analyzed by some cools tools we plan to publish
 
 <code language="java>
@@ -398,7 +398,7 @@ public class ProductAddedToOrderEvent implements Serializable{
 }
 </code>
 
-Than, [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java one of the listeners] stores data about this fact in "spy model" used by the marketing division to do something evil.
+Then, [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java one of the listeners] stores data about this fact in "spy model" used by the marketing division to do something evil.
 
 <code language="java">
 @EventListeners
@@ -420,30 +420,30 @@ Now we will discuss [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn
 One way to integrate modules (which are equal to Bounded Context in this Sample) is to call Application API of the another module.
 This approach introduces coupling between Modules.
 
-If You want to reduce coupling You can introduce events - one of the IoC techniques.
-In this case:
+If You want to reduce coupling, You can introduce events - one of the IoC techniques.
+In that case:
   * one module fires Event (rather Domain Event, but Application Event is also possible)
   * other modules can listen to this event - each module can register many listeners per event.
 
 Introducing events results in:
-  * lose coupling (which is always good)
-  * possibility to react in the asynchronous way
+  * loose coupling (which is always good)
+  * possibility to react in an asynchronous way
   * potability to introduce plugin oriented architecture - if You want to create flexible platform
 
 ===Bounded Context===
 Consider class example by Udi Dahan.
 There is a [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fcrm CRM Module] which contains a [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/crm/domain/Customer.java Customer Aggregate]. 
 
-CRM module is about managing clients, this is completely differed Bounded Context than [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales sales Module].
+CRM module is about managing clients, this Bounded Context is completely different than [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales sales Module].
 
-CRM Client can have status changed. Requirement is:
- "when client status is changed to VIP than calculate x% of the rebate to all not-approved-yet orders"
+CRM Client can have its status changed. Requirement is:
+ "when client status is changed to VIP, then calculate x% of the rebate to all not-approved-yet orders"
 Orders and Rebates are Sales Bounded Context concepts.
-If we would perform this operation in the CRM module than we would break context boundary. CRM module would know about Sales details. probably everyone have worked on a systems we such a module-spaghetti was developed.
+If we would perform this operation in the CRM module than we would break context boundary. CRM module would know about Sales details. Probably everyone have worked on a systems we such a module-spaghetti was developed.
 
 ===Listener===
 
-In this sample we want to avoid this kind of problems. Therefore CRM Client does it's own logic, than fires Event [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/crm/domain/events/CustomerStatusChangedEvent.java CustomerStatusChangedEvent]. *This is just a statement about the fact that took place*.
+In this sample, we want to avoid this kind of problems. Therefore CRM Client does it's own logic, than fires Event [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/crm/domain/events/CustomerStatusChangedEvent.java CustomerStatusChangedEvent]. *This is just a statement about the fact that took place*.
 
 <code language="java">
 @Entity
@@ -468,7 +468,7 @@ public class Customer extends BaseAggregateRoot{
 }
 </code>
 
-System can react in many ways on that statement. For example Sales module can register [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/listeners/CustomerStatusChangedListener.java CustomerStatusChangedListener] to perform *additional business logic*.
+System can react in many ways on that statement. For example, Sales module can register [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/listeners/CustomerStatusChangedListener.java CustomerStatusChangedListener] to perform *additional business logic*.
 
 <code language="java">
 @EventListeners
@@ -485,14 +485,14 @@ public class CustomerStatusChangedListener{
 </code>
 
 ====Indicative mode====
-Notice that Events are expressed in indicative model. Something has happen and we can not reject this fact. We can only perform additional processing.
+Notice that Events are expressed in an indicative model. Something has happen and we can not reject this fact. We can only perform additional processing.
 
-This is opposite to the Commands, that are expressed in imperative mode and we can always reject a command.
+This is opposite to the Commands, which are expressed in imperative mode and we can always reject a command.
 
 ====Asynchronous Event Processing====
 Event listeners are just methods annotated with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/infrastructure/events/EventListener.java EventListener]
 
-You can specify asynchronous attribute to express intention that this logic can be calculated later.
+You can specify asynchronous attribute to express an intention so that this logic can be calculated later.
 *Always think if additional logic must be performed immediately?* Maybe not, than You can optimize request processing time.
 
 <code language="java">
@@ -506,13 +506,13 @@ public class OrderSubmittedListener {
 }
 </code>
 
-Notice that in case of events, listener is the artifact that express asynch intention. It is opposite to the Commands, where commands express this intention and handler has nothing to say abut this matter.
+Notice that in case of events, listener is the artifact that express asynchronous intention. It is opposite to the Commands, where commands express this intention and handler has nothing to say in this matter.
 
 ====Application Listener as a Context Mapper and Anti-corruption Layer====
-You can consider Application Event Listeners as a Context Mapers because them map concepts from different Bounded Contexts.
+You can consider Application Event Listeners as a Context Mappers, because the map concepts from different Bounded Contexts.
 If Your Listeners are listening to the events from the legacy systems, they can be also considered as Anti-corruption Layer artifacts.
 
-===Impl===
+===Implementation===
 Application Level Event Listener can be implemented in two styles:
   * Perform logic using injected dependencies
   * Create a Command and run it via injected [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java Run Environment]
@@ -522,26 +522,26 @@ Application Level Event Listener can be implemented in two styles:
 
 Events are very powerful IoC technique, but has some limitations. You can use Event when dealing with dependent facts that took place in Your system. You mentally treat each Event and it's Listeners as an independent objects with no deterministic processing sequence.
 
-What if sequence order matters? What of some process need to be "pushed" by many events?
+What if sequence order matters? What if some process need to be "pushed" by many events?
 
 You need to introduce a Saga mental model to orchestrate complex processes that contains multi-events sequence.
 
 Sagas are just mentioned here to make layer description complete. Detailed description of Saga model is presented at the end of this document.
 ----
-==Statefull Application Objects==
+==Stateful Application Objects==
 Sometimes You may need to model Application State.
 
 Notice that:
   * state of the Domain Model should be persisted
   * state of the Client Tier is a different aspect
 
-We are talking about Application Layer state. If You need to introduce state think if You are sure about that. Than think about persisting this model or using global, distributed cache. But if You decide to use Session as a storage mechanism than You have easy support. Just annotate classes with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationStatefullComponent.java ApplicationStatefullComponent] and You are done.
+We are talking about Application Layer state. If You need to introduce state, think if You are sure about that. Next, think about persisting this model or using global, distributed cache. But if You decide to use Session as a storage mechanism, then You have easy support. Just annotate classes with [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/annotation/ApplicationStatefullComponent.java ApplicationStatefullComponent] and You are done.
 
-Spring will store objects of this class in Http Session. Spring also let You to inject this objects to Singleton Scoped objects using magic trick based on cunning proxy. For example our CommandHandlers or ApplicationServices are stateless singletons in sake of memory optimization.
+Spring will store objects of this class in Http Session. Spring also lets You inject this objects into Singleton Scoped objects using magic trick based on cunning proxy. For example, our CommandHandlers or ApplicationServices are stateless singletons in sake of memory optimization.
 
-Sample contains following Statefull Application Components:
-  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/SystemUser.java SystemUser] - common object that represents user working with the system. You can inject this objects into CommandHandlers or ApplicationServices if You need to know who is performing operation. SystemUser is a application concept that abstract form domain entity. This object contains just ID of the domain entity therefore concept of domain user does not leak into whole code.
-  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/ClientBasket.java ClientBasket] is a metaphor of a shopping cart. In this sample We assume that Shopping cart is not a domain artifact nor client specific feature. Assumption is that this metaphor models application concept (but in some systems it may be a very important domain concept or maybe just some feature of some minor client app.).
+Sample contains following Stateful Application Components:
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/application/SystemUser.java SystemUser] - common object representing user working with the system. You can inject this objects into CommandHandlers or ApplicationServices, if You need to know who is performing operation. SystemUser is a application concept that abstract form domain entity. This object contains just ID of the domain entity, therefore concept of domain user does not leak into the whole code.
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/ClientBasket.java ClientBasket] is a metaphor of a shopping cart. In this sample, we assume that Shopping cart is not a domain artifact, nor client specific feature. Assumption is that this metaphor models application concept (but in some systems it may be a very important domain concept, or maybe just some feature of some minor client app).
 
 <code language="java">
 @ApplicationStatefullComponent
@@ -572,22 +572,22 @@ public class ClientBasket implements Serializable{
 ----
 
 =Domain Layer=
-Now let's focus on the Sales Bounded Context and it's [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain Domain Layer].
+Now let's focus on the Sales Bounded Context and its [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain Domain Layer].
 
 We will go through all building blocks discussing design decisions and technical solutions.
 ==Entity==
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/Product.java Product] is a sample entity.
 
 Worth to notice:
-  * In this case we don't need setters (technically JPA can work on private fields via refelction which is even faster that calling methods)
-  * In general entity contains business methods - but on the other hand do not spread all business code on entities. [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderLine.java Order Line] is a sample Entity that performs business logic - calculates cost based on rebate policy
-  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainEntity.java DomainEntity] is just a tagging annotation that will be used by cool visualisation tools we plan to publish
+  * In this case, we don't need setters (technically JPA can work on private fields via reflection which is even faster that calling methods)
+  * In general, entity contains business methods - but on the other hand do not spread all business code on entities. [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/OrderLine.java Order Line] is a sample Entity that performs business logic - calculates cost based on rebate policy
+  * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainEntity.java DomainEntity] is just a tagging annotation that will be used by cool visualization tools we plan to publish
 
 ===Base class===
 You *can* consider extending [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseEntity.java BaseEntity].
-*If You don't want to couple Your model with Leaven classes than simply rename and repackage this class*.
+*If You don't want to couple Your model with Leaven classes, then simply rename and repackage this class*.
 
-Remember that inheritance ins not just about pulling code up in the hierarchy! BaseEntity class is used as a polymorphic interface (in the meaning of "api", not java keyword) in the repositories, so we are in tune with [http://en.wikipedia.org/wiki/Liskov_substitution_principle Liskov Substitution Principle]. Therefore inheritance is justified.
+Remember that inheritance is not just about pulling code up in the hierarchy! BaseEntity class is used as a polymorphic interface (in the meaning of "api", not java keyword) in the repositories, so we are in tune with [http://en.wikipedia.org/wiki/Liskov_substitution_principle Liskov Substitution Principle]. Therefore inheritance is justified.
 
 Features of BaseEntity:
   * Optimistic Concurrency - @Version annotation
@@ -611,10 +611,10 @@ public class Order extends BaseAggregateRoot {
 </code>
 ===Encapsulation===
 Notice that:
-  * Aggregates does not allow to modify all their properties via setters. It may have sense only in some cases.
+  * Aggregates does not allow to modify all their properties via setters. It may have sense in some cases only.
   * Aggregate state is changed via business methods
   * Some business operations may be not valid in some state (ex. Order.submit()) - therefore they throw domain [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Ferrors errors].
-  * Not all getters makes sense.
+  * Not all getters make sense.
 
 <code language="java">
 
@@ -636,7 +636,7 @@ public class Invoice extends BaseAggregateRoot {
 }
 </code>
 ====Inner model protection====
-Notice that Order Aggregate method: addProduct takes as an argument Product Entity, than wraps it with OrderLine. OrderLine is Aggregate's inner implementation detail.
+Notice that Order Aggregate method: addProduct takes Product Entity as an argument, then wraps it with OrderLine. OrderLine is Aggregate's inner implementation detail.
 
 <code language="java">
 public void addProduct(Product product, int quantity) {
@@ -678,7 +678,7 @@ Aggregate is an entity from the JPA perspective. JPA can operate on private fiel
 ====Lazy Loading====
 You may consider Eager loading of some aggregated objects. Some aggregated objects are always needed.
 
-On the other hand Lazy loading does not hurt with <i>n+1 select problem</i> because in Business Model we usually load just couple on aggregates, so n is relatively small.
+On the other hand, Lazy loading does not hurt with <i>n+1 select problem</i>, because in Business Model we usually load just couple on aggregates, so n is relatively small.
 
 <code language="java">
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -686,21 +686,21 @@ On the other hand Lazy loading does not hurt with <i>n+1 select problem</i> beca
 </code>
 
 ====Cascade Operations====
-Cascade operations makes sense to most aggregated objects, so You must always consider adding this attribute.
+Cascade operations make sense to most aggregated objects, so You must always consider adding this attribute.
 
 ===Base classes===
 You *may* consider extending [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseAggregateRoot.java BaseAggregateRoot] class.
 
-*If You don't want to couple Your model with Leaven classes than simply rename and repackage this class*.
+*If You don't want to couple Your model with Leaven classes, then simply rename and repackage this class*.
 
 BaseAggregateRoot is based on BaseEntity - it adds common future, an injected [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/DomainEventPublisher.java DomainEventPublisher].
 
 ===Aggregate Dependency Injection===
-Aggregates are main work-horses of the domain. Therefore they need to delegate some work to dependencies (Domain Services, Policies, Specifications or DomainEventPublisher).
+Aggregates are the main work-horses of the domain. Therefore, they need to delegate some work to dependencies (Domain Services, Policies, Specifications or DomainEventPublisher).
 
 Aggregates *should not* create dependencies by their own. This simply kills testability.
 
-We decided to perform injection manually in Factories and Repositories (described later). Factories and Repostories are the only places where Aggregate can be born, You should not call an Aggregate constructor. Therefore Factories and Repositories performs injection before they return an Aggregate.
+We decided to perform injection manually in Factories and Repositories (described later). Factories and Repostories are the only places where Aggregate can be born, You should not call an Aggregate constructor. Therefore, Factories and Repositories performs injection before they return an Aggregate.
 
 Notice how[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseAggregateRoot.java BaseAggregateRoot] class supports injection. setEventPubslisher can be called only once - in Repo or Factory. Calling it inside Application Layer will fail.
 
@@ -722,14 +722,14 @@ public abstract class BaseAggregateRoot extends BaseEntity {
 There are other ways to do this:
   * No setter, just custom injection annotation checked in Repo and factory - a little dirty in our opinion
   * @Configurable annotation - we do not want do use any magic in sake of architecture style portability. Besides, sometime we need to calculate (perform some business logic) to determine a Policy for example
-  * Pass needed dependencies as Aggregate methods' parameters. Sometimes can be artificial, but sometimes makes sense. For example when dependency is need only in one method of the Aggregate. But in other hand - as we discuss later - very specific and used once Aggregate Methods should become a Domain Service.
+  * Pass needed dependencies as Aggregate methods' parameters. Sometimes can be artificial, but sometimes makes sense. For example, when dependency is needed only in one method of the Aggregate. But on the other hand - as we discuss later - very specific and used once Aggregate Methods should become a Domain Service.
 ----
 ==Value Objects==
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fsharedcernel Shared Kernel] contains two examples of Value Objects: Money and Percentage. Both encapsulates representation of the value they protect.
-Therefore You can chane money calculations to ultra-fast integers where fractions are handled with bytes shifting:)
+Therefore You can change money calculations to ultra-fast integers where fractions are handled with bytes shifting:)
 Moreover Money encapsulates concept of the Currency. You can also add concept of currency ration date.
 ===Immutability===
-VOs are immutable, so  You can pass them to another Aggregate without worrying about Side Effects. For example prices for OrderedProducts are used by InvoicingService to generate Invoice. Life is simple with immutability.
+VOs are immutable, so  You can pass them to another Aggregate without worrying about Side Effects. For example, prices for OrderedProducts are used by InvoicingService to generate Invoice. Life is simple with immutability.
 
 <code language="java">
 public Money multiplyBy(BigDecimal multiplier) {
@@ -742,14 +742,14 @@ public Money multiplyBy(BigDecimal multiplier) {
 
 
 ===Make explicit what is implicit===
-VOs are little classes that makes difference.
+VOs are little classes that make a difference.
 Without VOs Your code suffers from Primitive Obsession Code Smell.
 ===Increase expression power===
-Value objects are small artifacts but extremely increase power of domain expression. They enrich Ubiquitous Languages and helps understand details of the model. 
+Value objects are small artifacts, but extremely increase power of domain expression. They enrich Ubiquitous Languages and help understand details of the model. 
 ===JPA aspects=== 
 Using VOs is very "cheap" from the perspective of JPA. You don't need any additional tables. Simple map them as @Embededable classes and use in Entitues/Aggregates ad @Embeded.
 
-If You have more than one embeded VO in Entity You must use additional annotations:
+If You have more than one embedded VO in Entity, You must use additional annotations:
 
 <code language="java">
 @Embedded
@@ -765,7 +765,7 @@ private Money net;
 private Money gros;
 </code>
 
-Alternatively You can provide special Naming Strategy in Hibenrate.
+Alternatively, You can provide special Naming Strategy in Hibenrate.
 
 ----
 ==Factory==
@@ -828,7 +828,7 @@ public class OrderFactory {
     @Inject
     private InjectorHelper injector;
 </code>
-For example OrderFactory adds gratis products to newly created order. Knowledge about gratis comes from DomainService or Repository.
+For example, OrderFactory adds gratis products to newly created order. Knowledge about gratis comes from DomainService or Repository.
 
 Another example is RebatePolictFactory in OrderFactory to determine rebate.
 
@@ -856,14 +856,14 @@ In sample code OrderRepository is responsible for injecting RebatePolicy.
 }
 </code>
 
-There are some very common dependencies, like DomainEventsPublisher that are injected by special [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/support/InjectorHelper.java InjectorHelper].
+There are some very common dependencies, like DomainEventsPublisher, which are injected by special [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/support/InjectorHelper.java InjectorHelper].
  
 ===Part of business logic (Assembling objects)===
 
 Factory is responsible for some domain logic:
   * calculates dependencies - Rebate Policy
-  * add gratis producst
-Therefore it is a First Class Citizen in DDD Buildng Blocks World.
+  * add gratis product
+Therefore it is a First Class Citizen in DDD Building Blocks World.
 
 Read great [http://misko.hevery.com/2008/08/21/where-have-all-the-singletons-gone post] by Miško Hevery that explains three faces of the coupling:
   * collaboration
@@ -875,12 +875,12 @@ Factories lighten application logic layer by taking construction coupling.
 
 ===Increase testability=== 
 
-If You construct Aggregate dependencies in factories and than inject them to the Aggregate You gain another feature - higher testability. Thanks factories, Aggregates don't have to use new operator (except inner data structures). This means You can easily mock dependencies when unit testing.
+If You construct Aggregate dependencies in factories and then inject them to the Aggregate, You gain another feature - higher testability. Thanks to factories, Aggregates don't have to use new operator (except inner data structures). This means You can easily mock dependencies when unit testing.
 
 ----
 ==Repository==
 
-Project contains few sample Repositories, that are implemented in the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Finfrastructure%2Frepositories%2Fjpa Infrastructure Layer].
+Project contains few sample Repositories, which are implemented in the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Finfrastructure%2Frepositories%2Fjpa Infrastructure Layer].
 
 Repository is an abstraction of the Aggregate/Entity persistence.
 <code language="java">
@@ -904,27 +904,27 @@ public class JpaOrderRepository extends GenericJpaRepositoryForBaseEntity<Order>
 </code>
 
 
-In general Aggregate parts may origin form different sources.
+In general, Aggregate parts may origin form different sources.
 
 
-Repository manages aggregate, which means it mus load and save. Don'p pollute repositories with dozens of search method - that's the responsibility of the second stack - a Presentation Stack.
+Repository manages aggregate, which means it must load and save. Don't pollute repositories with dozens of search method - that's the responsibility of the second stack - a Presentation Stack.
 
-Of course repository will contain business search methods, like: find draft Orders of the given Client, because we want to apply rebate for them.
+Naturally, repository will contain business search methods, like: find draft Orders of the given Client, because we want to apply rebate for them.
 
 ===Responsibilities===
 
-In general Repository is also responsible for stuff that Factory does: a Dependency Injection.
+In general, Repository is also responsible for stuff that Factory does: a Dependency Injection.
 
 ===Base Classes=== 
 
 There are base classes for both Entity and Aggregate repositories in [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Frepo%2Fjpa common DDD goodies].
 
-Impl is based on the famous [http://www.ibm.com/developerworks/java/library/j-genericdao/index.html Generic DAO] by Per Mellqvist.
+Implementation is based on the famous [http://www.ibm.com/developerworks/java/library/j-genericdao/index.html Generic DAO] by Per Mellqvist.
 
 ----
 ==Domain Services==
 Sometimes it is not natural to just stick some method to the Aggregate.
-Moreover we don't want to our Aggregates become a God Classes. 8k lines of code monster that knows everything and knows everyone.
+Moreover, we don't want to our Aggregates become a God Classes, like 8k lines of code monster that knows everything and knows everyone.
 
 There is a [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/InvoicingService.java InvoicingService] sample Domain Service that handles creating Invoices.
 
@@ -942,7 +942,7 @@ public class InvoicingService {
 </code>
 We certainly don't want to add this feature to the Order Aggregate.
 
-Domain Service is annotated by [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainService.java DomainService] annotation that introduces Spring Bean features. therefore our Domain Service can be injected and we can inject dependencies to the service (ex. Repositories).
+Domain Service is annotated by [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/annotations/DomainService.java DomainService] annotation that introduces Spring Bean features. Therefore our Domain Service can be injected and we can inject dependencies to the service (ex. Repositories).
 
 As we can see, InvoicingService looks at the Order Aggregate through a ValueObject "projection" mentioned earlier.
 
@@ -953,18 +953,18 @@ InvoicingService can be considered as a Transformer role class, that transforms 
 
 ===When to introduce: simple rule of the thumb=== 
 
-Simple rule of the thumb for beginners. You probably wont miss much if create Domain Services instead of Aggregate methods for operations that are used on one Use Case/user Story.
+Simple rule of the thumb for beginners. You probably wont miss much, if create Domain Services instead of Aggregate methods for operations that are used on one Use Case/user Story.
 
-It it a procedural way of thinking but keeps Aggregates coherent and lousily coupled.
+It it a procedural way of thinking, but keeps Aggregates coherent and loosely coupled.
 
-That's just a rule for the newbies, so it intuition tells when to break it. 
+That's just a rule for the newbies, so it's intuition that tells when to break it. 
 
 ----
 ==Policy==
 
 Technically Policy is just an old, good [http://en.wikipedia.org/wiki/Strategy_design_pattern Strategy Design Pattern].
 
-In our sample project we have two behaviors that varies a lot:
+In our sample project, we have two behaviors that vary a lot:
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/RebatePolicy.java Rebate Counting] - depends on client, product, whole order, history etc
   * [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/TaxPolicy.java Tax Counting] - depends on client's country, seller country etc
 
@@ -1006,7 +1006,7 @@ public class RebatePolicyFactory {
 
 ===Functional style===
 
-Strategy design pattern semantically is similar to the functional style programming. Concept is the same: an operation is as First Class Citizen. In OO language FCC is an objects. So we simply pack operations into objects with only one method which is a signal to the object saying "execute yourself":
+Strategy design pattern is semantically similar to the functional style programming. Concept is the same: an operation is as First Class Citizen. In OO language, FCC is an objects. So we simply pack operations into objects with only one method which is a signal to the object saying "execute yourself":
 
 <code language="java">
 @DomainPolicy
@@ -1019,7 +1019,7 @@ public interface RebatePolicy {
 
 ===Injecting=== 
 
-In our example Order Policy is injected to the order Aggregate by the Order Repository and Order Factory.
+In our example, Order Policy is injected to the order Aggregate by the Order Repository and Order Factory.
 
 <code language="java">
 @Entity
@@ -1059,7 +1059,7 @@ public class InvoicingService {
 ==Specification==
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/application/commands/handlers/SubmitOrderCommandHandler.java SubmitOrderCommandHandler] attempts to submit Order and generate Invoice.
 
-But there are complex constrains that must be met before Order can be submitted. If you struggle to model constrains that are build by many criterion which are arranged in logic tree than You may consider using a [http://en.wikipedia.org/wiki/Specification_pattern Specification Pattern]. 
+But there are complex constrains, that must be met before Order can be submitted. If you struggle to model constrains that are build by many criterion which are arranged in logic tree, then You may consider using a [http://en.wikipedia.org/wiki/Specification_pattern Specification Pattern]. 
 
 Sample contains [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Fspecification%2Forder Order Specifications] based on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fsharedcernel%2Fspecification library generic specification]. 
 
@@ -1088,11 +1088,11 @@ private Specification<Order> generateSpecification(SystemUser systemUser) {
 </code>
 ===Further extension===
 
-If needed You may extend Specification so that it collects errors.
+If needed, You may extend Specification so that it collects errors.
 
 ----
 ==Domain Events==
-In one of the previous chapters we have discussed Application Events. technically Domain Events are the same. Difference is one the mental level - Domain Events model facts that takes place in domain model.
+In one of the previous chapters, we have discussed Application Events. Technically Domain Events are the same. Difference is one the mental level - Domain Events model facts that takes place in domain model.
 
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/BaseAggregateRoot.java BaseAggregateRoot] contains [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/ddd/domain/DomainEventPublisher.java DomainEventPublisher] object which is injected via Repo or Factory. 
 
@@ -1140,9 +1140,9 @@ Sample: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-s
 ===Optimization===
 Some listeners may be executed in asynchronous way which reduces request processing time.
 
-Sample: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/infrastructure/events/listeners/domain/OrderSubmittedListener.java OrderSubmittedListener] that fakes sending mail can be annotated to work in asynch mode. 
+Sample: [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/infrastructure/events/listeners/domain/OrderSubmittedListener.java OrderSubmittedListener] that fakes sending mail can be annotated to work in asynchronous mode. 
 ===Plugin oriented architecture===
-Listeners may introduce new features without need to touch core code.
+Listeners may introduce new features without the need to touch core code.
 ===Updating read model===
 Domain Events can be used to update [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fpresentation Presentation Model].
 
@@ -1151,13 +1151,13 @@ You can use this technique when presentation model is implemented as a separate,
 In [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/presentation/listeners/ProductEventsListener.java this sample] Listener works on Application Event, but idea is the same.
 
 ===Event Sourcing===
-Domain Events may be stored as a behavioral model. Loading Aggregate loads all it'e events and executes them on a given aggregate.
+Domain Events may be stored as a behavioral model. Loading Aggregate loads all its events and executes them on a given aggregate.
 
 Stored events can be "projected" to many "perspectives".
 In this case Presentation model must be updated via updating listeners discussed in previous section.
 
 ===Complex Event Processing===
-You can introduce Event Oriented approach when system/organisation need to process event streams and react on event patterns that emerge in time/quantity window.
+You can introduce Event Oriented approach when system/organization need to process event streams and react on event patterns that emerge in time/quantity window.
 ----
 ----
 =Saga=
@@ -1170,7 +1170,7 @@ Saga has persistent state and listen to many events.
 
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Finfrastructure%2Fsagas Saga Engine] is described in details in [PART II]. General idea is:
   * Engine catches event
-  * Engines finds Loaders that are interested in this event
+  * Engines find Loaders that are interested in this event
   * Engine asks found Loaders to load/create persistent Mementos
   * Engine feeds relevant Sagas with Mementos
   * Engine calls Saga event handlers
@@ -1180,10 +1180,10 @@ Saga has persistent state and listen to many events.
 
 Above scenario is a technical point of view, but it is good to understand it at this level. Business Developer does not have to implement technical steps, they are provided by the Engine. Business 
 
-Developers focuses on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fsagas Saga API] and following domain artifacts:
+Developers focus on the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fsagas Saga API] and following domain artifacts:
 
 ===Logic===
-Create class that implements Saga logic. In this class we focus only on business logic, don't have to think about engine.
+Create class that implements Saga logic. In this class we focus only on business logic, we don't have to think about engine.
 Sample:
 
 Extends base class and use API Annotation.
@@ -1204,9 +1204,9 @@ TODO
 
 ===Loader===
 
-Saga loader focuses on funding right memento for Saga Logic based on event. In general finding Memento may rely on different parameters of different events. For each event instance there may be many matching finders, therefore many mementos, so one event instance can push many sagas.
+Saga loader focuses on funding right memento for Saga Logic based on event. In general finding Memento may rely on different parameters of different events. For each event instance, there may be many matching finders, therefore many mementos, so one event instance can push many sagas.
 
 TODO
 
 ==Saga makes explicit what is implicit==
-Sage models very complex processes. Modeling them instead of trying to pretend that they are not so complex is essential for chaos management in the model and code.
+Saga models very complex processes. Modeling them, instead of trying to pretend that they are not so complex, is essential for chaos management in the model and code.
