@@ -130,13 +130,13 @@ ERP model is simplified in sake of educational purpose. If You are developing su
 ----
 
 =Application Architecture=
-Looking at the [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map&q Visual Map] should be helpful at this moment. 
+Looking at the [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map Visual Map] should be helpful at this moment. 
 ==Two stacks of Layers== 
 Each module is build regarding the same architecture style.
 Three tier architecture:
-* Client Tier
-* Application Server Tier
-* DB Tier
+  * Client Tier
+  * Application Server Tier
+  * DB Tier
 
 Application Server Tier is designed in layered fashion (remember that Tier!=Layer). Layers are grouped in two stacks.
 One stack is specialized in domain modeling and handling commands, while second is specialized in fast data serving and handling queries.
