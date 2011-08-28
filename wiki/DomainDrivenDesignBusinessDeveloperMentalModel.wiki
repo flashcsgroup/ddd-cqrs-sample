@@ -12,7 +12,7 @@ This document describes sample code illustrating DDD techniques. The intention i
 
 Idea is that business developers does not need to understand what's under the hood - he or she should rather focus on modeling and well crafted business code.
 
-==Architecture and design visualization using "scalable map"==
+==Architecture and design visualization using Scalable Map"==
 
 Java (and any known language) does not support understanding complex code structures. Neither UML tools do.
 
@@ -130,7 +130,7 @@ ERP model is simplified in sake of educational purpose. If You are developing su
 ----
 
 =Application Architecture=
-Looking at the [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_"scalable_map Visual Map] should be helpful at this moment. 
+Looking at the [DomainDrivenDesignBusinessDeveloperMentalModel#Architecture_and_design_visualization_using_Scalable_Map Visual Map] should be helpful at this moment. 
 ==Two stacks of Layers== 
 Each module is build regarding the same architecture style.
 Three tier architecture:
@@ -138,7 +138,10 @@ Three tier architecture:
   * Application Server Tier
   * DB Tier
 
-Application Server Tier is designed in layered fashion (remember that Tier!=Layer). Layers are grouped in two stacks.
+Application Server Tier is designed in layered fashion.
+_Remember that Tier!=Layer. Tier is a concept of separation from the technical point of view (clients, servers, databases). Layer is a concept of the logical code separation (layers at the application server)._
+
+Layers are grouped in two stacks.
 One stack is specialized in domain modeling and handling commands, while second is specialized in fast data serving and handling queries.
 
 CqRS convention is to call one stack: Write Model  and second: Read Model. But we prefer call it *Business* and *Presentation* models because in Business model You both write and read data (read data are just not visually presented, used only in processing).
