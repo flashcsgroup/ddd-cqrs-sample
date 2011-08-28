@@ -106,7 +106,7 @@ public class SubmitOrderCommand {
 CommandHandlerAnnotation is annotated with Spring annotations. Therefore executing any CommandHandler results in running all Spring AOP engine that supports Transactions and Security. You can also inject dependencies to each handler.
 
 If You would like to get rid of Spring and provide Your own implementations of this features refer to [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Leaven_for_additional_features Run Environment - leaven for additional features] chapter.
----
+----
 ==Presentation (Read) Model== 
 Presentation Stack responsibility from the Business Developer perspective is described in [DomainDrivenDesignBusinessDeveloperMentalModel#Presentation_Stack DDD part].
 
@@ -195,7 +195,7 @@ TODO
 ====NoSQL usage====
 
 ====Cloud==== 
----
+----
 ==Event Sourcing== 
 ===When to Use===
   * Need to store Behavioral model and "project" it in many perspectives
