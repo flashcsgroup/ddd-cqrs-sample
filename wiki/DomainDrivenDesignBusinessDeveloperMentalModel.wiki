@@ -726,6 +726,44 @@ There are other ways to do this:
   * No setter, just custom injection annotation checked in Repo and factory - a little dirty in our opinion
   * @Configurable annotation - we do not want do use any magic in sake of architecture style portability. Besides, sometime we need to calculate (perform some business logic) to determine a Policy for example
   * Pass needed dependencies as Aggregate methods' parameters. Sometimes can be artificial, but sometimes makes sense. For example, when dependency is needed only in one method of the Aggregate. But on the other hand - as we discuss later - very specific and used once Aggregate Methods should become a Domain Service.
+
+
+===Possible Modeling Extension: introducing State Design Pattern===
+State is a powerful technique for dealing with certain class of problems. 
+
+So we may want to use State when: 
+  * object can be in many states (in business systems state may be associated with some domain statuses) 
+  * object can perform may operations 
+  * way of performing operations depends on the current state 
+All above can (and in most cases probably should) be implemented using switch - yes, trivial switch. That's the easiest way. 
+
+...unless we expect following positive forces to emerge: 
+  * we expect introducing new states in future - so we open our design for expansion 
+  * we do not expect introducing many new operations - because maintaining state can be painful
+
+
+Sample scenario when State Design Pattern can be introduced to implement Aggregate as a State Machine:
+  * we have a DeliveryPackage aggregate 
+  * aggregate has some business responsibility (which is rather stable, we do not expect many new methods) 
+  * DeliveryPackage can be in many States - and for example we expect that the set of possible states varies, depending on deployment (our product/system is deployed t many clients, where each client has different policies about cargo statuses/states; we want to maintain common code base) 
+
+
+You may consider little change in the pattern design. In general State is somehow "invasive", it "pollutes" Aggregate. You can  consider designing what I call a cocoon. So You have Aggregate with basic business responsibilities. You create a cocoon that wraps Aggregate and implements all State Machine mechanic. This Mechanics  delegates to concrete States, concrete States delegates to aggregate. 
+
+So every time You want to work with Aggregate You do sth like this: 
+
+<code language="java">
+Aggregate a = repo.load(id); 
+ AggregateStateMachine asm = new AggregateStateMachine(a); //at this 
+ time machine sets current state by checking some statuses of the 
+ aggregate (statuses must be accessible) 
+ asm.doStrh();//delegates to current state, stat to aggregate, 
+ eventually changes state 
+ repo.persist(a) 
+</code>
+
+This is just a suggestion for a possible solution for decoupling.
+
 ----
 ==Value Objects==
 [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Fddd%2Fdomain%2Fsharedcernel Shared Kernel] contains two examples of Value Objects: Money and Percentage. Both encapsulates representation of the value they protect.
@@ -917,6 +955,21 @@ Naturally, repository will contain business search methods, like: find draft Ord
 ===Responsibilities===
 
 In general, Repository is also responsible for stuff that Factory does: a Dependency Injection.
+
+===Repository is not a DAO===
+Repo is not just about CRUD. We wanted to break mental association with Data Access Object pattern - which is considered as a CRUD operations container. 
+
+Reasons to expose DAO difference: 
+Repo load vs DAO read:
+  * Repo may perform additional logic: injection, assembling based on  some rules 
+  * Repo is not just about reading data - in general Repo may read chunks of domain aggregate from different sources (not only DB) and assemble them. Rare but You may see system where Repo talks do few DAOs 
+  * Using Event Sourcing we are actually reading events at than loading them to the Aggregate - so aggregate is loaded from Events. 
+
+Repo perists vs DAO create
+  * create is concept from "DB-oriented" system, where created means "stored in db". 
+  * in DDD Aggregate begins it's life in a Factory (which creates it), and persisting is a step of the process - db is just a technical detail 
+
+Actually it can be considered having just one method: save which creates or updates aggregate - just like Hiberbate's saveorupdate.
 
 ===Base Classes=== 
 
