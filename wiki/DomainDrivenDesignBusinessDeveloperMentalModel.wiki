@@ -619,10 +619,6 @@ Notice that:
   * Some business operations may be not valid in some state (ex. Order.submit()) - therefore they throw domain [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fdomain%2Ferrors errors].
   * Not all getters make sense.
 
-<code language="java">
-
-</code>
-
 ====Inner state protection====
 Notice that Invoice Aggregate method: getItems returns list of [http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/erp/sales/domain/InvoiceLine.java InvoiceLine] entities. But this list is also unidentifiable in order to protect Aggregate from being changed by outer code. 
 <code language="java">
@@ -753,13 +749,12 @@ You may consider little change in the pattern design. In general State is someho
 So every time You want to work with Aggregate You do sth like this: 
 
 <code language="java">
-Aggregate a = repo.load(id); 
- AggregateStateMachine asm = new AggregateStateMachine(a); //at this 
- time machine sets current state by checking some statuses of the 
- aggregate (statuses must be accessible) 
- asm.doStrh();//delegates to current state, stat to aggregate, 
- eventually changes state 
+public Void handle(SomeCommand command){
+ Aggregate a = repo.load(command.getAggregateId()); 
+ AggregateStateMachine asm = new AggregateStateMachine(a); //at this time machine sets current state by checking some statuses of the aggregate (statuses must be accessible) 
+ asm.doStrh();//delegates to current state, stat to aggregate, eventually changes state 
  repo.persist(a) 
+}
 </code>
 
 This is just a suggestion for a possible solution for decoupling.
