@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<selenium.version>2.0rc3</selenium.version>
+		<selenium.version>2.5.0</selenium.version>
 		<jbehave.web.version>3.3.4</jbehave.web.version>
 		<jbehave.core.version>3.4.5</jbehave.core.version>
 
@@ -225,9 +225,10 @@
 							<outputDirectory>${basedir}/target/failsafe-reports</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/test/failsafe-dummy-reports </directory>
+									<directory>src/test/failsafe-dummy-reports</directory>
 								</resource>
 							</resources>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 				</executions>
