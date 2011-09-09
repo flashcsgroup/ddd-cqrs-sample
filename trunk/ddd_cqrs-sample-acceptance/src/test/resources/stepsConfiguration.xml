@@ -4,13 +4,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-	<context:component-scan base-package="pl.com.bottega.erp.crm.acceptance" />
 	<context:property-placeholder location="classpath:/application.properties" />
+	
+	<context:component-scan base-package="pl.com.bottega.erp.crm.acceptance">
+		<context:include-filter type="custom"
+			expression="pl.com.bottega.erp.crm.acceptance.spring.AgentComponentFilter" />
+	</context:component-scan>
 
-	<bean id="webDriverProvider" scope="singleton"
-		class="pl.com.bottega.erp.crm.acceptance.FlakyIePropertyWebDriverProvider" />
-
-	<bean class="org.jbehave.web.selenium.WebDriverScreenshotOnFailure">
-		<constructor-arg ref="webDriverProvider" />
-	</bean>
 </beans>
