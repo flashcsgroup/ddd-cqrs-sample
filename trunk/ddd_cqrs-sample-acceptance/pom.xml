@@ -285,4 +285,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>org.springframework.maven.milestone</id>
+			<url>http://maven.springframework.org/milestone </url>
+		</repository>
+	</repositories>
 </project>
