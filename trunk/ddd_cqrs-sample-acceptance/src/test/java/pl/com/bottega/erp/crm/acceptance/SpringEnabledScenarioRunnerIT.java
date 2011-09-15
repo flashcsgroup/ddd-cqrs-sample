@@ -19,8 +19,7 @@ public class SpringEnabledScenarioRunnerIT {
 
     public static class MyReportBuilder extends StoryReporterBuilder {
         public MyReportBuilder() {
-            this.withFormats(org.jbehave.core.reporters.Format.CONSOLE, org.jbehave.core.reporters.Format.TXT,
-                    org.jbehave.core.reporters.Format.HTML, org.jbehave.core.reporters.Format.XML).withDefaultFormats();
+            this.withFormats(org.jbehave.core.reporters.Format.CONSOLE);
         }
     }
 }
