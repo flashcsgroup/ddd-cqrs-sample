@@ -302,7 +302,7 @@ You always have to perform checking in Domain Logic of this operation can be exe
 
 ----
 ==Run Environment==
-[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/RunEnvironment.java RunEnvironment] class is the actual place that runs Commands. Actually it matches CommandHandler to the Command using [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Finding_Handler provider] and runs Commandhandlers.
+[http://code.google.com/p/ddd-cqrs-sample/source/browse/trunk/ddd_cqrs-sample/src/main/java/pl/com/bottega/cqrs/command/impl/RunEnvironment.java RunEnvironment] class is the actual place that runs Commands. Actually it matches CommandHandler to the Command using [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Finding_Handler provider] and runs Commandhandlers.
 
 You should use this class in the following situations:
   * in the [CommandQueryResponsibilitySegregationSystemArchitectMentaModel#Server_Gate Gate]
