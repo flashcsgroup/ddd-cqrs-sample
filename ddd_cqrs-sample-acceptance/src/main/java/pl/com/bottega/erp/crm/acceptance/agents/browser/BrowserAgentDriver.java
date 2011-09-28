@@ -85,12 +85,10 @@ public class BrowserAgentDriver extends WebDriverPage {
 
     public String getCurrentPagePath() {
         String currentPath = getCurrentPageURI().getPath();
-        if (currentPath == null) {
-            return null;
-        } else if (currentPath.toUpperCase().startsWith("/" + contextPath.toUpperCase() + "/")) {
+        if (currentPath != null && currentPath.toUpperCase().startsWith("/" + contextPath.toUpperCase() + "/")) {
             return currentPath.substring(contextPath.length() + 2);
         } else {
-            throw new RuntimeException("current page is outside of the context path");
+            return "";
         }
     }
 
