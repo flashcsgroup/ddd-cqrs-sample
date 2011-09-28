@@ -27,7 +27,7 @@ public class ProductsListRemote implements ProductsListAgent {
     @Override
     public int getBasketItemsCount() {
         // query for basket items
-        return 0;
+        return 1;
     }
 
     @Override
@@ -38,6 +38,6 @@ public class ProductsListRemote implements ProductsListAgent {
     @Override
     public boolean hasProducts() {
         // query for products
-        return false;
+        return true;
     }
 }

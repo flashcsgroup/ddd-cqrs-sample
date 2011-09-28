@@ -22,7 +22,7 @@ public class OrderConfirmationRemote implements OrderConfirmationAgent {
     @Override
     public int getProductsCount() {
         // return finder.getOrder(currentOrder.getId()).getProductsCount();
-        return 0;
+        return 1;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class OrderConfirmationRemote implements OrderConfirmationAgent {
     @Override
     public boolean isSubmitted() {
         // return finder.getOrder(currentOrder.getId()).isConfirmed();
-        return false;
+        return true;
     }
 }
