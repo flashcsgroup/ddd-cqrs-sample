@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.jbehave.web.selenium.WebDriverPage;
 import org.jbehave.web.selenium.WebDriverProvider;
 import org.openqa.selenium.By;
@@ -85,11 +86,17 @@ public class BrowserAgentDriver extends WebDriverPage {
 
     public String getCurrentPagePath() {
         String currentPath = getCurrentPageURI().getPath();
-        if (currentPath != null && currentPath.toUpperCase().startsWith("/" + contextPath.toUpperCase() + "/")) {
-            return currentPath.substring(contextPath.length() + 2);
+        currentPath = stripSlashes(currentPath);
+        if (StringUtils.startsWithIgnoreCase(currentPath, contextPath)) {
+            currentPath = StringUtils.stripStart(currentPath, contextPath);
+            return stripSlashes(currentPath);
         } else {
             return "";
         }
+    }
+
+    private String stripSlashes(String currentPath) {
+        return StringUtils.strip(currentPath, "/");
     }
 
     private URI getCurrentPageURI() {

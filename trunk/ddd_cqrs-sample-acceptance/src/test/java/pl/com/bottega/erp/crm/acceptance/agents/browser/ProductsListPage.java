@@ -46,6 +46,6 @@ public class ProductsListPage implements ProductsListAgent {
     }
 
     private void navigateToThisPage() {
-        driver.navigateTo("/sales/products/list");
+        driver.navigateTo("sales/products/list");
     }
 }
