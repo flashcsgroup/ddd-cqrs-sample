@@ -1216,14 +1216,9 @@ Great Saga introduction by Udi Dahan: [http://www.udidahan.com/2009/04/20/saga-p
 ==Complex process orchestration==
 In general use Saga when You need to orchestrate process that is pushed by many events. Using Saga You can model partial state change of the bigger process - state change triggered by events.
 ==Sample Scenario==
-In the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fsaga Order example], the saga pattern is used to mark the order as
- archived after the shipment delivery. Usage of saga eliminates direct
- call from Shipment Aggregate Root to Order Aggregate Root and prevents
- from execution the archive process in wrong order. Also the simple
- usage of event architecture, would sometimes need to extend the
- information scope in the event (new handlers could expect Id different
- than shipment Id). Solution based on saga pattern eliminates changes
- in event information scope.
+In the [http://code.google.com/p/ddd-cqrs-sample/source/browse/#svn%2Ftrunk%2Fddd_cqrs-sample%2Fsrc%2Fmain%2Fjava%2Fpl%2Fcom%2Fbottega%2Ferp%2Fsales%2Fsaga Order example], the saga pattern is used to mark the order as archived after the shipment delivery. Usage of saga eliminates direct call from Shipment Aggregate Root to Order Aggregate Root and prevents from execution the archive process in wrong order.
+
+Also the simple usage of event architecture, would sometimes need to extend the information scope in the event (new handlers could expect Id different than shipment Id). Solution based on saga pattern eliminates changes in event information scope.
 ==Persistent multi-listener==
 
 Saga has persistent state and listen to many events.
