@@ -1,10 +1,9 @@
 package pl.com.bottega.erp.sales.saga;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import org.springframework.stereotype.Component;
 
 import pl.com.bottega.ddd.sagas.LoadSaga;
 import pl.com.bottega.ddd.sagas.SagaManager;
@@ -13,11 +12,11 @@ import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
 import pl.com.bottega.erp.shipping.domain.events.OrderShippedEvent;
 import pl.com.bottega.erp.shipping.domain.events.ShipmentDeliveredEvent;
 
-@Component
+@Stateless
 public class OrderShipmentStatusTrackerSagaManager implements
         SagaManager<OrderShipmentStatusTrackerSaga, OrderShipmentStatusTrackerData> {
 
-    @PersistenceContext
+	@PersistenceContext(unitName="defaultPU")
     private EntityManager entityManager;
 
     @LoadSaga

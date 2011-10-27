@@ -1,5 +1,8 @@
 package pl.com.bottega.erp.sales.application.listeners;
 
+import javax.enterprise.event.Observes;
+
+import pl.com.bottega.ddd.infrastructure.events.AsynchronousEvent;
 import pl.com.bottega.ddd.infrastructure.events.EventListener;
 import pl.com.bottega.ddd.infrastructure.events.EventListeners;
 import pl.com.bottega.erp.crm.domain.Customer.CustomerStatus;
@@ -15,7 +18,7 @@ import pl.com.bottega.erp.crm.domain.events.CustomerStatusChangedEvent;
 public class CustomerStatusChangedListener{
 
 	@EventListener(asynchronous=true)	
-	public void handle(CustomerStatusChangedEvent event) {
+	public void handle(@Observes @AsynchronousEvent CustomerStatusChangedEvent event) {
 		if (event.getStatus() == CustomerStatus.VIP){
 			calculateReabteForAllDraftOrders(event.getCustomerId(), 10);
 		}		

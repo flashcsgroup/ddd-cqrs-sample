@@ -15,7 +15,6 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Value;
 
 import pl.com.bottega.acceptance.commons.BrowserAgent;
 
@@ -24,10 +23,10 @@ import com.google.common.base.Function;
 @BrowserAgent
 public class BrowserAgentDriver extends WebDriverPage {
 
-    @Value("${contextPath}")
+    //@Value("${contextPath}")
     private String contextPath;
 
-    @Value("${serverUrl}")
+    //@Value("${serverUrl}")
     private String serverUrl;
 
     private static final long DEFAULT_TIMEOUT_IN_SECONDS = 2;

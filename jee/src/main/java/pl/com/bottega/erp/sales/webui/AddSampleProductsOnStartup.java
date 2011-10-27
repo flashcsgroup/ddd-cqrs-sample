@@ -3,14 +3,9 @@ package pl.com.bottega.erp.sales.webui;
 import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.erp.sales.domain.Client;
@@ -20,18 +15,15 @@ import pl.com.bottega.erp.sales.domain.Product.ProductType;
 /**
  * @deprecated development only
  */
-@Component
+@Stateful
 public class AddSampleProductsOnStartup {
 
-    @PersistenceContext
+	@PersistenceContext
     private EntityManager em;
-
-    @Resource
-    private PlatformTransactionManager transactionManager;
 
     @PostConstruct
     public void addSampleProductsToRepo() {
-        TransactionStatus tx = transactionManager.getTransaction(new DefaultTransactionDefinition());
+    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         for (int i = 1; i < 21; i++) {
             em.persist(product(String.format("Electronic Gizmo %02d", i), 0.99));
             em.persist(product(String.format("Cell Phone with 32GB flash memory %02d", i), 299.99));
@@ -40,7 +32,6 @@ public class AddSampleProductsOnStartup {
             em.persist(product(String.format("Tablet with Keyboard %02d", i), 459.99));
         }
         em.persist(new Client());
-        transactionManager.commit(tx);
     }
 
     private Product food(String name, double cost) {

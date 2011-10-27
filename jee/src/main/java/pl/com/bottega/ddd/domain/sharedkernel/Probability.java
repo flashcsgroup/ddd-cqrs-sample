@@ -53,4 +53,10 @@ public class Probability {
 	public String toString() {
 		return value.toString();
 	}
+	
+	/** For JPA ONLY. */
+	protected Probability()
+	{
+		
+	}
 }

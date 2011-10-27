@@ -1,14 +1,8 @@
 package pl.com.bottega.acceptance.commons;
 
-import java.io.IOException;
-import java.util.Set;
 
-import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.core.type.filter.TypeFilter;
-
-public class AgentComponentFilter implements TypeFilter {
-
+public class AgentComponentFilter  {
+/*
     private static enum Agent {
         BROWSER(BrowserAgent.class), REMOTE(RemoteAgent.class);
 
@@ -36,5 +30,5 @@ public class AgentComponentFilter implements TypeFilter {
         } catch (Exception e) {
             return DEFAULT;
         }
-    }
+    }*/
 }

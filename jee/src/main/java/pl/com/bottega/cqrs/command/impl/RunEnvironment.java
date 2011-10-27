@@ -5,14 +5,12 @@ package pl.com.bottega.cqrs.command.impl;
 
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Component;
-
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
 
 /**
  * @author Slawek
  */
-@Component
+
 public class RunEnvironment {
 
 	public interface HandlersProvider{

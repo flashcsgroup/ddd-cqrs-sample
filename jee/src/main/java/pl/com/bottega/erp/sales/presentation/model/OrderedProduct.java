@@ -58,4 +58,9 @@ public class OrderedProduct {
 	public int getQuantity(){
 		return quantity;
 	}
+	
+	/** For JPA only. */
+	protected OrderedProduct() {
+		
+	}
 }
