@@ -3,13 +3,12 @@
  */
 package pl.com.bottega.ddd.application;
 
-import java.io.Serializable;
 import java.util.List;
 
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import pl.com.bottega.ddd.application.annotation.ApplicationStatefullComponent;
 import pl.com.bottega.erp.sales.domain.Client;
 
 /**
@@ -17,11 +16,10 @@ import pl.com.bottega.erp.sales.domain.Client;
  * 
  * @author Slawek
  */
-@SuppressWarnings("serial")
-@ApplicationStatefullComponent
-public class SystemUser implements Serializable {
+@Stateful
+public class SystemUser {
 
-    @PersistenceContext
+    @PersistenceContext(unitName="defaultPU")
     private EntityManager entityManager;
 
     /**

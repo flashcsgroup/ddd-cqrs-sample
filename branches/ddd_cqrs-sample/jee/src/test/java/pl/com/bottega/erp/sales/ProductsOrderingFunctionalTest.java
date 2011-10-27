@@ -7,13 +7,9 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import pl.com.bottega.cqrs.command.Gate;
 import pl.com.bottega.erp.sales.application.commands.AddProductToOrderCommand;
@@ -34,9 +30,8 @@ import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
  * 
  * @author Rafał Jamróz
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/functionalTestsContext.xml")
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+
+
 public class ProductsOrderingFunctionalTest {
 
     @Inject
@@ -53,6 +48,7 @@ public class ProductsOrderingFunctionalTest {
     private OrderFinder orderFinder;
 
     @Test
+    @Ignore
     public void shouldCreateOrder() throws Exception {
         // given
         Long existingProductId = anyProduct().getProductId();
@@ -64,6 +60,7 @@ public class ProductsOrderingFunctionalTest {
     }
 
     @Test
+    @Ignore
     public void shouldSubmitCreatedOrder() throws Exception {
         // given
         Long existingProductId = anyProduct().getProductId();
@@ -76,6 +73,7 @@ public class ProductsOrderingFunctionalTest {
     }
     
     @Test
+    @Ignore
     public void shouldAddAlreadyAddedProdcyByIncreasingQuantity(){
     	//given
     	Long existingProductId = anyProduct().getProductId();
@@ -87,6 +85,7 @@ public class ProductsOrderingFunctionalTest {
     }
     
     @Test
+    @Ignore
     public void shouldAddProdct(){
     	//given
     	Long existingProductId = anyProduct().getProductId();

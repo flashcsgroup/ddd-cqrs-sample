@@ -5,13 +5,10 @@ package pl.com.bottega.cqrs.command.impl;
 
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Component;
-
 import pl.com.bottega.cqrs.command.Command;
 import pl.com.bottega.cqrs.command.Gate;
 
 
-@Component
 public class StandardGate implements Gate {
 	
 	@Inject

@@ -18,7 +18,11 @@ public class Shipment extends BaseAggregateRoot {
 
     private ShippingStatus status;
 
-    private Shipment() {
+    
+    /** For JPA ONLY! */
+    protected Shipment()
+    {
+    	
     }
 
     public Shipment(Long orderId) {
@@ -51,5 +55,6 @@ public class Shipment extends BaseAggregateRoot {
     public Long getOrderId() {
         return orderId;
     }
+   
 
 }

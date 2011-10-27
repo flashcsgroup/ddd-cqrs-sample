@@ -6,13 +6,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
-import org.springframework.stereotype.Component;
-
-import pl.com.bottega.ddd.infrastructure.events.impl.SimpleEventPublisher;
+import pl.com.bottega.ddd.infrastructure.events.impl.CDIEventPublisher;
 import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
 import pl.com.bottega.ddd.infrastructure.sagas.SagaEngine;
 import pl.com.bottega.ddd.sagas.LoadSaga;
@@ -23,22 +20,17 @@ import pl.com.bottega.ddd.sagas.SagaManager;
 /**
  * @author Rafał Jamróz
  */
-@Component
 public class SimpleSagaEngine implements SagaEngine {
 
     private final SagaRegistry sagaRegistry;
 
-    private final SimpleEventPublisher eventPublisher;
+    @Inject
+    private CDIEventPublisher eventPublisher;
 
     @Inject
-    public SimpleSagaEngine(SagaRegistry sagaRegistry, SimpleEventPublisher eventPublisher) {
+    public SimpleSagaEngine(SagaRegistry sagaRegistry, CDIEventPublisher eventPublisher) {
         this.sagaRegistry = sagaRegistry;
         this.eventPublisher = eventPublisher;
-    }
-
-    @PostConstruct
-    public void registerEventHandler() {
-        eventPublisher.registerEventHandler(new SagaEventHandler(this));
     }
 
     @SuppressWarnings("rawtypes")

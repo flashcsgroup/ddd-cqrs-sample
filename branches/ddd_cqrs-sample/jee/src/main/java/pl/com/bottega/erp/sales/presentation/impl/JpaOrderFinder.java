@@ -2,6 +2,7 @@ package pl.com.bottega.erp.sales.presentation.impl;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -16,9 +17,10 @@ import pl.com.bottega.erp.sales.presentation.OrderFinder;
  * @author Rafał Jamróz
  */
 @Finder
+@Stateless
 public class JpaOrderFinder implements OrderFinder {
 
-    @PersistenceContext
+	@PersistenceContext(unitName="defaultPU")
     private EntityManager entityManager;
 
     @Override

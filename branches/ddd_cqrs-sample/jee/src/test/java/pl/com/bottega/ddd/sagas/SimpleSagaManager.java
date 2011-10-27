@@ -3,9 +3,6 @@ package pl.com.bottega.ddd.sagas;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class SimpleSagaManager implements SagaManager<SimpleSaga, SimpleSagaData> {
 
     private Set<SimpleSagaData> data = new HashSet<SimpleSagaData>();

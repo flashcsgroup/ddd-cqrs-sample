@@ -7,9 +7,9 @@ import pl.com.bottega.ddd.domain.annotations.DomainRepository;
  */
 @DomainRepository
 public interface ShipmentRepository {
-    void persist(Shipment order);
+    void persist(Shipment shipment);
 
-    Shipment save(Shipment order);
+    Shipment save(Shipment shipment);
 
     Shipment load(Long orderId);
 }

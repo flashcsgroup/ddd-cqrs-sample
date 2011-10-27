@@ -12,10 +12,9 @@ import javax.inject.Inject;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
-import org.springframework.stereotype.Component;
 
 import pl.com.bottega.ddd.domain.DomainEvent;
-import pl.com.bottega.ddd.infrastructure.events.impl.SimpleEventPublisher;
+import pl.com.bottega.ddd.infrastructure.events.impl.CDIEventPublisher;
 import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
 
 /**
@@ -26,18 +25,17 @@ import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
  * 
  * @author Rafał Jamróz
  */
-@Component
 public class ExpectedEvents implements TestRule {
 
     @Inject
-    private SimpleEventPublisher eventPublisher;
+    private CDIEventPublisher eventPublisher;
 
     protected List<Object> publishedEvents;
     protected List<Object> expectedEvents;
 
     @PostConstruct
     public void initialize() {
-        eventPublisher.registerEventHandler(new MyEventHandler());
+        //eventPublisher.registerEventHandler(new MyEventHandler());
     }
 
     @Override
