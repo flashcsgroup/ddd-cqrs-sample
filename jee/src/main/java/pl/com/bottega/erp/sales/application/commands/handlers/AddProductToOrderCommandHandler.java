@@ -1,6 +1,7 @@
 package pl.com.bottega.erp.sales.application.commands.handlers;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
 import pl.com.bottega.cqrs.command.handler.CommandHandlerAnnotation;
@@ -11,6 +12,7 @@ import pl.com.bottega.erp.sales.domain.Product;
 import pl.com.bottega.erp.sales.domain.ProductRepository;
 
 @CommandHandlerAnnotation
+@Named
 public class AddProductToOrderCommandHandler implements CommandHandler<AddProductToOrderCommand, Void>{
 
 	@Inject

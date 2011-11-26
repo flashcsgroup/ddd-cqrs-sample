@@ -2,8 +2,7 @@ package pl.com.bottega.erp.sales.webui;
 
 import java.math.BigDecimal;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateful;
+import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -15,14 +14,21 @@ import pl.com.bottega.erp.sales.domain.Product.ProductType;
 /**
  * @deprecated development only
  */
-@Stateful
+@Singleton
 public class AddSampleProductsOnStartup {
 
-	@PersistenceContext
+	private boolean initialized = false;
+	
+	@PersistenceContext(name="defaultPU")
     private EntityManager em;
 
-    @PostConstruct
+    
     public void addSampleProductsToRepo() {
+    	
+    	if (initialized)
+    	{
+    		return;
+    	}
     	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         for (int i = 1; i < 21; i++) {
             em.persist(product(String.format("Electronic Gizmo %02d", i), 0.99));
@@ -32,6 +38,7 @@ public class AddSampleProductsOnStartup {
             em.persist(product(String.format("Tablet with Keyboard %02d", i), 459.99));
         }
         em.persist(new Client());
+        initialized = true;
     }
 
     private Product food(String name, double cost) {

@@ -15,9 +15,9 @@ public class CDIEventPublisher implements ApplicationEventPublisher,
 		DomainEventPublisher {
 
 
-	@Inject Event<Serializable> eventBus;
+	@Inject private Event<Serializable> eventBus;
 	
-	@EJB EJBAsynchronousEventDispatcher asynchronousDispatcher;
+	@EJB private EJBAsynchronousEventDispatcher asynchronousDispatcher;
 	
 	@Override
 	public void publish(DomainEvent event) 

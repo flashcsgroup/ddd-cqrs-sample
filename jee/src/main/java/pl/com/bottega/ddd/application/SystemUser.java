@@ -28,7 +28,7 @@ public class SystemUser {
     @SuppressWarnings("unchecked")
     public Long getUserId() {
         // return userId;
-        List<Client> clients = entityManager.createQuery("from Client").getResultList();
+        List<Client> clients = entityManager.createQuery("select c from Client c").getResultList();
         return clients.get(0).getEntityId();
     }
 }

@@ -50,7 +50,7 @@ public class JpaOrderRepository implements OrderRepository {
 
 	@Override
 	public Order save(Order order) {
-		entityManager.persist(order);
+		entityManager.merge(order);
 		return order;
 	}
 

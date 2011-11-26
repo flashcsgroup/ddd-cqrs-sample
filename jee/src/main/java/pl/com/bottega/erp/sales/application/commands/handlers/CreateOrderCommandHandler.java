@@ -3,6 +3,7 @@ package pl.com.bottega.erp.sales.application.commands.handlers;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
 import pl.com.bottega.cqrs.command.handler.CommandHandlerAnnotation;
@@ -17,7 +18,6 @@ import pl.com.bottega.erp.sales.domain.Order;
 import pl.com.bottega.erp.sales.domain.OrderFactory;
 import pl.com.bottega.erp.sales.domain.OrderRepository;
 import pl.com.bottega.erp.sales.domain.ProductRepository;
-import pl.com.bottega.erp.sales.domain.errors.OrderCreationException;
 
 /**
  * @see PurchaseApplicationService
@@ -25,6 +25,7 @@ import pl.com.bottega.erp.sales.domain.errors.OrderCreationException;
  * @author Rafał Jamróz
  */
 @CommandHandlerAnnotation
+@Named
 public class CreateOrderCommandHandler implements
 		CommandHandler<CreateOrderCommand, Long> {
 

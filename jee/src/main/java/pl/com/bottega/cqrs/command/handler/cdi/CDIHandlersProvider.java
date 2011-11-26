@@ -54,6 +54,10 @@ public class CDIHandlersProvider implements HandlersProvider {
 	public CommandHandler<Object, Object> getHandler(Object command) 
 	{
 		String beanName = handlers.get(command.getClass());
+		if (beanName == null)
+		{
+			throw new IllegalStateException("No command handler registered for command " + command.getClass().getName() + " Are you sure your handlers are @Named beans?");			
+		}
 		BeanManager beanManager = getBeanManager();
 		Set<Bean<?>> beanset = beanManager.getBeans(beanName);
 
