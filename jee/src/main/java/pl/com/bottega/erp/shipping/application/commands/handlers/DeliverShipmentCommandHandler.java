@@ -1,5 +1,6 @@
 package pl.com.bottega.erp.shipping.application.commands.handlers;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -11,6 +12,7 @@ import pl.com.bottega.erp.shipping.domain.ShipmentRepository;
 
 @CommandHandlerAnnotation
 @Named
+@Stateless
 public class DeliverShipmentCommandHandler implements CommandHandler<DeliverShipmentCommand, Void> {
 
     @Inject

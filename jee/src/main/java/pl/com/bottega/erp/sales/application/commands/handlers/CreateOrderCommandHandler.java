@@ -2,6 +2,7 @@ package pl.com.bottega.erp.sales.application.commands.handlers;
 
 import java.util.Map;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -26,6 +27,7 @@ import pl.com.bottega.erp.sales.domain.ProductRepository;
  */
 @CommandHandlerAnnotation
 @Named
+@Stateless
 public class CreateOrderCommandHandler implements
 		CommandHandler<CreateOrderCommand, Long> {
 

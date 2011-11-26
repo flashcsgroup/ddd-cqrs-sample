@@ -2,6 +2,7 @@ package pl.com.bottega.erp.sales.application.commands.handlers;
 
 import java.util.Locale;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -28,6 +29,7 @@ import pl.com.bottega.erp.sales.domain.specification.order.TotalCostSpecificatio
 
 @CommandHandlerAnnotation
 @Named
+@Stateless
 public class SubmitOrderCommandHandler implements CommandHandler<SubmitOrderCommand, Void> {
 
     @Inject

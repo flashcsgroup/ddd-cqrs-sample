@@ -21,7 +21,6 @@ import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
  * 
  */
 @DomainRepositoryImpl
-@Stateless
 public class JpaOrderRepository implements OrderRepository {
 
 	

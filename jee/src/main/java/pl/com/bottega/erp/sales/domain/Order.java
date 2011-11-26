@@ -160,8 +160,8 @@ public class Order extends BaseAggregateRoot {
         for (OrderLine line : items) {
             if (product.equals(line.getProduct()))
                 return line;
-            if (product.getEntityId() != null && product.getEntityId().equals(line.getProduct().getEntityId()))
-            	return line;
+//            if (product.getEntityId() != null && product.getEntityId().equals(line.getProduct().getEntityId()))
+//            	return line;
         }
         return null;
     }
