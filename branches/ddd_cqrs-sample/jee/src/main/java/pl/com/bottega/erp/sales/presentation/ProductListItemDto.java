@@ -39,4 +39,13 @@ public class ProductListItemDto implements Serializable {
     public void setPrice(Money price) {
         this.price = price;
     }
+
+	public ProductListItemDto(Long productId, String displayedName, Money price) {
+		super();
+		this.productId = productId;
+		this.displayedName = displayedName;
+		this.price = price;
+	}
+    
+    
 }

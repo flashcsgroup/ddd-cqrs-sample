@@ -24,7 +24,7 @@ public class SqlProductFinder implements ProductFinder {
 
     @Override
     public PaginatedResult<ProductListItemDto> findProducts(ProductSearchCriteria criteria) {
-//        int productsCount = countProducts(criteria);
+//        int prodThis puctsCount = countProducts(criteria);
 //        if (productsCount <= 0) {
 //            return new PaginatedResult<ProductListItemDto>(criteria.getPageNumber(), criteria.getItemsPerPage());
 //        }
