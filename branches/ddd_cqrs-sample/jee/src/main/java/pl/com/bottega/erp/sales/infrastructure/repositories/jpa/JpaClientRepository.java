@@ -10,7 +10,6 @@ import pl.com.bottega.erp.sales.domain.Client;
 import pl.com.bottega.erp.sales.domain.ClientRepository;
 
 @DomainRepositoryImpl
-@Stateless
 public class JpaClientRepository implements ClientRepository {
 
 	@PersistenceContext

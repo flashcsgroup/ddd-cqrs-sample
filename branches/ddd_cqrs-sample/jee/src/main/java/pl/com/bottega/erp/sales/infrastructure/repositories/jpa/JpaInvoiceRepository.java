@@ -18,7 +18,6 @@ import pl.com.bottega.erp.sales.domain.InvoiceRepository;
  * 
  */
 @DomainRepositoryImpl
-@Stateless
 public class JpaInvoiceRepository implements InvoiceRepository {
   
     @Inject

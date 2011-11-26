@@ -11,7 +11,6 @@ import pl.com.bottega.erp.shipping.domain.Shipment;
 import pl.com.bottega.erp.shipping.domain.ShipmentRepository;
 
 @DomainRepositoryImpl
-@Stateless
 public class JpaShipmentRepository implements ShipmentRepository {
 
     @Inject
