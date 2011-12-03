@@ -1,11 +1,15 @@
 package pl.com.bottega.ddd.infrastructure.sagas.impl;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -21,6 +25,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
+@Singleton
+@Startup
 public class CDISagaRegistry implements SagaRegistry {
 
 	private Multimap<Class<?>, String> loadersInterestedIn = HashMultimap
@@ -44,7 +50,6 @@ public class CDISagaRegistry implements SagaRegistry {
 		}
 		return beanManager;
 	}
-
 	
 	@Override
 	public Collection<SagaManager> getLoadersForEvent(Object event) {
@@ -59,7 +64,7 @@ public class CDISagaRegistry implements SagaRegistry {
 			if (beanset.size() > 1) {
 				throw new IllegalStateException("Should never occur: name "
 						+ loaderBeanName
-						+ " has more than one registered CDI bean!");
+						+ " has more than one registered bean!");
 			}
 
 			Bean bean = beanset.iterator().next();
@@ -72,7 +77,8 @@ public class CDISagaRegistry implements SagaRegistry {
 				throw new IllegalArgumentException(
 						"Cannot load saga manager for bean " + loaderBeanName);
 			}
-			results.add((SagaManager) reference);
+			SagaManager<?, ?> managerObject = (SagaManager<?, ?>)reference;
+			results.add(managerObject);
 		}
 		return results;
 	}
@@ -86,7 +92,7 @@ public class CDISagaRegistry implements SagaRegistry {
 		if (beanset.size() > 1) {
 			throw new IllegalStateException("Should never occur: type "
 					+ sagaType.getName()
-					+ " has more than one registered CDI bean!");
+					+ " has more than one registered bean!");
 		}
 
 		Bean bean = beanset.iterator().next();
@@ -115,7 +121,7 @@ public class CDISagaRegistry implements SagaRegistry {
 		for (Bean<?> bean : beanSet) {
 
 			try {
-				registerSagaLoader(bean.getClass(), bean.getName());
+				registerSagaLoader(bean.getBeanClass(), bean.getName());
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -123,14 +129,18 @@ public class CDISagaRegistry implements SagaRegistry {
 	}
 
 	private void registerSagaLoader(Class<?> loaderClass, String beanName) {
-		for (Method method : loaderClass.getMethods()) {
+ 		for (Method method : loaderClass.getMethods()) {
 			if (method.getAnnotation(SagaAction.class) != null
 					|| method.getAnnotation(LoadSaga.class) != null) {
 				Class<?>[] params = method.getParameterTypes();
 				if (params.length == 1) {
 					loadersInterestedIn.put(params[0], beanName);
+					// TODO not reliable
+			    	Type firstInterface = loaderClass.getGenericInterfaces()[0];
+			    	 Type type = ((ParameterizedType) firstInterface).getActualTypeArguments()[0];
+	    	
 				} else {
-					throw new RuntimeException("incorred event hadndler: "
+					throw new RuntimeException("incorrect event hadndler: "
 							+ method);
 				}
 			}

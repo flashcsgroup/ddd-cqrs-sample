@@ -7,10 +7,11 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.NoResultException;
 
-import pl.com.bottega.ddd.infrastructure.events.impl.CDIEventPublisher;
-import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
+import pl.com.bottega.ddd.infrastructure.events.EventListener;
+import pl.com.bottega.ddd.infrastructure.events.EventListeners;
 import pl.com.bottega.ddd.infrastructure.sagas.SagaEngine;
 import pl.com.bottega.ddd.sagas.LoadSaga;
 import pl.com.bottega.ddd.sagas.SagaAction;
@@ -20,21 +21,20 @@ import pl.com.bottega.ddd.sagas.SagaManager;
 /**
  * @author Rafał Jamróz
  */
+@EventListeners
+@Named
 public class SimpleSagaEngine implements SagaEngine {
 
     private final SagaRegistry sagaRegistry;
 
     @Inject
-    private CDIEventPublisher eventPublisher;
-
-    @Inject
-    public SimpleSagaEngine(SagaRegistry sagaRegistry, CDIEventPublisher eventPublisher) {
+    public SimpleSagaEngine(SagaRegistry sagaRegistry) {
         this.sagaRegistry = sagaRegistry;
-        this.eventPublisher = eventPublisher;
     }
 
     @SuppressWarnings("rawtypes")
     @Override
+    @EventListener
     public void handleSagasEvent(Object event) {
         Collection<SagaManager> loaders = sagaRegistry.getLoadersForEvent(event);
         for (SagaManager loader : loaders) {
@@ -58,8 +58,11 @@ public class SimpleSagaEngine implements SagaEngine {
     }
 
     // TODO determine saga type more reliably
-    private Class<? extends SagaInstance> determineSagaTypeByLoader(SagaManager loader) {
-        Type type = ((ParameterizedType) loader.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0];
+    private Class<? extends SagaInstance> determineSagaTypeByLoader(SagaManager<?,?> loader) 
+    {
+    	Class<?> managerClass = loader.getClass();
+    	Type firstInterface = managerClass.getGenericInterfaces()[0];
+        Type type = ((ParameterizedType) firstInterface).getActualTypeArguments()[0];
         return (Class<? extends SagaInstance>) type;
     }
 
@@ -104,22 +107,5 @@ public class SimpleSagaEngine implements SagaEngine {
         throw new RuntimeException("no method handling " + event.getClass());
     }
 
-    private static class SagaEventHandler implements EventHandler {
 
-        private final SagaEngine sagaEngine;
-
-        public SagaEventHandler(SagaEngine sagaEngine) {
-            this.sagaEngine = sagaEngine;
-        }
-
-        @Override
-        public boolean canHandle(Object event) {
-            return true;
-        }
-
-        @Override
-        public void handle(Object event) {
-            sagaEngine.handleSagasEvent(event);
-        }
-    }
 }

@@ -3,10 +3,20 @@ package pl.com.bottega.ddd.sagas;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+@Named
+@Singleton
 public class SimpleSagaManager implements SagaManager<SimpleSaga, SimpleSagaData> {
 
     private Set<SimpleSagaData> data = new HashSet<SimpleSagaData>();
 
+    public void reset()
+    {
+    	data.clear();
+    }
+    
     @LoadSaga
     public SimpleSagaData load(SampleDomainEvent event) {
         return findByAggregateId(event.getAggregateId());
@@ -38,5 +48,6 @@ public class SimpleSagaManager implements SagaManager<SimpleSaga, SimpleSagaData
         data.add(newSagaData);
         return newSagaData;
     }
+
 
 }

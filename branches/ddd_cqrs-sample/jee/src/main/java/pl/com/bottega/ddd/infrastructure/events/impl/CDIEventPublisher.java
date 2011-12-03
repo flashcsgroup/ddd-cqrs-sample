@@ -1,35 +1,53 @@
 package pl.com.bottega.ddd.infrastructure.events.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pl.com.bottega.ddd.application.ApplicationEventPublisher;
 import pl.com.bottega.ddd.domain.DomainEvent;
 import pl.com.bottega.ddd.domain.DomainEventPublisher;
+import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
 
+@Singleton
 public class CDIEventPublisher implements ApplicationEventPublisher,
 		DomainEventPublisher {
 
 
-	@Inject private Event<Serializable> eventBus;
-	
-	@EJB private EJBAsynchronousEventDispatcher asynchronousDispatcher;
-	
-	@Override
-	public void publish(DomainEvent event) 
-	{	
-		eventBus.fire(event);
-		asynchronousDispatcher.fire(event);
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(CDIEventPublisher.class);
 
-	@Override
-	public void publish(Serializable applicationEvent) {
-		eventBus.fire(applicationEvent);
-		asynchronousDispatcher.fire(applicationEvent);
-	}
+	 private Set<EventHandler> eventHandlers = new HashSet<EventHandler>();
+
+	    public void registerEventHandler(EventHandler handler) {
+	        eventHandlers.add(handler);
+	    }
+	    
+	    @Override
+	    public void publish(Serializable event) {
+	        doPublish(event);
+	    }
+
+	    @Override
+	    public void publish(DomainEvent event) {
+	        doPublish(event);
+	    }
+
+	    protected void doPublish(Object event) {
+	        for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers)) {
+	            if (handler.canHandle(event)) {
+	                try {
+	                    handler.handle(event);
+	                } catch (Exception e) {
+	                    LOGGER.error("event handling error", e);
+	                }
+	            }
+	        }
+	    }
 
 }

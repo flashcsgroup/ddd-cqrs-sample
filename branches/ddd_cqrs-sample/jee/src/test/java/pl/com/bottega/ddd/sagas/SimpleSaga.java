@@ -1,6 +1,7 @@
 package pl.com.bottega.ddd.sagas;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Saga
 public class SimpleSaga extends SagaInstance<SimpleSagaData> {
@@ -12,9 +13,11 @@ public class SimpleSaga extends SagaInstance<SimpleSagaData> {
         this.spy = spy;
     }
 
+    
     @SagaAction
     public void onSampleDomainEvent(SampleDomainEvent event) {
-        data.setAggregateId(event.getAggregateId());
+
+    	data.setAggregateId(event.getAggregateId());
         spy.sampleEventHandled();
         completeIfPossible();
     }

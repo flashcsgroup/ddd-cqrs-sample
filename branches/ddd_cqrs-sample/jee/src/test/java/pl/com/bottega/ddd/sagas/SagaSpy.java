@@ -1,6 +1,8 @@
 package pl.com.bottega.ddd.sagas;
 
+import javax.inject.Singleton;
 
+@Singleton
 public class SagaSpy {
 
     private int sagaCompletedCount;
@@ -29,5 +31,12 @@ public class SagaSpy {
 
     public int getSagaCompletedCount() {
         return sagaCompletedCount;
+    }
+    
+    public void reset()
+    {
+    	sagaCompletedCount = 0;
+    	anotherEventHandledCount = 0;
+    	sampleEventHandledCount = 0;
     }
 }
