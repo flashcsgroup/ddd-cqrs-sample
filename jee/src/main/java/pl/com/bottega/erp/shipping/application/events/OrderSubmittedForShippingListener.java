@@ -1,9 +1,8 @@
 package pl.com.bottega.erp.shipping.application.events;
 
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-import pl.com.bottega.ddd.infrastructure.events.AsynchronousEvent;
 import pl.com.bottega.ddd.infrastructure.events.EventListener;
 import pl.com.bottega.ddd.infrastructure.events.EventListeners;
 import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
@@ -24,6 +23,7 @@ import pl.com.bottega.erp.shipping.domain.ShipmentRepository;
  * @author Rafał Jamróz
  */
 @EventListeners
+@Named
 public class OrderSubmittedForShippingListener {
 
     @Inject
@@ -36,7 +36,7 @@ public class OrderSubmittedForShippingListener {
     private ShipmentRepository repository;
 
     @EventListener(asynchronous = true)
-    public void handle(@Observes @AsynchronousEvent OrderSubmittedEvent event) {
+    public void handle(OrderSubmittedEvent event) {
         ClientOrderDetailsDto orderDetails = orderFinder.getClientOrderDetails(event.getOrderId());
         Shipment shipment = factory.createShipment(orderDetails);
         repository.persist(shipment);

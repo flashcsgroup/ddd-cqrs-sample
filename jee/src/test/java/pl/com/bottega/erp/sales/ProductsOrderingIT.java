@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Collections;
 
 import javax.inject.Inject;
-import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -26,7 +25,6 @@ import pl.com.bottega.cqrs.command.impl.RunEnvironment;
 import pl.com.bottega.cqrs.command.impl.StandardGate;
 import pl.com.bottega.ddd.application.SystemUser;
 import pl.com.bottega.ddd.domain.support.InjectorHelper;
-import pl.com.bottega.ddd.infrastructure.events.impl.EJBAsynchronousEventDispatcher;
 import pl.com.bottega.erp.sales.application.commands.AddProductToOrderCommand;
 import pl.com.bottega.erp.sales.application.commands.CreateOrderCommand;
 import pl.com.bottega.erp.sales.application.commands.SubmitOrderCommand;
@@ -35,10 +33,10 @@ import pl.com.bottega.erp.sales.application.commands.handlers.CreateOrderCommand
 import pl.com.bottega.erp.sales.application.commands.handlers.SubmitOrderCommandHandler;
 import pl.com.bottega.erp.sales.domain.Client;
 import pl.com.bottega.erp.sales.domain.Invoice;
+import pl.com.bottega.erp.sales.domain.InvoiceLine;
 import pl.com.bottega.erp.sales.domain.InvoicingService;
 import pl.com.bottega.erp.sales.domain.Order;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
-import pl.com.bottega.erp.sales.domain.InvoiceLine;
 import pl.com.bottega.erp.sales.domain.OrderFactory;
 import pl.com.bottega.erp.sales.domain.OrderLine;
 import pl.com.bottega.erp.sales.domain.OrderedProduct;
@@ -92,7 +90,7 @@ public class ProductsOrderingIT {
 				Product.class, Client.class, CreateOrderCommandHandler.class, OrderFactory.class, RebatePolicyFactory.class, InjectorHelper.class,
 				TestEventPublisher.class, SystemUser.class, JpaOrderRepository.class,
 				JpaProductRepository.class, JpaClientRepository.class, Order.class, OrderLine.class,
-				EJBAsynchronousEventDispatcher.class, AddSampleProductsOnStartup.class, AddProductToOrderCommandHandler.class,
+				AddSampleProductsOnStartup.class, AddProductToOrderCommandHandler.class,
 				SubmitOrderCommandHandler.class, JpaInvoiceRepository.class, InvoicingService.class, Invoice.class, InvoiceLine.class)
 				.addAsManifestResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"))
 				.addAsManifestResource("META-INF/persistence.xml", "persistence.xml");

@@ -29,7 +29,6 @@ public class AddSampleProductsOnStartup {
     	{
     		return;
     	}
-    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         for (int i = 1; i < 21; i++) {
             em.persist(product(String.format("Electronic Gizmo %02d", i), 0.99));
             em.persist(product(String.format("Cell Phone with 32GB flash memory %02d", i), 299.99));

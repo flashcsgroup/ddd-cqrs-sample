@@ -1,6 +1,6 @@
 package pl.com.bottega.erp.sales.saga;
 
-import javax.ejb.Stateless;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -12,7 +12,7 @@ import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
 import pl.com.bottega.erp.shipping.domain.events.OrderShippedEvent;
 import pl.com.bottega.erp.shipping.domain.events.ShipmentDeliveredEvent;
 
-@Stateless
+@Named
 public class OrderShipmentStatusTrackerSagaManager implements
         SagaManager<OrderShipmentStatusTrackerSaga, OrderShipmentStatusTrackerData> {
 
