@@ -22,7 +22,7 @@ import pl.com.bottega.ddd.infrastructure.sagas.impl.CDISagaRegistry;
 import pl.com.bottega.ddd.infrastructure.sagas.impl.SimpleSagaEngine;
 
 @RunWith(Arquillian.class)
-public class SagaIntegrationTest {
+public class SagaIT {
 
     @Inject
     private DomainEventPublisher publisher;
@@ -36,7 +36,7 @@ public class SagaIntegrationTest {
     @Deployment
 	public static Archive<?> createTestArchive()
 	{
-		return ShrinkWrap.create(JavaArchive.class, SagaIntegrationTest.class.getName() + ".jar").addPackages(false,
+		return ShrinkWrap.create(JavaArchive.class, SagaIT.class.getName() + ".jar").addPackages(false,
 				SimpleSaga.class.getPackage()).addClasses(
 	
 				SagaSpy.class, CDIEventPublisher.class, SimpleSaga.class, SagaInstance.class, SimpleSagaData.class,
