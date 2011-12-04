@@ -29,7 +29,13 @@
 	</build>
 
 	<dependencies>
+		  <dependency>
+    <groupId>org.apache.openjpa</groupId>
+    <artifactId>openjpa</artifactId>
+    <version>2.1.1</version>
+  </dependency>
 		<dependency>
+
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>2.0.0</version>
@@ -202,7 +208,7 @@
 									<skipTests>${integration.skip}</skipTests>
 									<reportsDirectory>${project.build.directory}/failsafe-reports/integration</reportsDirectory>
 									<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-integration.xml</summaryFile>
-									
+
 								</configuration>
 							</execution>
 
@@ -236,9 +242,9 @@
 										<browser>chrome</browser>
 										<webdriver.chrome.driver>${chrome.driver}</webdriver.chrome.driver>
 										<chrome.binary>${chrome.binary}</chrome.binary>
-																			<includes>
-										<include>**/*AcceptanceIT.java</include>
-									</includes>
+										<includes>
+											<include>**/*AcceptanceIT.java</include>
+										</includes>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
@@ -256,7 +262,7 @@
 									<systemPropertyVariables>
 										<browser>ie</browser>
 									</systemPropertyVariables>
-																		<includes>
+									<includes>
 										<include>**/*AcceptanceIT.java</include>
 									</includes>
 								</configuration>
@@ -275,7 +281,7 @@
 									<systemPropertyVariables>
 										<useAgent>remote</useAgent>
 									</systemPropertyVariables>
-																		<includes>
+									<includes>
 										<include>**/*AcceptanceIT.java</include>
 									</includes>
 								</configuration>

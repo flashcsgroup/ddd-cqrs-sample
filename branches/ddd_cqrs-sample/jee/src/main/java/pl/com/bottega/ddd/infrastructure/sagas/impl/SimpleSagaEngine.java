@@ -36,7 +36,7 @@ public class SimpleSagaEngine implements SagaEngine {
     @Override
     @EventListener
     public void handleSagasEvent(Object event) {
-        Collection<SagaManager> loaders = sagaRegistry.getLoadersForEvent(event);
+        Collection<SagaManager<?,?>> loaders = sagaRegistry.getLoadersForEvent(event);
         for (SagaManager loader : loaders) {
             SagaInstance sagaInstance = loadSaga(loader, event);
             invokeSagaActionForEvent(sagaInstance, event);
@@ -47,23 +47,25 @@ public class SimpleSagaEngine implements SagaEngine {
     }
 
     private SagaInstance loadSaga(SagaManager loader, Object event) {
-        Class<? extends SagaInstance> sagaType = determineSagaTypeByLoader(loader);
+        Class<? extends SagaInstance<?>> sagaType = determineSagaTypeByLoader(loader);
         Object sagaData = loadSagaData(loader, event);
         if (sagaData == null) {
             sagaData = loader.createNewSagaData();
         }
         SagaInstance sagaInstance = sagaRegistry.createSagaInstance(sagaType);
+        
+        
         sagaInstance.setData(sagaData);
         return sagaInstance;
     }
 
     // TODO determine saga type more reliably
-    private Class<? extends SagaInstance> determineSagaTypeByLoader(SagaManager<?,?> loader) 
+    private Class<? extends SagaInstance<?>> determineSagaTypeByLoader(SagaManager<?,?> loader) 
     {
     	Class<?> managerClass = loader.getClass();
     	Type firstInterface = managerClass.getGenericInterfaces()[0];
         Type type = ((ParameterizedType) firstInterface).getActualTypeArguments()[0];
-        return (Class<? extends SagaInstance>) type;
+        return (Class<? extends SagaInstance<?>>) type;
     }
 
     /**
