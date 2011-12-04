@@ -16,7 +16,7 @@ public class JpaShipmentRepository implements ShipmentRepository {
     @Inject
     private InjectorHelper injectorHelper;
 
-	@PersistenceContext
+	@PersistenceContext(name="defaultPU")
     protected EntityManager entityManager;
 
     

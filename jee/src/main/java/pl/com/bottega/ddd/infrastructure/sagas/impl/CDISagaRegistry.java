@@ -52,8 +52,8 @@ public class CDISagaRegistry implements SagaRegistry {
 	}
 	
 	@Override
-	public Collection<SagaManager> getLoadersForEvent(Object event) {
-		Collection<SagaManager> results = new HashSet<SagaManager>();
+	public Collection<SagaManager<?,?>> getLoadersForEvent(Object event) {
+		Collection<SagaManager<?,?>> results = new HashSet<SagaManager<?,?>>();
 		BeanManager manager = getBeanManager();
 		Collection<String> loadersBeansNames = loadersInterestedIn.get(event
 				.getClass());
@@ -84,8 +84,8 @@ public class CDISagaRegistry implements SagaRegistry {
 	}
 
 	@Override
-	public SagaInstance createSagaInstance(
-			Class<? extends SagaInstance> sagaType) {
+	public SagaInstance<?> createSagaInstance(
+			Class<? extends SagaInstance<?>> sagaType) {
 		BeanManager manager = getBeanManager();
 		Set<Bean<?>> beanset = manager.getBeans(sagaType);
 
