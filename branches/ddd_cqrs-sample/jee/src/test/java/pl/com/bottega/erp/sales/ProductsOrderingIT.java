@@ -77,9 +77,6 @@ public class ProductsOrderingIT {
 	private OrderFinder orderFinder;
 
 	@Inject
-	AddSampleProductsOnStartup preparation;
-
-	@Inject
 	TestEventPublisher events;
 
 	@Deployment
@@ -99,7 +96,6 @@ public class ProductsOrderingIT {
 	@Before
 	public void prepare() throws Exception
 	{
-		preparation.addSampleProductsToRepo();
 
 		events.reset();
 	}

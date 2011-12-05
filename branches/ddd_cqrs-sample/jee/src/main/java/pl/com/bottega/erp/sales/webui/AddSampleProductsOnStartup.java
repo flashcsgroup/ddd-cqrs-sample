@@ -14,7 +14,7 @@ import pl.com.bottega.erp.sales.domain.Product.ProductType;
 /**
  * @deprecated development only
  */
-@Singleton
+@Singleton // I wish we could use @Startup and @PostConstruct but somehow this does not go along with OpenJPA initialization
 public class AddSampleProductsOnStartup {
 
 	private boolean initialized = false;
@@ -22,7 +22,11 @@ public class AddSampleProductsOnStartup {
 	@PersistenceContext(name="defaultPU")
     private EntityManager em;
 
-    
+	public void run()
+	{
+		
+	}
+
     public void addSampleProductsToRepo() {
     	
     	if (initialized)
