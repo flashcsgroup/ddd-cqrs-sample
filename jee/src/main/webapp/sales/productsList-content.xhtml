@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>DDD CQRS Sample</title>
+	<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+	<link rel="stylesheet" href="./static/css/layout/layout.css" />
+</h:head>
+<h:body>
+	<div class="productsListContent">
+		<h1>products available</h1>
+		<div class="productsContent">
+			<p>Choose from our wide range of quality products</p>
+			<div>
+				<h3>show only products</h3>
+				<h:form class="filterProductsForm">
+					<h:outputText value="containing text:" />
+					<h:inputText value="TODO BINDME {$sortBy}" />
+					<br />
+					<h:outputText value="up to price:" />
+					<h:inputText value="TODO BINDME" />
+					<h:outputText value="EUR" />
+					<br />
+					<input type="submit" value="filter" />
+					<!-- <input id="clearFiltersButton" type="button" value="show all" />-->
+				</h:form>
+			</div>
+
+			<p>${products.totalItemsCount} products found</p>
+			<h:dataTable class="dataTable" value="#{products.items}"
+				var="product">
+				
+				                <h:column class="imageColumn">
+				                <f:facet name="header"></f:facet>
+				                <img class="productImage"
+							src="../static/img/sales/noProductPicture.png"/>
+				                </h:column>
+                    
+    <h:column class="productNameColumn">
+    				            <f:facet name="header">Product name</f:facet>${product.displayedName}</h:column>
+				                
+				   <h:column class="priceColumn">
+				   <f:facet name="header">Price</f:facet>
+    	    ${product.price}</h:column>              
+			</h:dataTable>
+			<!-- 
+		<h:table id="productsTable" class="dataTable">
+			<h:thead>
+				<h:tr>
+					<h:td class="imageColumn"></h:td>
+					<h:td class="productNameColumn sortable">product name</h:td>
+					<h:td class="priceColumn sortable">price</h:td>
+					<h:td class="buttonsColumn"></h:td>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${products.items}" var="product">
+					<tr>
+						<td class="imageColumn"><img class="productImage"
+							src="<c:url value="/static/img/sales/noProductPicture.png "/>" />
+						</td>
+						<td class="productNameColumn"><c:out
+								value="${product.displayedName}" />
+						</td>
+						<td class="priceColumn"><c:out value="${product.price}" />
+						</td>
+						<td class="buttonsColumn"><input name="addProductButton"
+							type="button" value="add" productId="${product.productId}" /></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		<custom:pagination results="${products}" />
+	</div>
+</div>
+
+<div class="basketContainer">
+	<div class="highlight">
+		<h1>your basket</h1>
+	</div>
+
+	<div class="basketContent" style="display: none;">
+		<ul id="basketItemsList">
+		</ul>
+
+		<div class="basketControls">
+			<div>
+				<form action="checkout" method="post">
+					<input type="submit" value="checkout" />
+				</form>
+			</div>
+			<div>
+				<button onclick="clearBasket()">clear basket</button>
+			</div>
+		</div> -->
+		</div>
+		<div class="basketNoContent" style="display: none;">
+			<p class="notification">your basket is empty</p>
+		</div>
+	</div>
+
+</h:body>
+</html>

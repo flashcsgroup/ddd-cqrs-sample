@@ -24,8 +24,24 @@
 						<target>1.6</target>
 					</configuration>
 				</plugin>
+				
 			</plugins>
 		</pluginManagement>
+		<plugins>
+		<plugin>
+  <groupId>org.zeroturnaround</groupId>
+  <artifactId>jrebel-maven-plugin</artifactId>
+  <executions>
+    <execution>
+      <id>generate-rebel-xml</id>
+      <phase>process-resources</phase>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
@@ -34,14 +50,14 @@
     <artifactId>openjpa</artifactId>
     <version>2.1.1</version>
   </dependency>
-		<dependency>
-
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>2.0.0</version>
-			<scope>runtime</scope>
+	  		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbynet</artifactId>
+			<version>10.8.1.2</version>
+			<type>jar</type>
 		</dependency>
-		<dependency>
+	
+	<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
@@ -75,13 +91,7 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-		<!-- required for @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS) -->
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-			<version>2.2</version>
-			<scope>runtime</scope>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -99,9 +109,7 @@
 			<version>3.0.1</version>
 		</dependency>
 		<!-- test scope -->
-		<!-- start: dependencies for tests that need CDI container -->
-
-		<!-- end: dependencies for tests that need CDI container -->
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
