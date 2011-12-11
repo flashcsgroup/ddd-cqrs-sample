@@ -4,6 +4,11 @@
 	cursor: pointer;
 }
 
+.dataTable thead th.sortable:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 .dataTable thead .ascending {
 	background-image: url(../../img/layout/sortAscending.png);
 	background-repeat: no-repeat;
@@ -24,6 +29,7 @@
 
 .paginationPrompt {
 	float: left;
+		
 }
 
 .pagination {
