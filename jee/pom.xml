@@ -24,48 +24,50 @@
 						<target>1.6</target>
 					</configuration>
 				</plugin>
-				
+
 			</plugins>
 		</pluginManagement>
 		<plugins>
-		<plugin>
-  <groupId>org.zeroturnaround</groupId>
-  <artifactId>jrebel-maven-plugin</artifactId>
-  <executions>
-    <execution>
-      <id>generate-rebel-xml</id>
-      <phase>process-resources</phase>
-      <goals>
-        <goal>generate</goal>
-      </goals>
-    </execution>
-  </executions>
-</plugin>
+			<plugin>
+				<groupId>org.zeroturnaround</groupId>
+				<artifactId>jrebel-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-rebel-xml</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
-		  <dependency>
-    <groupId>org.apache.openjpa</groupId>
-    <artifactId>openjpa</artifactId>
-    <version>2.1.1</version>
-  </dependency>
-	  		<dependency>
+		<dependency>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbynet</artifactId>
 			<version>10.8.1.2</version>
 			<type>jar</type>
 		</dependency>
-	
-	<dependency>
+
+		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
 			<version>1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.spec.javax.ejb</groupId>
@@ -90,8 +92,9 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -109,7 +112,7 @@
 			<version>3.0.1</version>
 		</dependency>
 		<!-- test scope -->
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
