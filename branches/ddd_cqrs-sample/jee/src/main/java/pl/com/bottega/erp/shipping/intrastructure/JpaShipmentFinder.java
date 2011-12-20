@@ -12,7 +12,6 @@ import pl.com.bottega.erp.shipping.presentation.ShipmentDto;
 import pl.com.bottega.erp.shipping.presentation.ShipmentFinder;
 
 @Finder
-@Stateless
 public class JpaShipmentFinder implements ShipmentFinder {
 
 	@PersistenceContext(unitName="defaultPU")

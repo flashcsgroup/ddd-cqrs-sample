@@ -17,7 +17,6 @@ import pl.com.bottega.erp.sales.presentation.OrderFinder;
  * @author Rafał Jamróz
  */
 @Finder
-@Stateless
 public class JpaOrderFinder implements OrderFinder {
 
 	@PersistenceContext(unitName="defaultPU")
