@@ -93,7 +93,7 @@ table {
 	font-size: 1.1em;
 }
 
-table thead td {
+table thead th {
 	background-color: #090;
 	color: white;
 	text-align: center;
