@@ -1,4 +1,5 @@
 /* data table */
+
 .dataTable thead td.sortable:hover {
 	text-decoration: underline;
 	cursor: pointer;

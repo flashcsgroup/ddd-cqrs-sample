@@ -20,8 +20,8 @@
 					<h:inputText name="maxPrice" value="#{products.maxPriceFilter}" />
 					<h:outputText value="EUR" />
 					<br />
-					<input type="submit" value="filter" />
-					<input id="clearFiltersButton" type="button" value="show all" />
+					<h:commandButton value="filter" action="${products.doFilter}"/>
+					<h:commandButton value="show all" action="${products.clearFilter}" />
 				</h:form>
 			</div>
 
@@ -29,22 +29,35 @@
 			
 			
 			<h:dataTable  value="#{products.items}"
-			class="dataTable"
-			headerClass="priceColumn sortable"
+	id="productsTable" class="dataTable"
+			headerClass="priceColumn"
 			columnClasses="imageColumn, productNameColumn, priceColumn, buttonColumn"
-				var="product">
+				var="product"
+				sortedby="${products.sortedBy}"
+				ascending="$products.isAscending}"
+				>
 
 				<h:column class="imageColumn">
 					<f:facet name="header"></f:facet>
 					<img class="productImage"
-						src="./static/img/sales/noProductPicture.png" />
+						src="../static/img/sales/noProductPicture.png" />
 				</h:column>
 
 				<h:column class="productNameColumn">
-					<f:facet name="header">Product name</f:facet>${product.displayedName}</h:column>
+					<f:facet name="header">
+					<h:form>
+					<h:commandLink value="Product name" action="${products.sortByName}"/>
+					</h:form>
+					</f:facet>
+					${product.displayedName}</h:column>
 
 				<h:column class="priceColumn">
-					<f:facet name="header">Price</f:facet>
+					<f:facet name="header">
+										<h:form>
+					<h:commandLink value="Price" action="${products.sortByPrice}"/>
+					</h:form>
+
+					</f:facet>
     	    ${product.price}</h:column>
 
 				<h:column class="buttonsColumn">

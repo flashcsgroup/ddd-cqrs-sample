@@ -18,15 +18,15 @@
 }
 
 #productsTable thead .imageColumn {
-	width: 52px;
+	width: 32px;
 }
 
 #productsTable thead .productNameColumn {
-	
+
 }
 
 #productsTable thead .priceColumn {
-	width: 130px;
+	width: 65px;
 }
 
 #productsTable thead .buttonsColumn {
@@ -40,6 +40,7 @@
 
 #productsTable tbody .productNameColumn {
 	padding-left: 5px;
+	width: 230px;
 }
 
 #productsTable tbody .priceColumn {
