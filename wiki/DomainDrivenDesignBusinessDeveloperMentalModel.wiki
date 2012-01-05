@@ -612,6 +612,19 @@ public class Order extends BaseAggregateRoot {
  //..
 }
 </code>
+===Boundary===
+*The most critical factor of DDD modeling success designing proper boundaries of Aggregates*.
+
+Sample Order Aggregate is quite large. It contains OrderLines for example. Large aggregate leads to problematic situations in different aspects:
+  * "god classes" are hard to maintain and to test
+  * large responsibility may lead to situations then many concurrent request need to modify the same Aggreagte instance.
+
+Therefore in real system You would probably end up by modeling OrderLine as an Aggregate that hold reference to the Orderheader.
+But in this sample Order model we assume that OrderLines are just inner details of the Order.
+
+Genera, very basic rule of modeling Aggregate boundaries is to avoid traditional mental attitude: "lets find big bags for attributes". Instead lets gather all attributes (without bags for the beginning), find out which Use Cases modify which subsets of those attributes, than we have natural Aggregates boundaries.
+
+
 ===Encapsulation===
 Notice that:
   * Aggregates does not allow to modify all their properties via setters. It may have sense in some cases only.
