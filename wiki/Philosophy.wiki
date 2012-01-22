@@ -11,7 +11,7 @@ Project contains implementation of:
 
 Project covers many questionable aspects like BB injections. No technical compromises, *real* world problems and solutions instead of *hello* world play.
 
-===Present pragmatic approach to the CqRS architecture===
+===Illustrating pragmatic approach to the CqRS architecture===
   * Clean, "portable architecture" without magic tricks, that can be implemented in any technology
   * Provide *well crafted* code, ready to assimilate in *production*
 
